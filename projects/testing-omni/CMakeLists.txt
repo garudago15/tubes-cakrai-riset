@@ -15,6 +15,17 @@ add_subdirectory(${MBED_PATH} ${CMAKE_CURRENT_BINARY_DIR}/mbed-os)
 
 add_executable(${APP_TARGET}
     main.cpp
+    ../../libs/JoystickPS3/JoystickPS3.cpp
+    ../../libs/Control4Roda/Control4Omni.cpp
+    ../../libs/Control4Roda/Control4Roda.cpp
+    ../../libs/odom3enc/odom3enc.cpp
+    ../../libs/Motor/Motor.cpp
+    ../../libs/ControlMotor/ControlMotor.cpp
+    ../../libs/encoderHAL/encoderHAL.cpp
+    ../../libs/encoderKRAI/encoderKRAI.cpp
+    ../../libs/StanleyPursuit/StanleyPursuit.cpp
+    ../../libs/pidLo/pidLo.cpp
+    ../../libs/SMC_KRAI/SMC_KRAI.cpp
 )
 
 target_link_libraries(${APP_TARGET} mbed-os)
