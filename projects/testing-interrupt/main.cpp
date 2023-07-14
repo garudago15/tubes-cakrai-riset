@@ -13,18 +13,30 @@ FileHandle *mbed::mbed_override_console(int fd){
 int timer1 = us_ticker_read();
 
 // Interrupt
-#define TEST_LIMIT_SWITCH F407VET6_ENCODER_1_1_A
-InterruptIn limitSwitch(TEST_LIMIT_SWITCH, PullDown);
-void callbackPrint(){
-    printf("\nLIMIT SWITCH CLICKED!!!\n");
-}
+#define TEST_A_LIMIT_SWITCH F407VET6_ENCODER_1_2_A
+
+// InterruptIn limitSwitch_A(TEST_A_LIMIT_SWITCH, PullDown);
+DigitalIn limitSwitch_A(TEST_A_LIMIT_SWITCH, PullDown);
+
+// void callbackPrint(){
+//     Gak bisa printf dalam callback interrupt
+// }
 
 int main(){
-    limitSwitch.rise(&callbackPrint);
+    // limitSwitch.fall(&callbackPrint);
+
     printf("Start\n");
+    int state_A;
+
     while(1){
+        state_A = limitSwitch_A.read();
+
         if (us_ticker_read() - timer1 > 1e6){
-            printf("Hello World\n");
+
+            printf("%d\n", state_A);
+            // Dengan konfigurasi switch normally close dan PullDown resistor
+            // Tanpa di-trigger, value dari limit switch adalah 1
+            // Buat nge-test interrupt secara nyata, baiknya langsung diimplementasiin ke motor aslinya. Tentu saja code interruptnya belum nyampe sana :)
         }
     }
 }
