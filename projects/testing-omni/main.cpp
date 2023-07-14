@@ -1,10 +1,10 @@
 #include "mbed.h"
 #include "../../libs/Configs/Constants.h"
 #include "../../libs/JoystickPS3/JoystickPS3.h"
-#include "../libs/Control4Roda/Control4Omni.h"
+#include "../../libs/Control4Roda/Control4Omni.h"
 
 /* INITIALIZE SERIAL USING PRINTF */
-static BufferedSerial serial_port(USBTX, USBRX, 115200);
+static BufferedSerial serial_port(PA_9, PA_10, 115200);
 FileHandle *mbed::mbed_override_console(int fd){
     return &serial_port;
 }
@@ -12,60 +12,74 @@ FileHandle *mbed::mbed_override_console(int fd){
 /* INITIALIZE PS3 JOYSTICK */
 JoystickPS3 ps3(PS3_TX, PS3_RX);
 
-/* INITIALIZE OMNIWHEEL */
-/* Berikut adalah cara pake omniwheel:
-1. untuk ubah forward-backward speed pake omni.set_vy_cmd(float dlm m/s (depan positif))
-2. untuk ubah left-right speed pake omni.set_vx_cmd(float dlm m/s (kanan positif))
-3. untuk ubah rotasi pake omni.set_w_cmd(float dlm m/s (berlawanan arah jarum jam positif))
-4. untuk rem pake omni.forceBrakeSync()
-note: asumsi menggunakan 3 encoder posisi (utk odometri)
-note: asumsi full manual operation */
-Motor *FL_Motor(FL_PWM, FL_FWD, FL_REV);
-Motor *FR_Motor(FR_PWM, FR_FWD, FR_REV);
-Motor *BL_Motor(BL_PWM, BL_FWD, BL_REV);
-Motor *BR_Motor(BR_PWM, BR_FWD, BR_REV);
-encoderKRAI *encFL(FL_CHA, FL_CHB, WHEEL_PPR, Encoding::X4_ENCODING);
-encoderKRAI *encFR(FR_CHA, FR_CHB, WHEEL_PPR, Encoding::X4_ENCODING);
-encoderKRAI *encBR(BR_CHA, BR_CHB, WHEEL_PPR, Encoding::X4_ENCODING);
-encoderKRAI *encBL(BL_CHA, BL_CHB, WHEEL_PPR, Encoding::X4_ENCODING);
-pidLo *FLPid(KP_WHEEL_PID,KI_WHEEL_PID,0,TIME_SAMPLING, 1, 0, 1000, 1000); //constants: kp, ki, kd
-pidLo *FRPid(KP_WHEEL_PID,KI_WHEEL_PID,0,TIME_SAMPLING, 1, 0, 1000, 1000);
-pidLo *BRPid(KP_WHEEL_PID,KI_WHEEL_PID,0,TIME_SAMPLING, 1, 0, 1000, 1000);
-pidLo *BLPid(KP_WHEEL_PID,KI_WHEEL_PID,0,TIME_SAMPLING, 1, 0, 1000, 1000);
-SMC *FLSMC(KP_WHEEL_SMC, KS_WHEEL_SMC, EPS_WHEEL_SMC, 1, TIME_SAMPLING, SMC::KECEPATAN); //constants: kp, ksigma, epsilon, dan beta(tidak terpakai)
-SMC *FRSMC(KP_WHEEL_SMC, KS_WHEEL_SMC, EPS_WHEEL_SMC, 1, TIME_SAMPLING, SMC::KECEPATAN);
-SMC *BRSMC(KP_WHEEL_SMC, KS_WHEEL_SMC, EPS_WHEEL_SMC, 1, TIME_SAMPLING, SMC::KECEPATAN);
-SMC *BLSMC(KP_WHEEL_SMC, KS_WHEEL_SMC, EPS_WHEEL_SMC, 1, TIME_SAMPLING, SMC::KECEPATAN);
-//ControlMotor digunakan untuk menggabung hasil pid dan smc serta memberi nilai kp_pid, kd_pid, dan kp_smc sebagai fungsi kecepatan (dengan k1 sebagai minimal dan k2 sebagai maksimal) 
-ControlMotor *control_FL_motor(FLPid, FLSMC, MAX_WHEEL_SPEED, KP_WHEEL_PID_MIN, KP_WHEEL_PID_MAX, KD_WHEEL_PID_MIN, KD_WHEEL_PID_MAX, KP_WHEEL_SMC_MIN, KP_WHEEL_SMC_MAX); //constants: kp_pid_1, kp_pid_2, kd_pid_1, kd_pid_2, kp_smc_1, kp_smc_2
-ControlMotor *control_FR_motor(FRPid, FRSMC, MAX_WHEEL_SPEED, KP_WHEEL_PID_MIN, KP_WHEEL_PID_MAX, KD_WHEEL_PID_MIN, KD_WHEEL_PID_MAX, KP_WHEEL_SMC_MIN, KP_WHEEL_SMC_MAX);
-ControlMotor *control_BR_motor(BRPid, BRSMC, MAX_WHEEL_SPEED, KP_WHEEL_PID_MIN, KP_WHEEL_PID_MAX, KD_WHEEL_PID_MIN, KD_WHEEL_PID_MAX, KP_WHEEL_SMC_MIN, KP_WHEEL_SMC_MAX);
-ControlMotor *control_BL_motor(BLPid, BLSMC, MAX_WHEEL_SPEED, KP_WHEEL_PID_MIN, KP_WHEEL_PID_MAX, KD_WHEEL_PID_MIN, KD_WHEEL_PID_MAX, KP_WHEEL_SMC_MIN, KP_WHEEL_SMC_MAX);
-//encoder eksternal (encoderHAL) kyknya perlu research dulu karena pake namespace mbed (dan melibatkan timer interrupt). Untuk sekarang pemahaman saya sebagai berikut:
-// TIM_TypeDef *encL_TIM=encL_TIM; //for reference see www.st.com/st-web-ui/static/active/en/resource/technical/document/datasheet/DM00102166.pdf 
-// TIM_TypeDef *encR_TIM=encR_TIM; //this is also useful https://github.com/STMicroelectronics/STM32CubeF4/blob/master/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
-// TIM_TypeDef *encAux_TIM=encAux_TIM; //and this for a similar problem https://os.mbed.com/forum/platform-34-ST-Nucleo-F401RE-community/topic/4963/ 
-encoderHAL encL(encL_TIM);
-encoderHAL encR(encR_TIM);
-encoderHAL encAux(encAux_TIM);
-HAL_TIM_Encoder_MspInit(encL.getTimer());
-HAL_TIM_Encoder_MspInit(encR.getTimer());
-HAL_TIM_Encoder_MspInit(encAux.getTimer());
-odom3enc *odom(*encL, *encR, *encAux);
-pidLo *vxPid(KP_ROBOT_PID_v,KI_ROBOT_PID_v,0,TIME_SAMPLING, 1, 0, 1000, 1000);
-pidLo *vyPid(KP_ROBOT_PID_v,KI_ROBOT_PID_v,0,TIME_SAMPLING, 1, 0, 1000, 1000);
-pidLo *wPid(KP_ROBOT_PID_w,KI_ROBOT_PID_w,0,TIME_SAMPLING, 1, 0, 1000, 1000);
-//3 baris di bawah ini tidak akan dipakai karena omniWheel dikendalikan manual
-StanleyPursuit *line;
-pidLo *pid(0,0,0,TIME_SAMPLING, 1, 0, 1000, 1000);
-pidLo *pid2(0,0,0,TIME_SAMPLING, 1, 0, 1000, 1000);
-//define omniWheel
-Control4Omni omni(FL_motor, FR_motor, BR_motor, BL_motor, encFL, encFR, encBR, encBL, control_FL_motor, control_FR_motor, control_BR_motor, control_BL_motor, odom, vxPid, vyPid, wPid, line, pid, pid2); //*line, *pid, dan *pid2 digunakan utk automatic positioning
+/* Base Motor */
+Motor baseMotorFL(BASE_MOTOR_FL_PWM, BASE_MOTOR_FL_FOR, BASE_MOTOR_FL_REV);
+Motor baseMotorFR(BASE_MOTOR_FR_PWM, BASE_MOTOR_FR_FOR, BASE_MOTOR_FR_REV);
+Motor baseMotorBL(BASE_MOTOR_BL_PWM, BASE_MOTOR_BL_FOR, BASE_MOTOR_BL_REV);
+Motor baseMotorBR(BASE_MOTOR_BR_PWM, BASE_MOTOR_BR_FOR, BASE_MOTOR_BR_REV);
+
+/* PID Vx, Vy, W */
+pidLo vxPid(0, 0, 0, SAMP_IK_US, 10, 1, 1000, 100);
+pidLo vyPid(0, 0, 0, SAMP_IK_US, 10, 1, 1000, 100);
+pidLo wPid(0.025, 0.0025, 0, SAMP_IK_US, 10, 1, 1000, 100);
+
+PID pidMotorFL(BASE_FL_KP, BASE_FL_KI, BASE_FL_KD, BASE_FL_TS_MS, 0.5, 6);
+PID pidMotorFR(BASE_FR_KP, BASE_FR_KI, BASE_FR_KD, BASE_FR_TS_MS, 0.5, 6);
+PID pidMotorBR(BASE_BR_KP, BASE_BR_KI, BASE_BR_KD, BASE_BR_TS_MS, 0.5, 6);
+PID pidMotorBL(BASE_BL_KP, BASE_BL_KI, BASE_BL_KD, BASE_BL_TS_MS, 0.5, 8);
+
+/* SMC untuk motor */
+SMC smcMotorFL(BASE_FL_SMC_KP, SMC_FL_KSIGMA, SMC_EPSILON, SMC_BETA, (float)SAMP_PID_BASE_MOTOR_US / MS_TO_US, SMC::KECEPATAN);
+SMC smcMotorFR(BASE_FR_SMC_KP, SMC_FR_KSIGMA, SMC_EPSILON, SMC_BETA, (float)SAMP_PID_BASE_MOTOR_US / MS_TO_US, SMC::KECEPATAN);
+SMC smcMotorBR(BASE_BR_SMC_KP, SMC_BR_KSIGMA, SMC_EPSILON, SMC_BETA, (float)SAMP_PID_BASE_MOTOR_US / MS_TO_US, SMC::KECEPATAN);
+SMC smcMotorBL(BASE_BL_SMC_KP, SMC_BL_KSIGMA, SMC_EPSILON, SMC_BETA, (float)SAMP_PID_BASE_MOTOR_US / MS_TO_US, SMC::KECEPATAN);
+
+/* Control Motor */
+ControlMotor controlMotorFL(&pidMotorFL, &smcMotorFL, BASE_MOTOR_V_LIM, BASE_FL_KP, BASE_FL_KP_MAX, BASE_FL_KD, BASE_FL_KD_MAX, BASE_FL_SMC_KP, BASE_FL_SMC_KP_MAX);
+ControlMotor controlMotorFR(&pidMotorFR, &smcMotorFR, BASE_MOTOR_V_LIM, BASE_FR_KP, BASE_FR_KP_MAX, BASE_FR_KD, BASE_FR_KD_MAX, BASE_FR_SMC_KP, BASE_FR_SMC_KP_MAX);
+ControlMotor controlMotorBR(&pidMotorBR, &smcMotorBR, BASE_MOTOR_V_LIM, BASE_BR_KP, BASE_BR_KP_MAX, BASE_BR_KD, BASE_BR_KD_MAX, BASE_BR_SMC_KP, BASE_BR_SMC_KP_MAX);
+ControlMotor controlMotorBL(&pidMotorBL, &smcMotorBL, BASE_MOTOR_V_LIM, BASE_BL_KP, BASE_BL_KP_MAX, BASE_BL_KD, BASE_BL_KD_MAX, BASE_BL_SMC_KP, BASE_BL_SMC_KP_MAX);
+
+/* Base Motor Encoder */
+encoderKRAI encoderBaseFL(ENCODER_BASE_MOTOR_FL_CHA, ENCODER_BASE_MOTOR_FL_CHB, ENC_BASE_MOTOR_PPR / 2, X2_ENCODING);
+encoderKRAI encoderBaseFR(ENCODER_BASE_MOTOR_FR_CHA, ENCODER_BASE_MOTOR_FR_CHB, ENC_BASE_MOTOR_PPR / 2, X2_ENCODING);
+encoderKRAI encoderBaseBR(ENCODER_BASE_MOTOR_BR_CHA, ENCODER_BASE_MOTOR_BR_CHB, ENC_BASE_MOTOR_PPR / 2, X2_ENCODING);
+encoderKRAI encoderBaseBL(ENCODER_BASE_MOTOR_BL_CHA, ENCODER_BASE_MOTOR_BL_CHB, ENC_BASE_MOTOR_PPR / 2, X2_ENCODING);
+
+/* Odometry Encoder */
+encoderKRAI encL(ENCODER_L_CHA, ENCODER_L_CHB, 1000, X4_ENCODING);
+encoderKRAI encAux(ENCODER_AUX_CHA, ENCODER_AUX_CHB, 1000, X4_ENCODING);
+
+/* Odometry */
+odom2enc odom(&encAux, &encL);
+
+/* Trajectory Following */
+StanleyPursuit line;
+pidLo pid(0.08, 0.05, 0.5, 0.5, 0.5, 0, 1000, 100);
+pidLo pid2(0.03, 0.005, 0.2, 0.5, 0.5, 0, 1000, 100);
+
+/* ControlKRAI */
+ControlAutomatic4Omni omni(&baseMotorFL, &baseMotorFR, &baseMotorBR, &baseMotorBL, &encoderBaseFL, &encoderBaseFR, &encoderBaseBR, &encoderBaseBL, &controlMotorFL, &controlMotorFR, &controlMotorBR, &controlMotorBL, &odom, &vxPid, &vyPid, &wPid, &line, &pid, &pid2);
+
+//omni variable
+float vx_cmd = 0, vy_cmd = 0, w_cmd = 0;
+
 
 /* INITIALIZE TIMERS*/
-int timer1 = us_ticker_read();
-int timer2 = us_ticker_read();
-int now = us_ticker_read();
+/* Time Sampling for Base */
+uint32_t samplingStick = 0; 
+uint32_t samplingPID = 0;
+uint32_t samplingOdom = 0;
+// uint32_t samplingStickRead = 0;
+uint32_t samplingMotor = 0;
+// uint32_t samplingUpdPos = 0;
+// uint32_t samplingEncoder = 0;
+uint32_t samplingIK = 0;
+// uint32_t samplingPrint = 0;
+// uint32_t samplingOtomatis = 0;
+// uint32_t samplingOtomatisESP = 0;
+// uint32_t samplingParallelPark = 0;
+// uint32_t samplingAutoAim = 0;
 
 int main(){
     ps3.setup();
@@ -74,66 +88,130 @@ int main(){
         // Pengolahan dan Update data PS3
         ps3.olah_data();
         ps3.baca_data();
+        
+        /* utk reset
+        if (ps3.getStart())
+        {
+            NVIC_SystemReset();
+        }
+        */
+        
+        //default
+        // vx_cmd = 0;
+        // vy_cmd = 0;
+        // w_cmd = 0;
+
+        //braking system
         if(ps3.getKotak()){
             omni.forceBrakeSync(); //hard brake sebelum nembak agar robot tidak gerak saat nembak
-        }
-        if(ps3.getR2()){
-            if(ps3.getButtonUp()){ // Maju Boosted
-                omni.set_vy_cmd(MAX_ROBOT_SPEED);
-            } else if(ps3.getButtonDown()){ // Mundur Boosted
-                omni.set_vy_cmd(-1 * MAX_ROBOT_SPEED);
-            } else{ //Soft Brake
-                omni.set_vy_cmd(0);
+        } else{
+            //moving
+            if(ps3.getR2()){ //boost
+                if(ps3.getButtonUp()){ // Maju Boosted
+                    vy_cmd=MAX_ROBOT_SPEED;
+                } else if(ps3.getButtonDown()){ // Mundur Boosted
+                    vy_cmd=-1.0f * MAX_ROBOT_SPEED;
+                } else{ //Soft Brake
+                    vy_cmd=0.0f;
+                }
+                if(ps3.getButtonRight()){ // Kanan Boosted
+                    vx_cmd=MAX_ROBOT_SPEED;
+                } else if(ps3.getButtonLeft()){ // Kiri Boosted
+                    vx_cmd=-1.0f * MAX_ROBOT_SPEED;
+                } else{ //Soft Brake
+                    vx_cmd=0.0f;
+                }
+                if(ps3.getL1()){ //Mutar berlawanan arah jarum jam Boosted
+                    w_cmd=MAX_ROBOT_SPIN;
+                } else if(ps3.getR1()){ //Mutar searah jarum jam Boosted
+                    w_cmd=-1.0f * MAX_ROBOT_SPIN;
+                } else{ //Soft Brake
+                    w_cmd=0.0f;
+                }
+            }else{
+                if(ps3.getButtonUp()){ // Maju
+                    vy_cmd=NORMAL_ROBOT_SPEED;
+                } else if(ps3.getButtonDown()){ // Mundur
+                    vy_cmd=-1.0f * NORMAL_ROBOT_SPEED;
+                } else{ //Soft Brake
+                    vy_cmd=0.0f;
+                }
+                if(ps3.getButtonRight()){ // Kanan
+                    vx_cmd=NORMAL_ROBOT_SPEED;
+                } else if(ps3.getButtonLeft()){ // Kiri
+                    vx_cmd=-1.0f * NORMAL_ROBOT_SPEED;
+                } else{ //Soft Brake
+                    vx_cmd=0.0f;
+                }
+                if(ps3.getL1()){ //Mutar berlawanan arah jarum jam
+                    w_cmd=NORMAL_ROBOT_SPIN;
+                } else if(ps3.getR1()){ //Mutar searah jarum jam
+                    w_cmd=-1.0f * NORMAL_ROBOT_SPIN;
+                } else{ //Soft Brake
+                    w_cmd=0.0f;
+                }
             }
-            if(ps3.getButtonRight()){ // Kanan Boosted
-                omni.set_vx_cmd(MAX_ROBOT_SPEED);
-            } else if(ps3.getButtonLeft()){ // Kiri Boosted
-                omni.set_vx_cmd(-1 * MAX_ROBOT_SPEED);
-            } else{ //Soft Brake
-                omni.set_vx_cmd(0);
+
+            //stick sampling
+            if (us_ticker_read() - samplingStick > SAMP_STICK_US)
+            {
+                // stick.stickState(&vx_cmd, &vy_cmd, &w_cmd);
+
+                omni.set_vx_cmd(vx_cmd);
+                omni.set_vy_cmd(vy_cmd);
+                omni.set_w_cmd(w_cmd);
+
+                // PRINTF("PS3: vx_cmd: %f, vy_cmd: %f, w_cmd: %f\n", vx_cmd, vy_cmd, w_cmd);
+
+                samplingStick = us_ticker_read();
             }
-            if(ps3.getL1()){ //Mutar berlawanan arah jarum jam Boosted
-                omni.set_w_cmd(MAX_ROBOT_SPIN);
-            } else if(ps3.getR1()){ //Mutar searah jarum jam Boosted
-                omni.set_w_cmd(-1 * MAX_ROBOT_SPIN);
-            } else{ //Soft Brake
-                omni.set_w_cmd(0);
+
+            /********************** PID & ODOM **********************/
+
+            if (us_ticker_read() - samplingPID > SAMP_PID_BASE_MOTOR_US) //update PID berdasarkan target dan current speed tiap motor
+            {
+                omni.pidMotorSamp();
+
+                samplingPID = us_ticker_read();
             }
-        }else{
-            if(ps3.getButtonUp()){ // Maju
-                omni.set_vy_cmd(MAX_ROBOT_SPEED / 2);
-            } else if(ps3.getButtonDown()){ // Mundur
-                omni.set_vy_cmd(-1 * MAX_ROBOT_SPEED / 2);
-            } else{ //Soft Brake
-                omni.set_vy_cmd(0);
+
+            if (us_ticker_read() - samplingOdom > SAMP_BASE_ODOMETRY_US) //update odometri
+            {
+                controlElephant.baseSpeed();
+
+                samplingOdom = us_ticker_read();
             }
-            if(ps3.getButtonRight()){ // Kanan
-                omni.set_vx_cmd(MAX_ROBOT_SPEED / 2);
-            } else if(ps3.getButtonLeft()){ // Kiri
-                omni.set_vx_cmd(-1 * MAX_ROBOT_SPEED / 2);
-            } else{ //Soft Brake
-                omni.set_vx_cmd(0);
+
+            /********************** MOTOR **********************/
+
+            if (us_ticker_read() - samplingMotor > SAMP_BASE_MOTOR_US) //update motor
+            {
+                samplingMotor = us_ticker_read();
+
+                omni.motorSamp();
             }
-            if(ps3.getL1()){ //Mutar berlawanan arah jarum jam
-                omni.set_w_cmd(MAX_ROBOT_SPIN / 2);
-            } else if(ps3.getR1()){ //Mutar searah jarum jam
-                omni.set_w_cmd(-1 * MAX_ROBOT_SPIN / 2);
-            } else{ //Soft Brake
-                omni.set_w_cmd(0);
+
+            /********************** IK **********************/
+
+            if (us_ticker_read() - samplingIK > SAMP_IK_US) //update target speed tiap motor berdasarkan vx, vy, dan w
+            {
+                omni.base();
+
+                samplingIK = us_ticker_read();
             }
         }
 
-        // PID
-        now = us_ticker_read();
-        if(now - timer1 > TIME_SAMPLING){
-            //omni sampling
-            omni.encoderMotorSamp(); //baca encoder (current speed) tiap motor
-            omni.baseSpeed(); //update odometri
-            omni.base(); //update target speed tiap motor berdasarkan vx, vy, dan w
-            omni.pidMotorSamp(); //update PID berdasarkan target dan current speed tiap motor
-            omni.motorSamp(); //update motor
+        // old sampling method
+        // now = us_ticker_read();
+        // if(now - timer1 > TIME_SAMPLING){
+        //     //omni sampling
+        //     omni.encoderMotorSamp(); //baca encoder (current speed) tiap motor
+        //     omni.baseSpeed(); //update odometri
+        //     omni.base(); //update target speed tiap motor berdasarkan vx, vy, dan w
+        //     omni.pidMotorSamp(); //update PID berdasarkan target dan current speed tiap motor
+        //     omni.motorSamp(); //update motor
 
-            timer1 = now;
-        }
+        //     timer1 = now;
+        // }
     }
 }
