@@ -15,6 +15,7 @@ add_subdirectory(${MBED_PATH} ${CMAKE_CURRENT_BINARY_DIR}/mbed-os)
 
 add_executable(${APP_TARGET}
     main.cpp
+    ../../KRAI_Library/encoderHAL/encoderHAL.cpp
 )
 
 target_link_libraries(${APP_TARGET} mbed-os)

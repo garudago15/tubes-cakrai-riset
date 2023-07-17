@@ -1,7 +1,21 @@
 #include "mbed.h"
 #include "../../libs/Configs/Constants.h"
-#include "../../libs/JoystickPS3/JoystickPS3.h"
-#include "../../libs/Control4Roda/Control4Omni.h"
+#include "../../libs/Configs/ConfigurationPin.h"
+// #include "../../libs/Control4Roda/Control4Omni.h"
+#include "../../KRAI_Library/Motor/Motor.h"
+#include "../../KRAI_Library/pidLo/pidLo.h"
+#include "../../KRAI_Library/SMC_KRAI/SMC_KRAI.h"
+#include "../../KRAI_Library/ControlMotor/ControlMotor.h"
+#include "../../KRAI_Library/encoderHAL/encoderHAL.h"
+#include "../../KRAI_Library/encoderKRAI/encoderKRAI.h"
+#include "../../KRAI_Library/Control4Roda/ControlAutomatic4Omni.h"
+#include "../../KRAI_Library/StanleyPursuit/StanleyPursuit.h"
+#include "../../KRAI_Library/encoderHAL/EncoderMspInitF4.h"
+#include "../../KRAI_Library/odom2enc/Coordinate.h"
+#include "../../KRAI_Library/odom2enc/odom2enc.h"
+// #include "../../KRAI_Library/odom3enc/odom3enc.h"
+#include "../../KRAI_Library/JoystickPS3/JoystickPS3.h"
+#include "../../KRAI_Library/PID_KRAI/PID_KRAI.h"
 
 /* INITIALIZE SERIAL USING PRINTF */
 static BufferedSerial serial_port(PA_9, PA_10, 115200);
@@ -82,74 +96,102 @@ uint32_t samplingIK = 0;
 // uint32_t samplingAutoAim = 0;
 
 int main(){
-    ps3.setup();
+    printf("STICK START\n");
+
+    /* SET UP JOYSTICK */
+    stick.idle();   
+    stick.setup();
     omni.encoderMotorSamp(); //baca data awal encoder omniWheel
     while (true){
         // Pengolahan dan Update data PS3
         ps3.olah_data();
         ps3.baca_data();
         
-        /* utk reset
+        // utk reset
         if (ps3.getStart())
         {
             NVIC_SystemReset();
         }
-        */
-        
+
         //default
-        // vx_cmd = 0;
-        // vy_cmd = 0;
-        // w_cmd = 0;
+        vx_cmd = 0;
+        vy_cmd = 0;
+        w_cmd = 0;
 
         //braking system
-        if(ps3.getKotak()){
+        if(ps3.getKotak()){ //tombol utk nembak
             omni.forceBrakeSync(); //hard brake sebelum nembak agar robot tidak gerak saat nembak
         } else{
             //moving
-            if(ps3.getR2()){ //boost
-                if(ps3.getButtonUp()){ // Maju Boosted
-                    vy_cmd=MAX_ROBOT_SPEED;
-                } else if(ps3.getButtonDown()){ // Mundur Boosted
-                    vy_cmd=-1.0f * MAX_ROBOT_SPEED;
-                } else{ //Soft Brake
-                    vy_cmd=0.0f;
+            if (stick.getButtonRight()) { //gerak ke kanan
+                vx_cmd = TRANSLATION_BASE_SPEED;
+            } else if (stick.getButtonLeft()) { //gerak ke kiri
+                vx_cmd = -1.0f * TRANSLATION_BASE_SPEED;
+            } else{ //default
+                vx_cmd = 0.0f;
+            }
+
+            if (stick.getButtonUp()) { //gerak ke atas
+                vy_cmd = TRANSLATION_BASE_SPEED;
+            } else if (stick.getButtonDown()) { //gerak ke bawah
+                vy_cmd = -1.0f * TRANSLATION_BASE_SPEED;
+            } else{ //default
+                vy_cmd = 0.0f;
+            }
+
+            if (stick.getL1()) { //spin berlawanan arah jarum jam
+                w_cmd = ROTATION_BASE_SPEED;
+            } else if (stick.getR1()) { //spin berlawanan arah jarm jam
+                w_cmd = -1.0f * ROTATION_BASE_SPEED;
+            } else{ //default
+                w_cmd = 0.0f;
+            }
+
+            if (vx_cmd == 0.0 && vy_cmd == 0.0 && w_cmd == 0.0) {
+                // Change controllers parameters if the base about to stop wholly (soft braking)
+                smcMotorBL.setKp(BASE_BL_SMC_KP_BRAKE);
+                smcMotorBR.setKp(BASE_BR_SMC_KP_BRAKE);
+                smcMotorFL.setKp(BASE_FL_SMC_KP_BRAKE);
+                smcMotorFR.setKp(BASE_FR_SMC_KP_BRAKE);
+
+                smcMotorBL.setKsigma(SMC_BL_KSIGMA_BRAKE);
+                smcMotorBR.setKsigma(SMC_BR_KSIGMA_BRAKE);
+                smcMotorFL.setKsigma(SMC_FL_KSIGMA_BRAKE);
+                smcMotorFR.setKsigma(SMC_FR_KSIGMA_BRAKE);
+
+                pidMotorBL.setKp(BASE_BL_KP_BRAKE);
+                pidMotorBR.setKp(BASE_BR_KP_BRAKE);
+                pidMotorFL.setKp(BASE_FL_KP_BRAKE);
+                pidMotorFR.setKp(BASE_FR_KP_BRAKE);    
+            } else {
+                // Change back controller parameters if base is moving
+
+                if (stick.getR2()) {
+                    // Boost mode, also change controllers parameter
+                    vx_cmd *= TRANSLATION_BOOST_MULTIPLIER;
+                    vy_cmd *= TRANSLATION_BOOST_MULTIPLIER;
+                    w_cmd *= ROTATION_BOOST_MULTIPLIER;
+
+                    smcMotorBL.setKp(BASE_BL_SMC_KP_BOOST);
+                    smcMotorBR.setKp(BASE_BR_SMC_KP_BOOST);
+                    smcMotorFL.setKp(BASE_FL_SMC_KP_BOOST);
+                    smcMotorFR.setKp(BASE_FR_SMC_KP_BOOST);
+                } else { //normal mode
+                    smcMotorBL.setKp(BASE_BL_SMC_KP);
+                    smcMotorBR.setKp(BASE_BR_SMC_KP);
+                    smcMotorFL.setKp(BASE_FL_SMC_KP);
+                    smcMotorFR.setKp(BASE_FR_SMC_KP);
                 }
-                if(ps3.getButtonRight()){ // Kanan Boosted
-                    vx_cmd=MAX_ROBOT_SPEED;
-                } else if(ps3.getButtonLeft()){ // Kiri Boosted
-                    vx_cmd=-1.0f * MAX_ROBOT_SPEED;
-                } else{ //Soft Brake
-                    vx_cmd=0.0f;
-                }
-                if(ps3.getL1()){ //Mutar berlawanan arah jarum jam Boosted
-                    w_cmd=MAX_ROBOT_SPIN;
-                } else if(ps3.getR1()){ //Mutar searah jarum jam Boosted
-                    w_cmd=-1.0f * MAX_ROBOT_SPIN;
-                } else{ //Soft Brake
-                    w_cmd=0.0f;
-                }
-            }else{
-                if(ps3.getButtonUp()){ // Maju
-                    vy_cmd=NORMAL_ROBOT_SPEED;
-                } else if(ps3.getButtonDown()){ // Mundur
-                    vy_cmd=-1.0f * NORMAL_ROBOT_SPEED;
-                } else{ //Soft Brake
-                    vy_cmd=0.0f;
-                }
-                if(ps3.getButtonRight()){ // Kanan
-                    vx_cmd=NORMAL_ROBOT_SPEED;
-                } else if(ps3.getButtonLeft()){ // Kiri
-                    vx_cmd=-1.0f * NORMAL_ROBOT_SPEED;
-                } else{ //Soft Brake
-                    vx_cmd=0.0f;
-                }
-                if(ps3.getL1()){ //Mutar berlawanan arah jarum jam
-                    w_cmd=NORMAL_ROBOT_SPIN;
-                } else if(ps3.getR1()){ //Mutar searah jarum jam
-                    w_cmd=-1.0f * NORMAL_ROBOT_SPIN;
-                } else{ //Soft Brake
-                    w_cmd=0.0f;
-                }
+
+                smcMotorBL.setKsigma(SMC_BL_KSIGMA);
+                smcMotorBR.setKsigma(SMC_BR_KSIGMA);
+                smcMotorFL.setKsigma(SMC_FL_KSIGMA);
+                smcMotorFR.setKsigma(SMC_FR_KSIGMA);
+
+                pidMotorBL.setKp(BASE_BL_KP);
+                pidMotorBR.setKp(BASE_BR_KP);
+                pidMotorFL.setKp(BASE_FL_KP);
+                pidMotorFR.setKp(BASE_FR_KP);
             }
 
             //stick sampling
@@ -199,6 +241,16 @@ int main(){
 
                 samplingIK = us_ticker_read();
             }
+            /********************** PRINTS **********************/
+
+            // // Jalanin semua roda di base
+            // baseMotorBL.speed(0.4);
+            // baseMotorBR.speed(0.4);
+            // baseMotorFL.speed(0.4);
+            // baseMotorFR.speed(0.4);
+
+            // PRINTF("FR : %d, FL : %d, BR : %d, BL : %d\n", encoderBaseFR.getPulses(), encoderBaseFL.getPulses(), encoderBaseBR.getPulses(), encoderBaseBL.getPulses());
+
         }
 
         // old sampling method
