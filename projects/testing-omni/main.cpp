@@ -24,7 +24,7 @@ FileHandle *mbed::mbed_override_console(int fd){
 }
 
 /* INITIALIZE PS3 JOYSTICK */
-JoystickPS3 ps3(PS3_TX, PS3_RX);
+JoystickPS3 ps3(UART_STICK_TX, UART_STICK_RX);
 
 /* Base Motor */
 Motor baseMotorFL(BASE_MOTOR_FL_PWM, BASE_MOTOR_FL_FOR, BASE_MOTOR_FL_REV);
@@ -99,8 +99,8 @@ int main(){
     printf("STICK START\n");
 
     /* SET UP JOYSTICK */
-    stick.idle();   
-    stick.setup();
+    ps3.idle();   
+    ps3.setup();
     omni.encoderMotorSamp(); //baca data awal encoder omniWheel
     while (true){
         // Pengolahan dan Update data PS3
@@ -123,25 +123,25 @@ int main(){
             omni.forceBrakeSync(); //hard brake sebelum nembak agar robot tidak gerak saat nembak
         } else{
             //moving
-            if (stick.getButtonRight()) { //gerak ke kanan
+            if (ps3.getButtonRight()) { //gerak ke kanan
                 vx_cmd = TRANSLATION_BASE_SPEED;
-            } else if (stick.getButtonLeft()) { //gerak ke kiri
+            } else if (ps3.getButtonLeft()) { //gerak ke kiri
                 vx_cmd = -1.0f * TRANSLATION_BASE_SPEED;
             } else{ //default
                 vx_cmd = 0.0f;
             }
 
-            if (stick.getButtonUp()) { //gerak ke atas
+            if (ps3.getButtonUp()) { //gerak ke atas
                 vy_cmd = TRANSLATION_BASE_SPEED;
-            } else if (stick.getButtonDown()) { //gerak ke bawah
+            } else if (ps3.getButtonDown()) { //gerak ke bawah
                 vy_cmd = -1.0f * TRANSLATION_BASE_SPEED;
             } else{ //default
                 vy_cmd = 0.0f;
             }
 
-            if (stick.getL1()) { //spin berlawanan arah jarum jam
+            if (ps3.getL1()) { //spin berlawanan arah jarum jam
                 w_cmd = ROTATION_BASE_SPEED;
-            } else if (stick.getR1()) { //spin berlawanan arah jarm jam
+            } else if (ps3.getR1()) { //spin berlawanan arah jarm jam
                 w_cmd = -1.0f * ROTATION_BASE_SPEED;
             } else{ //default
                 w_cmd = 0.0f;
@@ -166,7 +166,7 @@ int main(){
             } else {
                 // Change back controller parameters if base is moving
 
-                if (stick.getR2()) {
+                if (ps3.getR2()) {
                     // Boost mode, also change controllers parameter
                     vx_cmd *= TRANSLATION_BOOST_MULTIPLIER;
                     vy_cmd *= TRANSLATION_BOOST_MULTIPLIER;
@@ -219,7 +219,7 @@ int main(){
 
             if (us_ticker_read() - samplingOdom > SAMP_BASE_ODOMETRY_US) //update odometri
             {
-                controlElephant.baseSpeed();
+                omni.baseSpeed();
 
                 samplingOdom = us_ticker_read();
             }
