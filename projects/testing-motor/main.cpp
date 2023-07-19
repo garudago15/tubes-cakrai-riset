@@ -1,9 +1,9 @@
 // main.cpp
 #include "mbed.h"
-#include "../KRAI_Library/Motor/Motor.h"
-#include "../KRAI_Library/encoderKRAI/encoderKRAI.h"
-#include "../KRAI_Library/pidLo/pidLo.h" // Include the pidLo library
-#include "../KRAI_Library/Pinout/F407VET6_2023.h"
+#include "../../KRAI_Library/Motor/Motor.h"
+#include "../../KRAI_Library/encoderKRAI/encoderKRAI.h"
+#include "../../KRAI_Library/pidLo/pidLo.h" // Include the pidLo library
+#include "../../KRAI_Library/Pinout/F407VET6_2023.h"
 
 // PIN Encoder
 #define CHA F407VET6_ENCODER_2_3_A
