@@ -82,6 +82,8 @@ M : A/B/C/D
 
 // #define F446RE_MASTER_I2C_SDA PB_9 // PC_9
 // #define F446RE_MASTER_I2C_SCL PB_8 // PA_8
+#define F446RE_MASTER_I2C_SDA PC_9 // PC_9
+#define F446RE_MASTER_I2C_SCL PA_8 // PA_8
 
 // /************** SPI **************/
 // #define F446RE_MASTER_SPI_MISO PA_6
