@@ -18,6 +18,7 @@ add_executable(${APP_TARGET}
     ../../KRAI_Library/Motor/Motor.cpp
     ../../KRAI_Library/encoderKRAI/encoderKRAI.cpp
     ../../KRAI_Library/pidLo/pidLo.cpp
+    ../../KRAI_Library/MovingAverage/MovingAverage.cpp
 )
 
 target_link_libraries(${APP_TARGET} mbed-os)
