@@ -1,21 +1,21 @@
 #include "mbed.h"
-#include "../../libs/Configs/Constants.h"
-#include "../../libs/Configs/ConfigurationPin.h"
+#include "../libs/Configs/Constants.h"
+#include "../libs/Configs/ConfigurationPin.h"
 // #include "../../libs/Control4Roda/Control4Omni.h"
-#include "../../KRAI_Library/Motor/Motor.h"
-#include "../../KRAI_Library/pidLo/pidLo.h"
-#include "../../KRAI_Library/SMC_KRAI/SMC_KRAI.h"
-#include "../../KRAI_Library/ControlMotor/ControlMotor.h"
-#include "../../KRAI_Library/encoderHAL/encoderHAL.h"
-#include "../../KRAI_Library/encoderKRAI/encoderKRAI.h"
-#include "../../KRAI_Library/Control4Roda/ControlAutomatic4Omni.h"
-#include "../../KRAI_Library/StanleyPursuit/StanleyPursuit.h"
-#include "../../KRAI_Library/encoderHAL/EncoderMspInitF4.h"
-#include "../../KRAI_Library/odom2enc/Coordinate.h"
-#include "../../KRAI_Library/odom2enc/odom2enc.h"
+#include "../KRAI_Library/Motor/Motor.h"
+#include "../KRAI_Library/pidLo/pidLo.h"
+#include "../KRAI_Library/SMC_KRAI/SMC_KRAI.h"
+#include "../KRAI_Library/ControlMotor/ControlMotor.h"
+#include "../KRAI_Library/encoderHAL/encoderHAL.h"
+#include "../KRAI_Library/encoderKRAI/encoderKRAI.h"
+#include "../KRAI_Library/Control4Roda/ControlAutomatic4Omni.h"
+#include "../KRAI_Library/StanleyPursuit/StanleyPursuit.h"
+#include "../KRAI_Library/encoderHAL/EncoderMspInitF4.h"
+#include "../KRAI_Library/odom2enc/Coordinate.h"
+#include "../KRAI_Library/odom2enc/odom2enc.h"
 // #include "../../KRAI_Library/odom3enc/odom3enc.h"
-#include "../../KRAI_Library/JoystickPS3/JoystickPS3.h"
-#include "../../KRAI_Library/PID_KRAI/PID_KRAI.h"
+#include "../KRAI_Library/JoystickPS3/JoystickPS3.h"
+#include "../KRAI_Library/PID_KRAI/PID_KRAI.h"
 
 /* INITIALIZE SERIAL USING PRINTF */
 static BufferedSerial serial_port(PA_9, PA_10, 115200);
@@ -77,6 +77,7 @@ ControlAutomatic4Omni omni(&baseMotorFL, &baseMotorFR, &baseMotorBR, &baseMotorB
 
 //omni variable
 float vx_cmd = 0, vy_cmd = 0, w_cmd = 0;
+float v_FL_curr = 0, v_FR_curr = 0, v_BL_curr = 0, v_BR_curr = 0;
 
 
 /* INITIALIZE TIMERS*/
@@ -87,7 +88,7 @@ uint32_t samplingOdom = 0;
 // uint32_t samplingStickRead = 0;
 uint32_t samplingMotor = 0;
 // uint32_t samplingUpdPos = 0;
-// uint32_t samplingEncoder = 0;
+uint32_t samplingEncoder = 0;
 uint32_t samplingIK = 0;
 // uint32_t samplingPrint = 0;
 // uint32_t samplingOtomatis = 0;
@@ -111,6 +112,7 @@ int main(){
         if (ps3.getStart())
         {
             NVIC_SystemReset();
+            printf("start");
         }
 
         //default
@@ -124,27 +126,24 @@ int main(){
         } else{
             //moving
             if (ps3.getButtonRight()) { //gerak ke kanan
-                vx_cmd = TRANSLATION_BASE_SPEED;
-            } else if (ps3.getButtonLeft()) { //gerak ke kiri
-                vx_cmd = -1.0f * TRANSLATION_BASE_SPEED;
-            } else{ //default
-                vx_cmd = 0.0f;
-            }
+                vx_cmd += TRANSLATION_BASE_SPEED;
+            } 
+            if (ps3.getButtonLeft()) { //gerak ke kiri
+                vx_cmd -= TRANSLATION_BASE_SPEED;
+            } 
 
             if (ps3.getButtonUp()) { //gerak ke atas
-                vy_cmd = TRANSLATION_BASE_SPEED;
-            } else if (ps3.getButtonDown()) { //gerak ke bawah
-                vy_cmd = -1.0f * TRANSLATION_BASE_SPEED;
-            } else{ //default
-                vy_cmd = 0.0f;
+                vy_cmd += TRANSLATION_BASE_SPEED;
+            } 
+            if (ps3.getButtonDown()) { //gerak ke bawah
+                vy_cmd -= TRANSLATION_BASE_SPEED;
             }
 
             if (ps3.getL1()) { //spin berlawanan arah jarum jam
-                w_cmd = ROTATION_BASE_SPEED;
-            } else if (ps3.getR1()) { //spin berlawanan arah jarm jam
-                w_cmd = -1.0f * ROTATION_BASE_SPEED;
-            } else{ //default
-                w_cmd = 0.0f;
+                w_cmd += ROTATION_BASE_SPEED;
+            } 
+            if (ps3.getR1()) { //spin berlawanan arah jarm jam
+                w_cmd -= ROTATION_BASE_SPEED;
             }
 
             if (vx_cmd == 0.0 && vy_cmd == 0.0 && w_cmd == 0.0) {
@@ -203,9 +202,25 @@ int main(){
                 omni.set_vy_cmd(vy_cmd);
                 omni.set_w_cmd(w_cmd);
 
-                // PRINTF("PS3: vx_cmd: %f, vy_cmd: %f, w_cmd: %f\n", vx_cmd, vy_cmd, w_cmd);
+                // printf("PS3: vx_cmd: %f, vy_cmd: %f, w_cmd: %f\n", vx_cmd, vy_cmd, w_cmd);
 
                 samplingStick = us_ticker_read();
+            }
+
+            /********************** ENCODER **********************/
+
+            if (us_ticker_read() - samplingEncoder > SAMP_BASE_MOTOR_ENCODER_US)
+            {
+                omni.encoderMotorSamp();
+
+                //printing curr speed
+                // float junk1;
+                
+                // omni.getVars(&junk1,&junk1,&junk1,&v_FL_curr,&v_FR_curr,&v_BR_curr,&v_BL_curr,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1);
+                printf("vFL: %.2f vFR: %.2f vBL: %.2f vBR: %.2f\n", omni.get_v_FL_curr(), omni.get_v_FR_curr(), omni.get_v_BL_curr(), omni.get_v_BR_curr());
+                // printf("FL: %d FR: %d BL:%d BR: %d\n", encoderBaseFL.getPulses(), encoderBaseFR.getPulses(), encoderBaseBL.getPulses(), encoderBaseBR.getPulses());
+
+                samplingEncoder = us_ticker_read();
             }
 
             /********************** PID & ODOM **********************/

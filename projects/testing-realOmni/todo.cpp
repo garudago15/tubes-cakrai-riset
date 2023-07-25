@@ -1,4 +1,4 @@
-// main.cpp
+// TO DO : PUSH
 #include "mbed.h"
 #include "../KRAI_Library/Motor/Motor.h"
 #include "../KRAI_Library/encoderKRAI/encoderKRAI.h"
