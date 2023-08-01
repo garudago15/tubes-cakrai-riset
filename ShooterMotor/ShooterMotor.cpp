@@ -14,10 +14,10 @@ ShooterMotor::ShooterMotor(Motor *leftMotor, Motor *rightMotor, encoderKRAI *enc
     this->maxRPM = 500.0f;
     this->prevTimeNow = 0;
 
-    this->pidLeftMotor->setInputLimits(-maxRPM, maxRPM);
-    this->pidLeftMotor->setOutputLimits(-1.0, 1.0);
+    this->pidLeftMotor->setInputLimits(-maxRPM, 0.0);
+    this->pidLeftMotor->setOutputLimits(-1.0, 0.0);
     this->pidRightMotor->setInputLimits(0.0, maxRPM);
-    this->pidRightMotor->setOutputLimits(-1.0, 1.0);
+    this->pidRightMotor->setOutputLimits(0.0, 1.0);
 
     this->outputPMW_LM = 0;
     this->outputPWM_RM = 0;
@@ -60,8 +60,8 @@ void ShooterMotor::controlOmegaShooter(float setPoint)
 
     // PID dan set speed motor
     this->outputPMW_LM = this->pidLeftMotor->advancepwm(-setPoint, this->omegaLM, 1.0);
-    this->leftMotor->speed(this->outputPMW_LM);
-    // this->leftMotor->speed(-0.25f);
+    // this->leftMotor->speed(this->outputPMW_LM);
+    this->leftMotor->speed(-0.25f);
 
 
     this->outputPWM_RM = this->pidRightMotor->createpwm(setPoint, this->omegaRM, 1.0);

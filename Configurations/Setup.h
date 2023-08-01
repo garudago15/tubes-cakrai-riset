@@ -11,23 +11,23 @@
     1.000.000 mikroSecond = 1 second
     1.000     mikroSecond = 1 miliSecond
 */
-uint32_t samplingPID = 5 * 1000; // Mikro Second
+uint32_t samplingPID = 10 * 1000; // Mikro Second
 
-// PID
-float kp_LM = 2.0f;
-float ki_LM = 0.0f;
-float kd_LM = 0.0f;
-PIDAaronBerk pidLeftMotor(kp_LM, ki_LM, kd_LM, (float)samplingPID);
+// PID (Pernah motor pg45, tanpa beban, berhasil dituning dengan konstanta berikut)
+float kp_LM = 0.75f;
+float ki_LM = 0.5f;
+float kd_LM = 0.0038f;
+PIDAaronBerk pidLeftMotor(kp_LM, ki_LM, kd_LM, samplingPID/1000000.0f);
 
 float kp_RM = 0.0f;
 float ki_RM = 0.0f;
 float kd_RM = 0.0f;
-PIDAaronBerk pidRightMotor(kp_RM, ki_RM, kd_RM, (float)samplingPID);
+PIDAaronBerk pidRightMotor(kp_RM, ki_RM, kd_RM, samplingPID/1000000.0f);
 
 // Encoder and Motor Shooter
 Motor leftMotor(PWM_LM, FOR_LM, REV_LM);
 Motor rightMotor(PWM_RM, FOR_RM, REV_RM);
-encoderKRAI encLeftMotor(CHB_LM, CHA_LM, PPR_LM, Encoding::X4_ENCODING); // Dibalik dulu karena phase A dan B karena kabelnya... :)
+encoderKRAI encLeftMotor(CHB_LM, CHA_LM, PPR_LM, Encoding::X4_ENCODING); // Dibalik dulu karena phase A dan B kabelnya... :)
 encoderKRAI encRightMotor(CHA_RM, CHB_RM, PPR_RM, Encoding::X4_ENCODING);
 
 // Moving Average
