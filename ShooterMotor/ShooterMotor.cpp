@@ -1,7 +1,7 @@
 #include "ShooterMotor.h"
 
 ShooterMotor::ShooterMotor(Motor *leftMotor, Motor *rightMotor, encoderKRAI *encLeftMotor, encoderKRAI *encRightMotor,
-                PIDAaronBerk *pidLeftMotor, PIDAaronBerk *pidRightMotor, MovingAverage *movAvgLM, MovingAverage *movAvgRM)
+                pidLo *pidLeftMotor, pidLo *pidRightMotor, MovingAverage *movAvgLM, MovingAverage *movAvgRM)
 {
     this->leftMotor = leftMotor;
     this->rightMotor = rightMotor;
@@ -11,13 +11,14 @@ ShooterMotor::ShooterMotor(Motor *leftMotor, Motor *rightMotor, encoderKRAI *enc
     this->pidRightMotor = pidRightMotor;
     this->movAvgLM = movAvgLM;
     this->movAvgRM = movAvgRM;
-    this->maxRPM = 500.0f;
+    this->maxRPMLM = 641.0f;
+    this->maxRPMRM = 855.0f;
     this->prevTimeNow = 0;
 
-    this->pidLeftMotor->setInputLimits(-maxRPM, 0.0);
-    this->pidLeftMotor->setOutputLimits(-1.0, 0.0);
-    this->pidRightMotor->setInputLimits(0.0, maxRPM);
-    this->pidRightMotor->setOutputLimits(0.0, 1.0);
+    // this->pidLeftMotor->setInputLimits(0.0, maxRPMLM);
+    // this->pidLeftMotor->setOutputLimits(0.0, 1.0);
+    // this->pidRightMotor->setInputLimits(maxRPMRM, 0.0);
+    // this->pidRightMotor->setOutputLimits(0.0, 1.0);
 
     this->outputPMW_LM = 0;
     this->outputPWM_RM = 0;
@@ -50,21 +51,21 @@ void ShooterMotor::controlOmegaShooter(float setPoint)
         measured the number of encoder pulses in a fix gate time
         omega = (delta_pulses) / (PPR * timeSampling)
     */
-   // Arah CCW => PWM (-)
+   // Arah CCW => PWM (-) || Pembacaan RPM POSITIVE (+)
     this->omegaLM = ((this->encLeftMotor->getPulses() - this->prevPulsesLM) / (PPR_LM * (float)(timeNow - this->prevTimeNow)/1000000.0f)) * 60; // Revolutions per Minute
     this->omegaLM = this->movAvgLM->movingAverage(omegaLM);
 
-    // Ingin Arah CW => PWM (+)
+    // Ingin Arah CW => PWM (+) || Pembacaan RPM NEGATIVE (-)
     this->omegaRM = ((this->encRightMotor->getPulses() - this->prevPulsesRM) / (PPR_RM * (float)(timeNow - this->prevTimeNow)/1000000.0f)) * 60; // Revolutions per Minute
     this->omegaRM = this->movAvgRM->movingAverage(omegaRM);
 
     // PID dan set speed motor
-    this->outputPMW_LM = this->pidLeftMotor->advancepwm(-setPoint, this->omegaLM, 1.0);
-    // this->leftMotor->speed(this->outputPMW_LM);
-    this->leftMotor->speed(-0.25f);
+    this->outputPMW_LM = this->pidLeftMotor->createpwm(setPoint, this->omegaLM, 1.0); // PWM POSITIVE => omegaLM (+)
+    this->leftMotor->speed(this->outputPMW_LM);
+    // this->leftMotor->speed(0.25f);
 
 
-    this->outputPWM_RM = this->pidRightMotor->createpwm(setPoint, this->omegaRM, 1.0);
+    this->outputPWM_RM = this->pidRightMotor->createpwm(setPoint, this->omegaRM, 1.0); // PWM POSITIVE => omegaRM (-)
     // this->rightMotor->speed(this->outputPWM_RM);
     // this->rightMotor->speed(0.25f);
 
@@ -78,9 +79,11 @@ void ShooterMotor::controlOmegaShooter(float setPoint)
 
     // Debug: print data omega
     // printf("%f %f\n", testWithoutMovAvg, this->omegaLM);
-    // printf("%f\n", omegaLM);
+    // printf("%f\n", omegaRM);
     // printf("%d %d\n", this->encLeftMotor->getPulses(), this->encRightMotor->getPulses());
     // printf("%f %f\n", this->omegaLM, this->omegaRM);
-    printf("%f %f %f\n", this->omegaLM/maxRPM, -setPoint/maxRPM, this->outputPMW_LM);
+    // printf("%f %f %f\n", this->omegaLM, this->omegaRM, setPoint);
+    printf("%f %f %f %f %f %f\n", this->omegaLM/maxRPMLM, setPoint/maxRPMLM, this->outputPMW_LM, getPParamLM(), getIParamLM(), getDParamLM());
+    // printf("%f %f %f %f %f %f\n", this->omegaRM/maxRPMRM, setPoint/maxRPMRM, this->outputPWM_RM, getPParamRM(), getIParamRM(), getDParamRM());
     // printf("%f %f %f\n", this->omegaRM/maxRPM, setPoint/maxRPM, this->outputPWM_RM);
 }

@@ -17,7 +17,7 @@ add_executable(${APP_TARGET}
     main.cpp
     ../KRAI_Library/encoderKRAI/encoderKRAI.cpp
     ../KRAI_Library/Motor/Motor.cpp
-    ../KRAI_Library/PIDAaronBerk/PIDAaronBerk.cpp
+    ../KRAI_Library/pidLo/pidLo.cpp
     ../KRAI_Library/MovingAverage/MovingAverage.cpp
     ShooterMotor/ShooterMotor.cpp
 )

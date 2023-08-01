@@ -56,9 +56,12 @@ int main()
                 // printf("kp = %f || ki = %f || kd = %f\n", pidLeftMotor.getPParam(), pidLeftMotor.getIParam(), pidLeftMotor.getDParam());
                 // printf("kp = %f || ki = %f || kd = %f\n", kpKiKd[0], kpKiKd[1], kpKiKd[2]);
             }
+        }
 
         if (us_ticker_read() - timeLast > samplingPID)
         {
+            // printf("%d\n", rotEncAdjSpeed.getPulses());
+            // controlShooterMotor.controlOmegaShooter((float)rotEncAdjSpeed.getPulses()); 
             controlShooterMotor.controlOmegaShooter(trySetPoint); 
             timeLast = us_ticker_read();
         }
