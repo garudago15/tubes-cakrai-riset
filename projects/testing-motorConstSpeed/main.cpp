@@ -4,16 +4,16 @@
  */
 
 #include "mbed.h"
-// #include "../KRAI_Library/Motor/Motor.h"
-#include "../KRAI_Library/encoderKRAI/encoderKRAI.h"
-// #include "../KRAI_Library/pidLo/pidLo.h" // Include the pidLo library
-// #include "../KRAI_Library/Pinout/F407VET6_2023.h"
+// #include "../../KRAI_Library/Motor/Motor.h"
+#include "../../KRAI_Library/encoderKRAI/encoderKRAI.h"
+// #include "../../KRAI_Library/pidLo/pidLo.h" // Include the pidLo library
+// #include "../../KRAI_Library/Pinout/F407VET6_2023.h"
 
-#include "../libs/Configs/Constants.h"
-// #include "../libs/Configs/ConfigurationPin.h"
-#include "../KRAI_Library/Pinout/F446RE_MASTER_2022.h"
-#include "../libs/MovingAverage/MovingAverage.h"
-#include "../libs/noPWMMotor/noPWMMotor.h"
+#include "../../libs/Configs/Constants.h"
+// #include "../../libs/Configs/ConfigurationPin.h"
+#include "../../KRAI_Library/Pinout/F446RE_MASTER_2022.h"
+#include "../../libs/MovingAverage/MovingAverage.h"
+#include "../../libs/noPWMMotor/noPWMMotor.h"
 
 /* INITIALIZE SERIAL USING PRINTF */
 static BufferedSerial serial_port(USBTX, USBRX, 115200);
@@ -46,32 +46,32 @@ float motor_default_speed=0.5;
 int main()
 {
     while(true){
-        // if(us_ticker_read()-t0>virtualPWMPeriod){
-        //     //get current speed
-        //     realSpeedRPM = (float)(enc.getPulses() - tmpPulse) * toRPMMultiplier;
-        //     speedRPM = Avg.movingAverage(realSpeedRPM);
-        //     accRPM = (speedRPM - tmpSpeedRPM) * toAccRPMMultiplier;
+        if(us_ticker_read()-t0>virtualPWMPeriod){
+            //get current speed
+            realSpeedRPM = (float)(enc.getPulses() - tmpPulse) * toRPMMultiplier;
+            speedRPM = Avg.movingAverage(realSpeedRPM);
+            accRPM = (speedRPM - tmpSpeedRPM) * toAccRPMMultiplier;
 
-        //     //taking tmp values
-        //     tmpPulse=enc.getPulses();
-        //     tmpSpeedRPM=speedRPM;
+            //taking tmp values
+            tmpPulse=enc.getPulses();
+            tmpSpeedRPM=speedRPM;
 
-        //     maxAccRPM=absoluteMaxAcc;
+            maxAccRPM=absoluteMaxAcc;
 
-        //     if(accRPM>maxAccRPM){ //max acceleration check
-        //         motor.onOff(0);
-        //     } else if(speedRPM>setpoint){ //max speed check
-        //         motor.onOff(0);
-        //     } else{
-        //         motor.onOff(1);
-        //     }
+            if(accRPM>maxAccRPM){ //max acceleration check
+                motor.onOff(0);
+            } else if(speedRPM>setpoint){ //max speed check
+                motor.onOff(0);
+            } else{
+                motor.onOff(1);
+            }
 
-        //     t0=us_ticker_read();
-        // }
+            t0=us_ticker_read();
+        }
 
         if(us_ticker_read()-t1>printPeriod){
-            motor.onOff(1);
-            printf("enc: %d\n",enc.getPulses());
+            // motor.onOff(1);
+            printf("enc: %d speed: %.2f\n",enc.getPulses(),speedRPM);
             t1=us_ticker_read();
         }
         // printf("%d\n",enc.getPulses());
