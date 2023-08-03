@@ -6,14 +6,14 @@
 #include "../../KRAI_Library/Pinout/F407VET6_2023.h"
 
 // PIN Encoder
-#define CHA F407VET6_ENCODER_2_3_A
-#define CHB F407VET6_ENCODER_2_3_B
+#define CHA F407VET6_ENCODER_2_4_A
+#define CHB F407VET6_ENCODER_2_4_B
 #define PPR 538
 
 // PIN Motor
-#define PWM F407VET6_PWM_MOTOR_1
-#define FOR F407VET6_FOR_MOTOR_1
-#define REV F407VET6_REV_MOTOR_1
+#define PWM F407VET6_PWM_MOTOR_6
+#define FOR F407VET6_FOR_MOTOR_6
+#define REV F407VET6_REV_MOTOR_6
 
 // Define paramaeter PID
 float Kp = 0.03;
@@ -56,13 +56,13 @@ int main()
         if (serial_port.readable())
         {
             // Parse the received string to extract KP, KI, KD values
-            scanf("%f %f %f %f", &Kp, &Ki, &Kd, &setpoint);
-            // Print the updated values
-            printf("Updated PID values: Kp=%.2f, Ki=%.2f, Kd=%.2f, goal=%.2f\n", Kp, Ki, Kd, setpoint);
-            // Set the updated PID values
-            pid.setTunings(Kp, Ki, Kd);
+            // scanf("%f %f %f %f", &Kp, &Ki, &Kd, &setpoint);
+            // // Print the updated values
+            // printf("Updated PID values: Kp=%.2f, Ki=%.2f, Kd=%.2f, goal=%.2f\n", Kp, Ki, Kd, setpoint);
+            // // Set the updated PID values
+            // pid.setTunings(Kp, Ki, Kd);
 
-            // scanf("%f", &motor_default_speed);
+            scanf("%f", &motor_default_speed);
         }
 
         // Cek Speed berkala setiap Ts detik
@@ -82,11 +82,12 @@ int main()
             //createpwm() function from pidLo to get the output PWM value
 
             // SET MOTOR SPEED
-            motor.speed(output);
+            // motor.speed(output);
+            motor.speed(motor_default_speed);
 
             // Coba
             // printf("%f ", output);
-            printf("%f\n", speedRPM);
+            printf("%.2f\n", speedRPM);
             // printf("%f, %f, %ld\n", speedRPM, output ,millis_ms()-SERIAL_PURPOSE_NOW);
         }   
     }

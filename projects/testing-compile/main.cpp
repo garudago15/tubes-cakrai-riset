@@ -8,10 +8,10 @@
  */
 
 //utk ARCH_MAX
-// #define micon_is_ARCH_MAX
+#define micon_is_ARCH_MAX
 
 //utk NUCLEO_F446RE
-#define micon_is_NUCLEO_F446RE
+// #define micon_is_NUCLEO_F446RE
 
 #ifdef micon_is_ARCH_MAX
 #define USB_TX PA_9
@@ -26,7 +26,7 @@
 #include "mbed.h"
 
 DigitalOut led1(LED1);
-int counting=0;
+float counting=0.0f;
 
 static BufferedSerial serial_port(USB_TX, USB_RX, 115200);
 FileHandle *mbed::mbed_override_console(int fd){
@@ -41,10 +41,13 @@ int main()
     led1=0;
     while(1){
         now=us_ticker_read();
+        if (serial_port.readable())
+        {
+            scanf("%f", &counting);
+        }
         if(now-timer1>500000){
             led1!=led1;
-            printf("Hello, %d", counting);
-            printf(" and %.2f\n", (float)counting);
+            printf("Hello, %.2f\n", counting);
             counting++;
             timer1=now;
         }

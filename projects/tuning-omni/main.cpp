@@ -53,10 +53,10 @@ PID pidMotorFR(BASE_FR_KP, BASE_FR_KI, BASE_FR_KD, BASE_FR_TS_MS, 0.5, 6);
 PID pidMotorBR(BASE_BR_KP, BASE_BR_KI, BASE_BR_KD, BASE_BR_TS_MS, 0.5, 6);
 PID pidMotorBL(BASE_BL_KP, BASE_BL_KI, BASE_BL_KD, BASE_BL_TS_MS, 0.5, 8);
 
-pidLo pidloMotorFL(Kp_pid_def, Ki_pid_def, Kd_pid_def, BASE_FL_TS_MS, 1.0, 0, 1000, 1000);
-pidLo pidloMotorFR(Kp_pid_def, Ki_pid_def, Kd_pid_def, BASE_FL_TS_MS, 1.0, 0, 1000, 1000);
-pidLo pidloMotorBL(Kp_pid_def, Ki_pid_def, Kd_pid_def, BASE_FL_TS_MS, 1.0, 0, 1000, 1000);
-pidLo pidloMotorBR(Kp_pid_def, Ki_pid_def, Kd_pid_def, BASE_FL_TS_MS, 1.0, 0, 1000, 1000);
+pidLo pidLoMotorFL(2.0f, 0.008f, 0.0f, BASE_FL_TS_MS, 1.0, 0, 1000, 1000);
+pidLo pidLoMotorFR(2.0f, 0.008f, 0.0f, BASE_FL_TS_MS, 1.0, 0, 1000, 1000);
+pidLo pidLoMotorBL(2.0f, 0.008f, 0.0f, BASE_FL_TS_MS, 1.0, 0, 1000, 1000);
+pidLo pidLoMotorBR(2.0f, 0.008f, 0.0f, BASE_FL_TS_MS, 1.0, 0, 1000, 1000);
 
 /* SMC untuk motor */
 SMC smcMotorFL(Kp_smc_def, Ksigma_smc_def, SMC_EPSILON, SMC_BETA, (float)SAMP_PID_BASE_MOTOR_US / MS_TO_US, SMC::KECEPATAN);
@@ -139,7 +139,7 @@ void pid_test(){
             // Print the updated values
             printf("Updated PID values: Kp=%.2f, Ki=%.2f, Kd=%.2f, T=%d\n", Kp_pid, Ki, Kd, accelPeriod);
             // Set the updated PID values
-            pidloMotorFR.setTunings(Kp_pid, Ki, Kd);
+            pidLoMotorBR.setTunings(Kp_pid, Ki, Kd);
 
             // scanf("%f", &motor_default_speed);
         }
@@ -177,8 +177,8 @@ void pid_test(){
                     }
                     if(vy_cmd>-0.005f && vy_cmd<0.005f){
                         vy_cmd=0.0f;
-                        if(v_FR_curr==0){
-                            pidloMotorFR.reset();
+                        if(v_BR_curr==0){
+                            pidLoMotorBR.reset();
                         }
                     }
                 }
@@ -191,14 +191,15 @@ void pid_test(){
             if (us_ticker_read() - samplingEncoder > SAMP_BASE_MOTOR_ENCODER_US/10)
             {
                 // omni.encoderMotorSamp();
-                uint32_t currFRticker = us_ticker_read();
-                v_FR_real = (float)encoderBaseFR.getPulses() * 2.0f * PI * WHEEL_RAD * (float)S_TO_US / (ENC_MOTOR_PULSE * (currFRticker - prevFRticker));
-                v_FR_curr = movAvg.movingAverage(v_FR_real);
-                prevFRticker = currFRticker;
-                encoderBaseFR.reset();
+                uint32_t currBRticker = us_ticker_read();
+                v_BR_real = (float)encoderBaseBR.getPulses() * 2.0f * PI * WHEEL_RAD * (float)S_TO_US / (ENC_MOTOR_PULSE * (currBRticker - prevBRticker));
+                v_BR_curr = movAvg.movingAverage(v_BR_real);
+                prevBRticker = currBRticker;
+                encoderBaseBR.reset();
                 
                 // omni.getVars(&junk1,&junk1,&junk1,&v_FL_curr,&v_FR_curr,&v_BR_curr,&v_BL_curr,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1);
-                printf("goal: %.2f vFR: %.2f pwm: %.2f p: %.5f i: %.5f d: %.5f T: %d\n", vy_cmd, v_FR_curr, curr_pwm, Kp_pid, Ki, Kd, accelPeriod);
+                printf("goal: %.2f vBR: %.2f pwm: %.2f p: %.5f i: %.5f d: %.5f T: %d\n", vy_cmd, v_BR_curr, curr_pwm, Kp_pid, Ki, Kd, accelPeriod);
+                // printf("goal: %.2f vFR: %.2f pwm: %.2f\n", vy_cmd, v_FR_curr, curr_pwm);
                 // printf("FL: %d FR: %d BL:%d BR: %d\n", encoderBaseFL.getPulses(), encoderBaseFR.getPulses(), encoderBaseBL.getPulses(), encoderBaseBR.getPulses());
 
                 samplingEncoder = us_ticker_read();
@@ -208,7 +209,7 @@ void pid_test(){
 
             if (us_ticker_read() - samplingPID > SAMP_PID_BASE_MOTOR_US) //update PID berdasarkan target dan current speed tiap motor
             {
-                curr_pwm=pidloMotorFR.createpwm(vy_cmd,v_FR_curr,0.8f);
+                curr_pwm=pidLoMotorBR.createpwm(vy_cmd,v_BR_curr,0.8f);
                 // last_vy_cmd=vy_cmd;
 
                 samplingPID = us_ticker_read();
@@ -221,7 +222,7 @@ void pid_test(){
             {
                 samplingMotor = us_ticker_read();
 
-                baseMotorFR.speed(curr_pwm);
+                baseMotorBR.speed(curr_pwm);
                 // baseMotorFR.speed(0.3);
             }
 
@@ -240,12 +241,12 @@ void smc_test(){
         if (serial_port.readable())
         {
             // Parse the received string to extract KP, KI, KD values
-            scanf("%f %f", &Kp_smc, &Ksigma);
+            scanf("%f %f %ld", &Kp_smc, &Ksigma, &accelPeriod);
             // Print the updated values
-            printf("Updated PID values: Kp=%.2f, Ksigma=%.2f\n", Kp_smc, Ksigma);
+            printf("Updated PID values: Kp=%.2f, Ksigma=%.2f, T=%d\n", Kp_smc, Ksigma, accelPeriod);
             // Set the updated PID values
-            smcMotorFL.setKp(Kp_smc);
-            smcMotorFL.setKsigma(Ksigma);
+            smcMotorBR.setKp(Kp_smc);
+            smcMotorBR.setKsigma(Ksigma);
 
             // scanf("%f", &motor_default_speed);
         }
@@ -255,17 +256,40 @@ void smc_test(){
         ps3.baca_data();
 
         //default
-        vy_cmd = 0;
+        // vy_cmd = 0;
 
         //braking system
         if(ps3.getKotak()){ //tombol utk nembak
             omni.forceBrakeSync(); //hard brake sebelum nembak agar robot tidak gerak saat nembak
         } else{
-            if (ps3.getButtonUp()) { //gerak ke atas
-                vy_cmd += 0.636f;
-            } 
-            if (ps3.getButtonDown()) { //gerak ke bawah
-                vy_cmd -= 0.636f;
+            if(us_ticker_read() - samplingAccel > accelPeriod){
+                if (ps3.getButtonUp()) { //gerak ke atas
+                    vy_cmd=vy_cmd+0.006f;
+                    if(vy_cmd>0.636f){
+                        vy_cmd = 0.636f;
+                    }
+                } 
+                else if (ps3.getButtonDown()) { //gerak ke bawah
+                    vy_cmd=vy_cmd-0.006f;
+                    if(vy_cmd<-0.636f){
+                        vy_cmd = -0.636f;
+                    }
+                }
+                else{
+                    if(vy_cmd>0.0f){
+                        vy_cmd=vy_cmd-0.006f;
+                    } else if(vy_cmd<0.0f){
+                        vy_cmd=vy_cmd+0.006f;
+                    }
+                    if(vy_cmd>-0.005f && vy_cmd<0.005f){
+                        vy_cmd=0.0f;
+                        if(v_BR_curr==0){
+                            smcMotorBR.reset();
+                        }
+                    }
+                }
+                samplingAccel=us_ticker_read();
+
             }
 
             /********************** ENCODER **********************/
@@ -273,14 +297,14 @@ void smc_test(){
             if (us_ticker_read() - samplingEncoder > SAMP_BASE_MOTOR_ENCODER_US/10)
             {
                 // omni.encoderMotorSamp();
-                uint32_t currFLticker = us_ticker_read();
-                v_FL_real = (float)encoderBaseFL.getPulses() * 2.0f * PI * WHEEL_RAD * (float)S_TO_US / (ENC_MOTOR_PULSE * (currFLticker - prevFLticker));
-                v_FL_curr = movAvg.movingAverage(v_FL_real);
-                prevFLticker = currFLticker;
-                encoderBaseFL.reset();
+                uint32_t currBRticker = us_ticker_read();
+                v_BR_real = (float)encoderBaseBR.getPulses() * 2.0f * PI * WHEEL_RAD * (float)S_TO_US / (ENC_MOTOR_PULSE * (currBRticker - prevBRticker));
+                v_BR_curr = movAvg.movingAverage(v_BR_real);
+                prevBRticker = currBRticker;
+                encoderBaseBR.reset();
                 
                 // omni.getVars(&junk1,&junk1,&junk1,&v_FL_curr,&v_FR_curr,&v_BR_curr,&v_BL_curr,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1,&junk1);
-                printf("goal: %.2f vFR: %.2f pwm: %.2f p: %.5f c: %.5f\n", vy_cmd, v_FL_curr, curr_pwm, Kp_smc, Ksigma);
+                printf("goal: %.2f vBR: %.2f pwm: %.2f p: %.5f c: %.5f\n", vy_cmd, v_BR_curr, curr_pwm, Kp_smc, Ksigma);
                 // printf("FL: %d FR: %d BL:%d BR: %d\n", encoderBaseFL.getPulses(), encoderBaseFR.getPulses(), encoderBaseBL.getPulses(), encoderBaseBR.getPulses());
 
                 samplingEncoder = us_ticker_read();
@@ -290,7 +314,7 @@ void smc_test(){
 
             if (us_ticker_read() - samplingPID > SAMP_PID_BASE_MOTOR_US) //update PID berdasarkan target dan current speed tiap motor
             {
-                curr_pwm=smcMotorFL.createpwm(vy_cmd,v_FL_curr,0.8f);
+                curr_pwm=smcMotorBR.createpwm(vy_cmd,v_BR_curr,0.8f);
 
                 samplingPID = us_ticker_read();
             }
@@ -302,7 +326,7 @@ void smc_test(){
             {
                 samplingMotor = us_ticker_read();
 
-                baseMotorFL.speed(curr_pwm);
+                baseMotorBR.speed(curr_pwm);
             }
 
         }
@@ -418,8 +442,8 @@ void cek_encoder(){
 }
 
 int main(){
-    pid_test();
-    // smc_test();
+    // pid_test();
+    smc_test();
     // controlMotor_test();
     // cek_encoder();
 }
