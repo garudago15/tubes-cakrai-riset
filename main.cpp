@@ -52,7 +52,7 @@ int main()
                 }
 
                 // Change left pid left motor tuning
-                pidLeftMotor.setTunings(kpKiKd[0], kpKiKd[1], kpKiKd[2]);
+                controlShooterMotor.setTuningRM(kpKiKd[0], kpKiKd[1], kpKiKd[2]);
                 // printf("kp = %f || ki = %f || kd = %f\n", pidLeftMotor.getPParam(), pidLeftMotor.getIParam(), pidLeftMotor.getDParam());
                 // printf("kp = %f || ki = %f || kd = %f\n", kpKiKd[0], kpKiKd[1], kpKiKd[2]);
             }

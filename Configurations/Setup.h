@@ -19,12 +19,17 @@ float ki_LM = 0.009f;
 float kd_LM = 0.0004f;
 pidLo pidLeftMotor(kp_LM, ki_LM, kd_LM, samplingPID/1000000.0f, MAXOUT, VFF, RPF, MAXIN);
 
+// PID DESIGN FAHMI
+// float kp_RM = 0.00838f;
+// float ki_RM = 0.04f;
+// float kd_RM = 0.00038f;
 float kp_RM = 0.00538f;
 float ki_RM = 0.009f;
 float kd_RM = 0.0004f;
 pidLo pidRightMotor(kp_RM, ki_RM, kd_RM, samplingPID/1000000.0f, MAXOUT, VFF, RPF, MAXIN);
 
 // Encoder and Motor Shooter
+// Motor leftMotor(PWM_LM, FOR_LM, REV_LM);
 Motor leftMotor(PWM_LM, FOR_LM, REV_LM);
 Motor rightMotor(PWM_RM, FOR_RM, REV_RM);
 encoderKRAI encLeftMotor(CHB_LM, CHA_LM, PPR_LM, Encoding::X4_ENCODING); // Dibalik dulu karena phase A dan B kabelnya... :)
