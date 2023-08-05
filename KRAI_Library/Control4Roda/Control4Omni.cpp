@@ -104,3 +104,27 @@ void Control4Omni::base()
 
     // printf("FL target: %f\tFR target: %f\tBR target: %f\tBL target: %f\n", this->FL_target_speed, this->FR_target_speed, this->BR_target_speed, this->BL_target_speed);
 }
+
+void Control4Omni::basePidLo()
+{
+
+    // Robot jalannya lurus, ga perlu koreksi pake vc vy w PID
+    this->vy_motor = this->vy_cmd;
+    this->vx_motor = this->vx_cmd;
+    this->w_motor = this->w_cmd;
+
+    
+    this->vy_last = this->vy_motor;
+    this->vx_last = this->vx_motor;
+
+    float vx_motor_input = this->vx_motor / COS45;
+    float vy_motor_input = this->vy_motor / COS45;
+    float w_motor_input = this->w_motor;
+
+    this->FL_target_speed = vy_motor_input + vx_motor_input - w_motor_input * R_BASE;
+    this->FR_target_speed = -vy_motor_input + vx_motor_input - w_motor_input * R_BASE;
+    this->BR_target_speed = -vy_motor_input - vx_motor_input - w_motor_input * R_BASE;
+    this->BL_target_speed = vy_motor_input - vx_motor_input - w_motor_input * R_BASE;
+
+    // printf("FL target: %f\tFR target: %f\tBR target: %f\tBL target: %f\n", this->FL_target_speed, this->FR_target_speed, this->BR_target_speed, this->BL_target_speed);
+}

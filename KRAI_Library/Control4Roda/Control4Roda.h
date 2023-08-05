@@ -103,6 +103,14 @@ class Control4Roda {
         float get_v_FR_curr();
         float get_v_BL_curr();
         float get_v_BR_curr();
+        float get_FL_pwm();
+        float get_FR_pwm();
+        float get_BL_pwm();
+        float get_BR_pwm();
+        float get_FL_target_speed();
+        float get_FR_target_speed();
+        float get_BL_target_speed();
+        float get_BR_target_speed();
         void reset();
 
 
@@ -120,6 +128,7 @@ class Control4Roda {
         void motorSamp();
         void forceBrakeSync();
         void pidMotorSamp();
+        void pidLoMotorSamp(); //oleh cakrai 15
         virtual void updatePosition();
 
         /* 

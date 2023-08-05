@@ -25,6 +25,9 @@ uint32_t accelPeriod=250;
 #define Kp_smc_def 0.0028f
 #define Ksigma_smc_def 10.0f
 
+
+
+
 /* INITIALIZE SERIAL USING PRINTF */
 static BufferedSerial serial_port(PA_9, PA_10, 115200);
 FileHandle *mbed::mbed_override_console(int fd){

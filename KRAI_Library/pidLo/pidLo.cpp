@@ -63,3 +63,13 @@ void pidLo :: reset(){
     last_error = 0;
     last_out = 0;
 }
+
+float pidLo :: getPParam(){
+    return this->kp;
+}
+float pidLo :: getIParam(){
+    return this->ki;
+}
+float pidLo :: getDParam(){
+    return this->kd;
+}

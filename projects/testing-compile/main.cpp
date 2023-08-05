@@ -35,6 +35,7 @@ FileHandle *mbed::mbed_override_console(int fd){
 
 int timer1=us_ticker_read();
 int now=us_ticker_read();
+char letter='a';
 
 int main()
 {
@@ -44,10 +45,12 @@ int main()
         if (serial_port.readable())
         {
             scanf("%f", &counting);
+            // scanf(" %c", &letter);
+            // letter=getchar();
         }
         if(now-timer1>500000){
             led1!=led1;
-            printf("Hello, %.2f\n", counting);
+            printf("Hello, %c %.2f\n", letter, counting);
             counting++;
             timer1=now;
         }

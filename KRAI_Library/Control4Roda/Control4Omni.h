@@ -19,6 +19,9 @@ class Control4Omni : public Control4Roda {
         // virtual void updatePosition();
         virtual void baseSpeed();
         virtual void base();
+
+        //from cakrai 15
+        void basePidLo();
 };
 
 #endif 
