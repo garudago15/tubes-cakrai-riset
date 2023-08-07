@@ -8,10 +8,10 @@
  */
 
 //utk ARCH_MAX
-#define micon_is_ARCH_MAX
+// #define micon_is_ARCH_MAX
 
 //utk NUCLEO_F446RE
-// #define micon_is_NUCLEO_F446RE
+#define micon_is_NUCLEO_F446RE
 
 #ifdef micon_is_ARCH_MAX
 #define USB_TX PA_9
@@ -42,13 +42,13 @@ int main()
     led1=0;
     while(1){
         now=us_ticker_read();
-        if (serial_port.readable())
-        {
-            scanf("%f", &counting);
-            // scanf(" %c", &letter);
-            // letter=getchar();
-        }
-        if(now-timer1>500000){
+        // if (serial_port.readable())
+        // {
+        //     scanf("%f", &counting);
+        //     // scanf(" %c", &letter);
+        //     // letter=getchar();
+        // }
+        if(now-timer1>500){
             led1!=led1;
             printf("Hello, %c %.2f\n", letter, counting);
             counting++;
