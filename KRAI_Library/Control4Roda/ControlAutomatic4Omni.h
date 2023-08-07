@@ -15,11 +15,16 @@ class ControlAutomatic4Omni : public Control4Omni {
         const float offset_for_lay_up = 20; // cm
         bool robot_to_pole_middle_mode;
 
+        /* Ultrasonic */
+        float ultrasonic1;
+        float ultrasonic2;
+        
         /* offset from pole mode */
         bool offset_from_pole_mode;
         float deltaOffset;
         /* Check if pole is on the middle of the robot*/
         bool middle;
+
 
     public:
         ControlAutomatic4Omni(Motor *FL_motor, Motor *FR_motor, Motor *BR_motor, Motor *BL_motor, encoderKRAI *encFL, encoderKRAI *encFR, encoderKRAI *encBR, encoderKRAI *encBL, 

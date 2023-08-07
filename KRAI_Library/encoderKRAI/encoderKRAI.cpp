@@ -17,7 +17,7 @@
 
 #include "encoderKRAI.h"
 
-encoderKRAI::encoderKRAI(PinName channelA, PinName channelB, int pulsesPerRev, Encoding encoding) 
+encoderKRAI::encoderKRAI(PinName channelA, PinName channelB, int pulsesPerRev, Encoding encoding)
     : channelA_(channelA),
       channelB_interrupt_((encoding == X4_ENCODING) ? channelB : NC),
       channelB_digital_((encoding == X2_ENCODING) ? channelB : NC)
@@ -54,6 +54,7 @@ encoderKRAI::encoderKRAI(PinName channelA, PinName channelB, int pulsesPerRev, E
 void encoderKRAI::reset(void) {
     this->pulses_      = 0;
     this->revolutions_ = 0;
+    this->delta = 0;
 }
 
 int encoderKRAI::getPulses(void) {
@@ -107,10 +108,10 @@ void encoderKRAI::encode(void) {
     }
 
     this->count_delta += 1;
-    
-    if(this->count_delta>=5) {
+
+    if(this->count_delta>=8) {
         this->delta = us_ticker_read() - prevt;
-        this->prevt = us_ticker_read(); 
+        this->prevt = us_ticker_read();
         this->count_delta = 0;
 
         if(this->pulses_<0) {

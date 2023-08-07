@@ -14,7 +14,7 @@ public:
 
     } PneumaticPos;
 
-    pneumaticKRAI(PinName pinPneu, int posisi = 0,PneumaticPos pneumaticPos = MUNDUR);  // posisi pneumatik 1
+    pneumaticKRAI(PinName pinPneu, int posisi = 0,PneumaticPos pneumaticPos = MAJU);  // posisi pneumatik 1
 
     void Extend(void);
     /**

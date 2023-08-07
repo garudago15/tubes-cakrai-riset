@@ -148,7 +148,7 @@ void ControlAutomatic4Mechanum::base() {
         this->vx_motor = this->vx_cmd;
         this->w_motor = this->w_cmd;
     }
-    
+    .
     // Limiting the acceleration
     if(fabs(this->vy_motor - this->vy_last) > 0.015*MAX_ACCEL_Y){
         if (this->vy_last > this->vy_motor){

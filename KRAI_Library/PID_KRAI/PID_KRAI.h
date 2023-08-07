@@ -26,7 +26,7 @@ class PID {
         float prevsp=0;
         float prevkp;
         float prevki;
-        float max_feedback;
+        float max_feedback; // Yg buat ini, buat apa woi
         int rise_is_reached=0;
         int loop_counter = 0;
         int rise_time;

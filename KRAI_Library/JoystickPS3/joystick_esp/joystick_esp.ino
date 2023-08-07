@@ -4,24 +4,67 @@
  * 
  */
 
-include <Ps3Controller.h>
+#include <Ps3Controller.h>
 #define RX 3
 #define TX 1
 
-#ifdef ESP32
-  #include <WiFi.h>
-#else
-  #include <ESP8266WiFi.h>
-#endif
-
 // Deklarasi variabel tombol analog
-unsigned char LX, LY, RX_, RY, aL2, aR2;
+signed char LX, LY, RX_, RY;
+unsigned char aL2, aR2;
  
 // Deklarasi varibel data yang dikirim
 unsigned char button;
 unsigned char RL;
 unsigned int button_click;
 unsigned int RL_click;
+
+/*********************************************************************************************/
+/**                                                                                         **/
+/** FUNGSI PENGIRIMAN DATA                                                                  **/
+/** -   Data yang akan dikirim adalah paket data 8-bit dengan urutan sebagai berikut        **/
+/** |------|------|--------|----|--------------|----------|----|----|----|----|----|----|   **/
+/** | 0x88 | 0x08 | button | RL | button_click | RL_click | R2 | L2 | RX | RY | LX | LY |   **/
+/** |------|------|--------|----|--------------|----------|----|----|----|----|----|----|   **/
+/**                                                                                         **/
+/*********************************************************************************************/
+ 
+void sendJoystickData() {
+  Serial.write(0x88);
+  Serial.write(0x08);
+  Serial.write(button);
+  Serial.write(RL);
+  Serial.write(button_click);
+  Serial.write(RL_click);
+  Serial.write(aR2);
+  Serial.write(aL2);
+  Serial.write(RX_);
+  Serial.write(RY);
+  Serial.write(LX);
+  Serial.write(LY);
+  Serial.write(0x18);
+  
+//  Serial.print(millis());
+//  Serial.print("\t");
+  Serial.print(button);
+  Serial.print("\t");
+  Serial.print(RL);
+  Serial.print("\t");
+  Serial.print(button_click);
+  Serial.print("\t");
+  Serial.print(RL_click);
+  Serial.print("\t");
+  Serial.print(aR2);
+  Serial.print("\t");
+  Serial.print(aL2);
+  Serial.print("\t");
+  Serial.print(RX_);
+  Serial.print("\t");
+  Serial.print(RY);
+  Serial.print("\t");
+  Serial.print(LX);
+  Serial.print("\t");
+  Serial.println(LY);
+}
 
 void notify()
 {
@@ -123,7 +166,7 @@ void notify()
       LX = Ps3.data.analog.stick.lx;
       LY = Ps3.data.analog.stick.ly;
 //    }
-//    if( abs(Ps3.event.analog_changed.stick.rx) + abs(Ps3.event.analog_changed.stick.ry) > 2 ){
+//    if( abs(Ps3.ev ent.analog_changed.stick.rx) + abs(Ps3.event.analog_changed.stick.ry) > 2 ){
       RX_ = Ps3.data.analog.stick.rx;
       RY = Ps3.data.analog.stick.ry;
 //    }
@@ -132,7 +175,6 @@ void notify()
     if( abs(Ps3.data.button.l2) ){
       aL2 = Ps3.data.analog.button.l2;
     }
-    \
     if( abs(Ps3.data.button.r2) ){
       aR2 = Ps3.data.analog.button.r2;
     }
@@ -140,67 +182,12 @@ void notify()
     sendJoystickData();
   }
 }
- 
-/*********************************************************************************************/
-/**                                                                                         **/
-/** FUNGSI PENGIRIMAN DATA                                                                  **/
-/** -   Data yang akan dikirim adalah paket data 8-bit dengan urutan sebagai berikut        **/
-/** |------|------|--------|----|--------------|----------|----|----|----|----|----|----|   **/
-/** | 0x88 | 0x08 | button | RL | button_click | RL_click | R2 | L2 | RX | RY | LX | LY |   **/
-/** |------|------|--------|----|--------------|----------|----|----|----|----|----|----|   **/
-/**                                                                                         **/
-/*********************************************************************************************/
- 
-void sendJoystickData() {
-  Serial.write(0x88);
-  Serial.write(0x08);
-  Serial.write(button);
-  Serial.write(RL);
-  Serial.write(button_click);
-  Serial.write(RL_click);
-  Serial.write(aR2);
-  Serial.write(aL2);
-  Serial.write(RX_);
-  Serial.write(RY);
-  Serial.write(LX);
-  Serial.write(LY);
-  Serial.write(0x18);
-  
-//  Serial.print(millis());
-//  Serial.print("\t");
-  Serial.print(button);
-  Serial.print("\t");
-  Serial.print(RL);
-  Serial.print("\t");
-  Serial.print(button_click);
-  Serial.print("\t");
-  Serial.print(RL_click);
-  Serial.print("\t");
-  Serial.print(aR2);
-  Serial.print("\t");
-  Serial.print(aL2);
-  Serial.print("\t");
-  Serial.print(RX_);
-  Serial.print("\t");
-  Serial.print(RY);
-  Serial.print("\t");
-  Serial.print(LX);
-  Serial.print("\t");
-  Serial.println(LY);
-}
 
 void setup()
 {
-  Serial.begin(230400, SERIAL_8N1, RX, TX);  
+  Serial.begin(230400, SERIAL_8N1, RX, TX);
   Ps3.attach(notify);
-  // Ps3.begin("00:1B:10:00:2A:EE"); // PS4
-  Ps3.begin("00:1B:10:00:2A:ED"); // PS3
-
-// 00:1B:10:00:2A:EB
-// 00:1B:10:00:2A:ED PS3
-//
-
-  
+  Ps3.begin("00:1B:10:00:2A:EC");   // Ubah MAC Address sesuai dengan PS3 Controller
 }
 
 void loop()

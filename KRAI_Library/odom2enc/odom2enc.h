@@ -2,18 +2,21 @@
 #define ODOM2ENC_H
 
 #include "mbed.h"
-#include "../encoderHAL/encoderHAL.h"
+#include "../encoderKRAI/encoderKRAI.h"
 #include "../CMPS12_KRAI/CMPS12_KRAI.h"
 #include "Coordinate.h"
 
 class odom2enc{
     private:
-        encoderHAL *encX;
-        encoderHAL *encY;
+        encoderKRAI *encX;
+        encoderKRAI *encY;
+
+        int xCurrentPulse, yCurrentPulse;
     public:
-        odom2enc(encoderHAL *encX, encoderHAL *encY);
+        odom2enc(encoderKRAI *encX, encoderKRAI *encY);
         Coordinate position;
         void resetOdom(void);
+        void resetEncoder(void);
         void updatePosition(void);
         void setPosition(float x_input, float y_input);
 };

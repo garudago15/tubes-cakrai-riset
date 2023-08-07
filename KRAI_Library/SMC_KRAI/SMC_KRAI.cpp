@@ -27,6 +27,7 @@ float SMC :: sat(float in){
 }
 
 float SMC :: createpwm(float setpoint , float feedback, float saturate){
+
     curr_error = setpoint - feedback;
     diff_error = (curr_error - prev_error)/_timeSampling;
 
@@ -50,6 +51,10 @@ float SMC :: createpwm(float setpoint , float feedback, float saturate){
     prev_sigma = curr_sigma;
     prev_diff_error = diff_error;
     
+    if (setpoint != prev_setpoint) reset();
+
+    prev_setpoint = setpoint;
+
     return pwm;
 }
 
@@ -63,4 +68,8 @@ void SMC :: reset(){
 
 void SMC :: setKp(float kp){
     _kp = kp;
+}
+
+void SMC :: setKsigma(float kSigma){
+    _ksigma = kSigma;
 }
