@@ -27,7 +27,7 @@
 #define D_RODA 5.8 // 0.06
 #endif
 /*************************** inisiasi class *******************************/
-odom2enc::odom2enc(encoderHAL *encX, encoderHAL *encY)
+odom2enc::odom2enc(encoderKRAI *encX, encoderKRAI *encY)
 {
     this->position.x = 0; // initiate all Value
     this->position.y = 0;
@@ -40,15 +40,22 @@ odom2enc::odom2enc(encoderHAL *encX, encoderHAL *encY)
 /* update position from base */
 void odom2enc::updatePosition(void)
 {
-    int xTemp = this->encX->getPulses(1); /* butuh 1.5us */
-    int yTemp = this->encY->getPulses(1); /* butuh 1.5us */
+    int xTemp = this->encX->getPulses();
+    int yTemp = this->encY->getPulses();
 
-    
+    this->resetEncoder();
 
     this->position.x += -((float)xTemp * PI * D_RODA / PPRX); // * cos(this->position.teta) - ((float)yTemp * PI * D_RODA / PPR) * -sin(this->position.teta); /* butuh 4.5 us */
-    this->position.y += ((float)yTemp * PI * D_RODA / PPRY); // * sin(this->position.teta) - ((float)yTemp * PI * D_RODA / PPR) * cos(this->position.teta);  /* butuh 4.5 us */
+    this->position.y +=  ((float)yTemp * PI * D_RODA / PPRY); // * sin(this->position.teta) - ((float)yTemp * PI * D_RODA / PPR) * cos(this->position.teta);  /* butuh 4.5 us */
     // printf("Pos  x: %f y: %f\n", this->position.x, this->position.y);
     // printf("%d %d\n", xTemp, yTemp);
+}
+
+/* reset encoder */
+void odom2enc::resetEncoder(void)
+{
+    this->encX->reset();
+    this->encY->reset();
 }
 
 void odom2enc::setPosition(float x_input, float y_input)

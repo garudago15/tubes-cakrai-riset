@@ -92,15 +92,27 @@ class Control4Roda {
         float vy_last, vx_last, w_last;
         float vy_motor, vx_motor, w_motor;
 
-        /* Ultrasonic */
-        float ultrasonic1;
-        float ultrasonic2;
-
     public:
         Control4Roda(Motor *FL_motor, Motor *FR_motor, Motor *BR_motor, Motor *BL_motor, encoderKRAI *encFL, encoderKRAI *encFR, encoderKRAI *encBR, encoderKRAI *encBL, ControlMotor *control_FL_motor, ControlMotor *control_FR_motor, ControlMotor *control_BR_motor, ControlMotor *control_BL_motor, odom2enc *odom, pidLo *vxPid, pidLo *vyPid, pidLo *wPid, StanleyPursuit *line, pidLo *pid, pidLo *pid2);
         // Getter
         void getVars(float *vx_cmd, float *vy_cmd, float *w_cmd, float *v_FL_curr, float *v_FR_curr, float *v_BR_curr, float *v_BL_curr, float *FL_pwm, float *FR_pwm, float *BR_pwm, float *BL_pwm, float *FL_target_speed, float *FR_target_speed, float *BR_target_speed, float *BL_target_speed, float *vy_last, float *vx_last, float *w_last, float *vy_motor, float *vx_motor, float *w_motor,
                      float *x_pos, float *y_pos, float *theta_pos, float *x_dest, float *y_dest);
+
+        //oleh cakrai 15
+        float get_v_FL_curr();
+        float get_v_FR_curr();
+        float get_v_BL_curr();
+        float get_v_BR_curr();
+        float get_FL_pwm();
+        float get_FR_pwm();
+        float get_BL_pwm();
+        float get_BR_pwm();
+        float get_FL_target_speed();
+        float get_FR_target_speed();
+        float get_BL_target_speed();
+        float get_BR_target_speed();
+        void reset();
+
 
 
         // Setter
@@ -108,11 +120,15 @@ class Control4Roda {
         void set_vy_cmd(float vy_cmd);
         void set_w_cmd(float w_cmd);
 
+        //oleh cakrai 15
+        void set_v_curr(float v_FL_curr, float v_FR_curr, float v_BL_curr, float v_BR_curr);
+
 
         // procedure
         void motorSamp();
         void forceBrakeSync();
         void pidMotorSamp();
+        void pidLoMotorSamp(); //oleh cakrai 15
         virtual void updatePosition();
 
         /* 

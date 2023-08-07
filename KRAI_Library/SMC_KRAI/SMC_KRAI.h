@@ -63,6 +63,12 @@ class SMC {
          */
         void setKp(float kp);
 
+        /** Change kSigma constant
+         * 
+         * @param kSigma new kSigma constant
+        */
+        void setKsigma(float kSigma);
+        
     private :
         float _kp;
         float _sqrt_kp;
@@ -76,6 +82,7 @@ class SMC {
         float curr_error;
         float diff_error;
         float prev_diff_error;
+        float prev_setpoint;
         float prev_sigma;
         float curr_sigma;
         float integ;

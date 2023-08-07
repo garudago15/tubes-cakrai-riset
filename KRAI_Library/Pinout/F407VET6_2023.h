@@ -76,13 +76,13 @@ Dilihat dari sini -> |________           |                    |  |
 
 #define F407VET6_UART_TX_1 PA_9
 #define F407VET6_UART_RX_1 PA_10
-#define F407VET6_UART_TX_2 PA_2
-#define F407VET6_UART_RX_2 PA_3
+#define F407VET6_UART_TX_2 PA_2 // Jangan digunakan bersamaan dengan motor 10
+#define F407VET6_UART_RX_2 PA_3 // Jangan digunakan bersamaan dengan motor 11
 
-#define F407VET6_I2C_SDA_1 PB_7
+#define F407VET6_I2C_SDA_1 PB_7 // Jangan digunakan bersamaan dengan motor 8
 #define F407VET6_I2C_SCL_1 PB_6
 #define F407VET6_I2C_SDA_2 PB_11
-#define F407VET6_I2C_SCL_2 PB_10
+#define F407VET6_I2C_SCL_2 PB_10 // Jangan digunakan bersamaan dengan motor 9
 #define F407VET6_I2C_SDA_3 PC_9
 #define F407VET6_I2C_SCL_3 PA_8
 

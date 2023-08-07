@@ -211,7 +211,6 @@ bool JoystickPS3::readable()
 //     return this->L2;
 // }
 
-
 void JoystickPS3::stickState(float *vx_cmd, float *vy_cmd, float *w_cmd)
 {
     /* RESET STATE */
@@ -264,7 +263,7 @@ void JoystickPS3::stickState(float *vx_cmd, float *vy_cmd, float *w_cmd)
                 }
             }
         }
-        else { // !this->bawah // KANAN
+        else { // !this->bawah
             if (this->kanan) {
                 if (this->kiri) {
                     if (this->R2) {
@@ -274,48 +273,48 @@ void JoystickPS3::stickState(float *vx_cmd, float *vy_cmd, float *w_cmd)
                         // to be filled
                     }
                 }
-                else { // !this->kiri // DIAGONAL KANAN BAWAH
+                else { // !this->kiri
                     if (this->R2) {
                         //stick right up
                         // printf("stick right up\n");
                         this->vx_cmd_ins = VEL_TRANSLASI_HIGH;
-                        this->vy_cmd_ins = -VEL_TRANSLASI_HIGH;
+                        this->vy_cmd_ins = VEL_TRANSLASI_HIGH;
                     }
                     else { // !this->R2
                         //stick right up
                         // printf("stick right up\n");
                         this->vx_cmd_ins = VEL_TRANSLASI_LOW;
-                        this->vy_cmd_ins = -VEL_TRANSLASI_LOW;
+                        this->vy_cmd_ins = VEL_TRANSLASI_LOW;
                     }
                 }
             }
-            else { // !this->kanan // DIAGONAL KANAN ATAS
-                if (this->kiri) {  
+            else { // !this->kanan
+                if (this->kiri) {
                     if (this->R2) {
                         //stick left up
                         // printf("stick left up\n");
-                        this->vx_cmd_ins = VEL_TRANSLASI_HIGH;
+                        this->vx_cmd_ins = -VEL_TRANSLASI_HIGH;
                         this->vy_cmd_ins = VEL_TRANSLASI_HIGH;
                     }
                     else { // !this->R1
                         //stick left up
                         // printf("stick left up\n");
-                        this->vx_cmd_ins = VEL_TRANSLASI_LOW;
+                        this->vx_cmd_ins = -VEL_TRANSLASI_LOW;
                         this->vy_cmd_ins = VEL_TRANSLASI_LOW;
                     }
                 }
-                else { // !this->kiri  MUNDUR
+                else { // !this->kiri
                     if (this->R2) {
                         //stick up
                         // printf("stick up\n");
-                        this->vx_cmd_ins = -VEL_TRANSLASI_HIGH;
-                        this->vy_cmd_ins = 0;
+                        this->vx_cmd_ins = 0;
+                        this->vy_cmd_ins = VEL_TRANSLASI_HIGH;
                     }
-                    else { // !this->R1 
+                    else { // !this->R1
                         //stick up
                         // printf("stick up\n");
-                        this->vx_cmd_ins = -VEL_TRANSLASI_LOW;
-                        this->vy_cmd_ins = 0;
+                        this->vx_cmd_ins = 0;
+                        this->vy_cmd_ins = VEL_TRANSLASI_LOW;
                     }
                 }
             }
@@ -332,53 +331,53 @@ void JoystickPS3::stickState(float *vx_cmd, float *vy_cmd, float *w_cmd)
                         // to be filled
                     }
                 }
-                else { // !this->kiri // KIRI BAWAH
+                else { // !this->kiri
                     if (this->R2) {
                         //stick right down
                         // printf("stick right down\n");
-                        this->vx_cmd_ins = -VEL_TRANSLASI_HIGH;
+                        this->vx_cmd_ins = VEL_TRANSLASI_HIGH;
                         this->vy_cmd_ins = -VEL_TRANSLASI_HIGH;
                     }
                     else { // !this->R2
                         //stick right down
                         // printf("stick right down\n");
-                        this->vx_cmd_ins = -VEL_TRANSLASI_LOW;
+                        this->vx_cmd_ins = VEL_TRANSLASI_LOW;
                         this->vy_cmd_ins = -VEL_TRANSLASI_LOW;
                     }
                 }
             }
-            else { // !this->kanan  // DIAGONAL KIRI ATAS
+            else { // !this->kanan
                 if (this->kiri) {
                     if (this->R2) {
                         //stick left down
                         // printf("stick left down\n");
                         this->vx_cmd_ins = -VEL_TRANSLASI_HIGH;
-                        this->vy_cmd_ins = VEL_TRANSLASI_HIGH;
+                        this->vy_cmd_ins = -VEL_TRANSLASI_HIGH;
                     }
                     else { // !this->R2
                         //stick left down
                         // printf("stick left down\n");
                         this->vx_cmd_ins = -VEL_TRANSLASI_LOW;
-                        this->vy_cmd_ins = VEL_TRANSLASI_LOW;
+                        this->vy_cmd_ins = -VEL_TRANSLASI_LOW;
                     }
                 }
-                else { // !this->kiri  // MAJU
+                else { // !this->kiri
                     if (this->R2) {
                         //stick down
                         // printf("stick down\n");
-                        this->vx_cmd_ins = VEL_TRANSLASI_HIGH;
-                        this->vy_cmd_ins = 0;
+                        this->vx_cmd_ins = 0;
+                        this->vy_cmd_ins = -VEL_TRANSLASI_HIGH;
                     }
                     else { // !this->R2
                         //stick down
                         // printf("stick down\n");
-                        this->vx_cmd_ins = VEL_TRANSLASI_LOW;
-                        this->vy_cmd_ins = 0;
+                        this->vx_cmd_ins = 0;
+                        this->vy_cmd_ins = -VEL_TRANSLASI_LOW;
                     }
                 }
             }
         }
-        else { // !this->bawah  
+        else { // !this->bawah
             if (this->kanan) {
                 if (this->kiri) {
                     if (this->R2) {
@@ -388,34 +387,34 @@ void JoystickPS3::stickState(float *vx_cmd, float *vy_cmd, float *w_cmd)
                         // to be filled
                     }
                 }
-                else { // !this->kiri   // KANAN
+                else { // !this->kiri
                     if (this->R2) {
                         //stick right
                         // printf("stick right\n");
-                        this->vx_cmd_ins = 0;
-                        this->vy_cmd_ins = VEL_TRANSLASI_HIGH;
+                        this->vx_cmd_ins = VEL_TRANSLASI_HIGH;
+                        this->vy_cmd_ins = 0;
                     }
                     else { // !this->R2
                         //stick right
                         // printf("stick right\n");
-                        this->vx_cmd_ins = 0;
-                        this->vy_cmd_ins = VEL_TRANSLASI_LOW;
+                        this->vx_cmd_ins = VEL_TRANSLASI_LOW;
+                        this->vy_cmd_ins = 0;
                     }
                 }
             }
-            else { // !this->kanan  // KIRI
+            else { // !this->kanan
                 if (this->kiri) {
                     if (this->R2) {
                         //stick left
                         // printf("stick left\n");
-                        this->vx_cmd_ins = 0;
-                        this->vy_cmd_ins = -VEL_TRANSLASI_HIGH;
+                        this->vx_cmd_ins = -VEL_TRANSLASI_HIGH;
+                        this->vy_cmd_ins = 0;
                     }
                     else { // !this->R2
                         //stick left
                         // printf("stick left\n");
-                        this->vx_cmd_ins = 0;
-                        this->vy_cmd_ins = -VEL_TRANSLASI_LOW;
+                        this->vx_cmd_ins = -VEL_TRANSLASI_LOW;
+                        this->vy_cmd_ins = 0;
                     }
                 }
                 else { // !this->kiri
@@ -450,18 +449,18 @@ void JoystickPS3::stickState(float *vx_cmd, float *vy_cmd, float *w_cmd)
     // Stick Rotation State
     if (this->R2) {
         if (this->R1) {
-            this->w_cmd_ins = VEL_ROTASI_HIGH;
+            this->w_cmd_ins = -VEL_ROTASI_HIGH;
         }
         if (this->L1) {
-            this->w_cmd_ins = -VEL_ROTASI_HIGH;
+            this->w_cmd_ins = VEL_ROTASI_HIGH;
         }
     }
     else { // !this->R2
         if (this->R1) {
-            this->w_cmd_ins = VEL_ROTASI_LOW;
+            this->w_cmd_ins = -VEL_ROTASI_LOW;
         }
         if (this->L1) {
-            this->w_cmd_ins = -VEL_ROTASI_LOW;
+            this->w_cmd_ins =  VEL_ROTASI_LOW;
         }
     }
 

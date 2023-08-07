@@ -36,13 +36,14 @@ double INA219::getCurrent(void)
             d = 1e-6 * i;
         }
     }
-    else 
+    else
     {
         _i2c.stop();
     }
     return d;
 }
 
+/* !WARNING! makan performa tinggi, jangan dipanggil terlalu sering. Seberapa beratnya tes waktu yang diperlukan buat fungsi ini. */
 double INA219::getVoltage(void)
 {
     double d = 0.0;
@@ -56,7 +57,7 @@ double INA219::getVoltage(void)
             d = 1e-3 * u;
         }
     }
-    else 
+    else
         _i2c.stop();
     return d;
 }

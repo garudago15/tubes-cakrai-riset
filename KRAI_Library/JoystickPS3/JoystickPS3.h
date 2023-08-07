@@ -5,185 +5,185 @@
 
 // CONSTANTS
 #ifndef PI
-#define PI                   3.14159265358979f
-
+#define PI 3.14159265358979f
 
 #endif
-#define VEL_TRANSLASI_HIGH  4.0f
-#define VEL_TRANSLASI_LOW  2.5f
-#define VEL_ROTASI_HIGH  PI * 3/2
-#define VEL_ROTASI_LOW  PI * 3/4
+#define VEL_TRANSLASI_HIGH 1.2f
+#define VEL_TRANSLASI_LOW 0.6f
+#define VEL_ROTASI_HIGH (2*PI/5)
+#define VEL_ROTASI_LOW (PI/5)
 #define JOYSTICK_DEFAULT_BAUD 230400
 
-class JoystickPS3 {
-    private:
-        BufferedSerial _serial;
-        unsigned char buf;
+class JoystickPS3
+{
+private:
+    BufferedSerial _serial;
+    unsigned char buf;
 
-        // unsigned char getChar();
-        int data_get;
+    // unsigned char getChar();
+    int data_get;
 
-        // Deklarasi variabel tombol analog
-        int LX, LY, RX, RY, R2, L2;
+    // Deklarasi variabel tombol analog
+    int LX, LY, RX, RY, R2, L2;
 
-        unsigned char button;
-        unsigned char RL;
-        unsigned char button_click;
-        unsigned char RL_click;
+    unsigned char button;
+    unsigned char RL;
+    unsigned char button_click;
+    unsigned char RL_click;
 
-        bool is_print;
+    bool is_print;
 
-        // Deklarasi variabel tombol joystik
-        bool kiri, kanan, atas, bawah;
-        bool segitiga, lingkaran, kotak, silang;
-        bool L1, R1, L3, R3, START, SELECT, PS;
+    // Deklarasi variabel tombol joystik
+    bool kiri, kanan, atas, bawah;
+    bool segitiga, lingkaran, kotak, silang;
+    bool L1, R1, L3, R3, START, SELECT, PS;
 
-        bool kiri_click, kanan_click, atas_click, bawah_click;
-        bool segitiga_click, lingkaran_click, kotak_click, silang_click;
-        bool L1_click, R1_click, L3_click, R3_click, R2_click, L2_click;
-        bool R2sebelum, L2sebelum;
-        bool START_click, SELECT_click, PS_click;
+    bool kiri_click, kanan_click, atas_click, bawah_click;
+    bool segitiga_click, lingkaran_click, kotak_click, silang_click;
+    bool L1_click, R1_click, L3_click, R3_click, R2_click, L2_click;
+    bool R2sebelum, L2sebelum;
+    bool START_click, SELECT_click, PS_click;
 
-        float vx_cmd_ins;
-        float vy_cmd_ins;
-        float w_cmd_ins;
+    float vx_cmd_ins;
+    float vy_cmd_ins;
+    float w_cmd_ins;
 
-        uint8_t send_spi;
-        uint32_t sampling_spi;
+    uint8_t send_spi;
+    uint32_t sampling_spi;
 
-        bool isBOHHmoving;
-    public:
-        // Constructor
-        JoystickPS3(PinName tx, PinName rx) : _serial(tx, rx) {}
+    bool isBOHHmoving;
 
-        unsigned char getChar();
+public:
+    // Constructor
+    JoystickPS3(PinName tx, PinName rx) : _serial(tx, rx) {}
 
-        // Setter for send_spi
-        void set_send_spi(uint8_t data);
+    unsigned char getChar();
 
-        // Setter for sampling_spi
-        void set_sampling_spi(uint32_t data);
+    // Setter for send_spi
+    void set_send_spi(uint8_t data);
 
-        // Setup joystick connection
-        void setup();
+    // Setter for sampling_spi
+    void set_sampling_spi(uint32_t data);
 
-        /*********************************************************************************************/
-        /**                                                                                         **/
-        /** FUNGSI PEMBACAAN DATA                                                                   **/
-        /** -   Data yang diterima dari Serial Arduino berbentuk 8-bit                              **/
-        /** -   Data yang diterima diolah menjadi boolean / 1-bit untuk data tombol button dan RL   **/
-        /**     karena data yang digunakan adalah 1-bit (true/false)                                **/
-        /** -   Untuk analog data yang diterima tidak diolah karena rentang data yang dikirimkan    **/
-        /**     memiliki rentang 0-255 / 8-bit, dan data yang akan digunakan adalah data 8-bit      **/
-        /**                                                                                         **/
-        /**         |------|-------|-------|------|-------|--------|-----------|----------|         **/
-        /** Bit Ke  |   7  |   6   |   5   |   4  |   3   |    2   |      1    |     0    |         **/
-        /**         |------|-------|-------|------|-------|--------|-----------|----------|         **/
-        /** Data    | kiri | bawah | kanan | atas | kotak | silang | lingkaran | segitiga |         **/
-        /**         |------|-------|-------|------|-------|--------|-----------|----------|         **/
-        /**                                                                                         **/
-        /** -   Penggabungan data R1, R2, L1, L2, R3, L3, START, dan SELECT disimpan dalam          **/
-        /**     variabel "RL"                                                                       **/
-        /** -   Urutan data pada variabel "RL" dan "RL_click" adalah                                **/
-        /**     sebagai berikut                                                                     **/
-        /**                                                                                         **/
-        /**         |----|--------|-------|----|----|----|----|                                     **/
-        /** Bit Ke  |  6 |    5   |   4   |  3 |  2 |  1 |  0 |                                     **/
-        /**         |----|--------|-------|----|----|----|----|                                     **/
-        /** Data    | PS | SELECT | START | L3 | L1 | R3 | R1 |                                     **/
-        /**         |----|--------|-------|----|----|----|----|                                     **/
-        /**                                                                                         **/
-        /*********************************************************************************************/
+    // Setup joystick connection
+    void setup();
 
-        void olah_data();
+    /*********************************************************************************************/
+    /**                                                                                         **/
+    /** FUNGSI PEMBACAAN DATA                                                                   **/
+    /** -   Data yang diterima dari Serial Arduino berbentuk 8-bit                              **/
+    /** -   Data yang diterima diolah menjadi boolean / 1-bit untuk data tombol button dan RL   **/
+    /**     karena data yang digunakan adalah 1-bit (true/false)                                **/
+    /** -   Untuk analog data yang diterima tidak diolah karena rentang data yang dikirimkan    **/
+    /**     memiliki rentang 0-255 / 8-bit, dan data yang akan digunakan adalah data 8-bit      **/
+    /**                                                                                         **/
+    /**         |------|-------|-------|------|-------|--------|-----------|----------|         **/
+    /** Bit Ke  |   7  |   6   |   5   |   4  |   3   |    2   |      1    |     0    |         **/
+    /**         |------|-------|-------|------|-------|--------|-----------|----------|         **/
+    /** Data    | kiri | bawah | kanan | atas | kotak | silang | lingkaran | segitiga |         **/
+    /**         |------|-------|-------|------|-------|--------|-----------|----------|         **/
+    /**                                                                                         **/
+    /** -   Penggabungan data R1, R2, L1, L2, R3, L3, START, dan SELECT disimpan dalam          **/
+    /**     variabel "RL"                                                                       **/
+    /** -   Urutan data pada variabel "RL" dan "RL_click" adalah                                **/
+    /**     sebagai berikut                                                                     **/
+    /**                                                                                         **/
+    /**         |----|--------|-------|----|----|----|----|                                     **/
+    /** Bit Ke  |  6 |    5   |   4   |  3 |  2 |  1 |  0 |                                     **/
+    /**         |----|--------|-------|----|----|----|----|                                     **/
+    /** Data    | PS | SELECT | START | L3 | L1 | R3 | R1 |                                     **/
+    /**         |----|--------|-------|----|----|----|----|                                     **/
+    /**                                                                                         **/
+    /*********************************************************************************************/
 
-        /*********************************************************************************************/
-        /**                                                                                         **/
-        /** FUNGSI IDLE                                                                             **/
-        /** -   Fungsi dijalankan saat Arduino mengirimkan data yang merupakan                      **/
-        /**     kondisi PS3 Disconnected                                                            **/
-        /** -   Fungsi membuat semua data joystik bernilai 0                                        **/
-        /**                                                                                         **/
-        /*********************************************************************************************/
+    void olah_data();
 
-        void idle();
+    /*********************************************************************************************/
+    /**                                                                                         **/
+    /** FUNGSI IDLE                                                                             **/
+    /** -   Fungsi dijalankan saat Arduino mengirimkan data yang merupakan                      **/
+    /**     kondisi PS3 Disconnected                                                            **/
+    /** -   Fungsi membuat semua data joystik bernilai 0                                        **/
+    /**                                                                                         **/
+    /*********************************************************************************************/
 
-        /*********************************************************************************************/
-        /**                                                                                         **/
-        /** FUNGSI PEMBACAAN DATA                                                                   **/
-        /** -   Fungsi pembacaan data yang dikirim dari arduino                                     **/
-        /** -   Data yang dikirim dari arduino merupakan paket data dengan format pengiriman        **/
-        /**                                                                                         **/
-        /** |------|------|--------|----|--------------|----------|----|----|----|----|----|----|   **/
-        /** | 0x88 | 0x08 | button | RL | button_click | RL_click | R2 | L2 | RX | RY | LX | LY |   **/
-        /** |------|------|--------|----|--------------|----------|----|----|----|----|----|----|   **/
-        /**                                                                                         **/
-        /** |------|------|                                                                         **/
-        /** | 0x88 | 0x09 |                                                                         **/
-        /** |------|------|                                                                         **/
-        /**                                                                                         **/
-        /** -   Jika urutan data yang diterima seperti tabel diatas, maka data tersebut akan        **/
-        /**     diolah untuk input ke aktuator                                                      **/
-        /**                                                                                         **/
-        /*********************************************************************************************/
+    void idle();
 
-        bool baca_data();
+    /*********************************************************************************************/
+    /**                                                                                         **/
+    /** FUNGSI PEMBACAAN DATA                                                                   **/
+    /** -   Fungsi pembacaan data yang dikirim dari arduino                                     **/
+    /** -   Data yang dikirim dari arduino merupakan paket data dengan format pengiriman        **/
+    /**                                                                                         **/
+    /** |------|------|--------|----|--------------|----------|----|----|----|----|----|----|   **/
+    /** | 0x88 | 0x08 | button | RL | button_click | RL_click | R2 | L2 | RX | RY | LX | LY |   **/
+    /** |------|------|--------|----|--------------|----------|----|----|----|----|----|----|   **/
+    /**                                                                                         **/
+    /** |------|------|                                                                         **/
+    /** | 0x88 | 0x09 |                                                                         **/
+    /** |------|------|                                                                         **/
+    /**                                                                                         **/
+    /** -   Jika urutan data yang diterima seperti tabel diatas, maka data tersebut akan        **/
+    /**     diolah untuk input ke aktuator                                                      **/
+    /**                                                                                         **/
+    /*********************************************************************************************/
 
-        // Set true of readable
+    bool baca_data();
 
-        bool readable();
+    // Set true of readable
 
-        // L2 pressed -> send 1 -> automatic
-        bool getMode();
+    bool readable();
 
+    // L2 pressed -> send 1 -> automatic
+    bool getMode();
 
-        // R2 pressed -> send 1 -> automatic
-        bool parallelParkMode();
+    // R2 pressed -> send 1 -> automatic
+    bool parallelParkMode();
 
-        // kotak pressed
-        bool offsetFromPoleMode();
+    // kotak pressed
+    bool offsetFromPoleMode();
 
-        // Read stick state and modify vc_cmd, vy_cmd, and w_cmd accordingly
+    // Read stick state and modify vc_cmd, vy_cmd, and w_cmd accordingly
 
-        void stickState(float *vx_cmd, float *vy_cmd, float *w_cmd);
+    void stickState(float *vx_cmd, float *vy_cmd, float *w_cmd);
 
-        // Send SPI Stick State to main program
+    // Send SPI Stick State to main program
 
-        void sendSPIStickState(uint8_t* data_send_spi, uint32_t* data_sampling_spi);
-        // , bool *digL, bool *digR
+    void sendSPIStickState(uint8_t *data_send_spi, uint32_t *data_sampling_spi);
+    // , bool *digL, bool *digR
 
-		bool getSelect();
+    bool getSelect();
 
-        bool getStart();
-                // Getter for all button state
-        bool getButtonUp();
+    bool getStart();
+    // Getter for all button state
+    bool getButtonUp();
 
-        bool getButtonDown();
+    bool getButtonDown();
 
-        bool getButtonRight();
+    bool getButtonRight();
 
-        bool getButtonLeft();
-        
-        bool getSegitiga();
+    bool getButtonLeft();
 
-        bool getLingkaran();
-        
-        bool getSilang();
+    bool getSegitiga();
 
-        bool getKotak();
-        
-        bool getR1();
-        
-        bool getR2();
+    bool getLingkaran();
 
-        bool getL1();
+    bool getSilang();
 
-        bool getL2();
+    bool getKotak();
 
-        int getRX();
-        int getRY();
-        int getLX();
-        int getLY();
+    bool getR1();
+
+    bool getR2();
+
+    bool getL1();
+
+    bool getL2();
+
+    int getRX();
+    int getRY();
+    int getLX();
+    int getLY();
 };
 
 #endif
