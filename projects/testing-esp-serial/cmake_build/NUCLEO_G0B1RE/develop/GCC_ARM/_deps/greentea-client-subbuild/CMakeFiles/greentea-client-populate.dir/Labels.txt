@@ -1,0 +1,14 @@
+# Target labels
+ greentea-client-populate
+# Source files and their labels
+D:/2. Programming and Project/URO-mbed-os/tubes-cakrai-riset/projects/testing-esp-serial/cmake_build/NUCLEO_G0B1RE/develop/GCC_ARM/_deps/greentea-client-subbuild/CMakeFiles/greentea-client-populate
+D:/2. Programming and Project/URO-mbed-os/tubes-cakrai-riset/projects/testing-esp-serial/cmake_build/NUCLEO_G0B1RE/develop/GCC_ARM/_deps/greentea-client-subbuild/CMakeFiles/greentea-client-populate.rule
+D:/2. Programming and Project/URO-mbed-os/tubes-cakrai-riset/projects/testing-esp-serial/cmake_build/NUCLEO_G0B1RE/develop/GCC_ARM/_deps/greentea-client-subbuild/CMakeFiles/greentea-client-populate-complete.rule
+D:/2. Programming and Project/URO-mbed-os/tubes-cakrai-riset/projects/testing-esp-serial/cmake_build/NUCLEO_G0B1RE/develop/GCC_ARM/_deps/greentea-client-subbuild/greentea-client-populate-prefix/src/greentea-client-populate-stamp/greentea-client-populate-build.rule
+D:/2. Programming and Project/URO-mbed-os/tubes-cakrai-riset/projects/testing-esp-serial/cmake_build/NUCLEO_G0B1RE/develop/GCC_ARM/_deps/greentea-client-subbuild/greentea-client-populate-prefix/src/greentea-client-populate-stamp/greentea-client-populate-configure.rule
+D:/2. Programming and Project/URO-mbed-os/tubes-cakrai-riset/projects/testing-esp-serial/cmake_build/NUCLEO_G0B1RE/develop/GCC_ARM/_deps/greentea-client-subbuild/greentea-client-populate-prefix/src/greentea-client-populate-stamp/greentea-client-populate-download.rule
+D:/2. Programming and Project/URO-mbed-os/tubes-cakrai-riset/projects/testing-esp-serial/cmake_build/NUCLEO_G0B1RE/develop/GCC_ARM/_deps/greentea-client-subbuild/greentea-client-populate-prefix/src/greentea-client-populate-stamp/greentea-client-populate-install.rule
+D:/2. Programming and Project/URO-mbed-os/tubes-cakrai-riset/projects/testing-esp-serial/cmake_build/NUCLEO_G0B1RE/develop/GCC_ARM/_deps/greentea-client-subbuild/greentea-client-populate-prefix/src/greentea-client-populate-stamp/greentea-client-populate-mkdir.rule
+D:/2. Programming and Project/URO-mbed-os/tubes-cakrai-riset/projects/testing-esp-serial/cmake_build/NUCLEO_G0B1RE/develop/GCC_ARM/_deps/greentea-client-subbuild/greentea-client-populate-prefix/src/greentea-client-populate-stamp/greentea-client-populate-patch.rule
+D:/2. Programming and Project/URO-mbed-os/tubes-cakrai-riset/projects/testing-esp-serial/cmake_build/NUCLEO_G0B1RE/develop/GCC_ARM/_deps/greentea-client-subbuild/greentea-client-populate-prefix/src/greentea-client-populate-stamp/greentea-client-populate-test.rule
+D:/2. Programming and Project/URO-mbed-os/tubes-cakrai-riset/projects/testing-esp-serial/cmake_build/NUCLEO_G0B1RE/develop/GCC_ARM/_deps/greentea-client-subbuild/greentea-client-populate-prefix/src/greentea-client-populate-stamp/greentea-client-populate-update.rule
