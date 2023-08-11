@@ -17,7 +17,7 @@
 
 #include "ENCODERMOTORSPEED.h"
 
-encoderKRAI::encoderKRAI(PinName channelA, PinName channelB, int pulsesPerRev, EncodingM encoding)
+encoderMotorSpeed::encoderMotorSpeed(PinName channelA, PinName channelB, int pulsesPerRev, EncodingM encoding)
     : channelA_(channelA),
       channelB_interrupt_((encoding == X4_ENCODING) ? channelB : NC),
       channelB_digital_((encoding == X2_ENCODING) ? channelB : NC)
@@ -38,30 +38,30 @@ encoderKRAI::encoderKRAI(PinName channelA, PinName channelB, int pulsesPerRev, E
     //X2 encoding uses interrupts on only channel A.
     //X4 encoding uses interrupts on      channel A,
     //and on channel B.
-    this->channelA_.rise(callback(this, &encoderKRAI::encode));
-    this->channelA_.fall(callback(this, &encoderKRAI::encode));
+    this->channelA_.rise(callback(this, &encoderMotorSpeed::encode));
+    this->channelA_.fall(callback(this, &encoderMotorSpeed::encode));
 
     //If we're using X4 encoding, then attach interrupts to channel B too.
     if (encoding == X4_ENCODING) {
-        this->channelB_interrupt_.rise(callback(this, &encoderKRAI::encode));
-        this->channelB_interrupt_.fall(callback(this, &encoderKRAI::encode));
+        this->channelB_interrupt_.rise(callback(this, &encoderMotorSpeed::encode));
+        this->channelB_interrupt_.fall(callback(this, &encoderMotorSpeed::encode));
     }
 
     this->delta = 2147483647;
     this->prevt = us_ticker_read();
 }
 
-void encoderKRAI::reset(void) {
+void encoderMotorSpeed::reset(void) {
     this->pulses_      = 0;
     this->revolutions_ = 0;
     this->delta = 0;
 }
 
-int encoderKRAI::getPulses(void) {
+int encoderMotorSpeed::getPulses(void) {
     return this->pulses_;
 }
 
-int encoderKRAI::getRevolutions(void) {
+int encoderMotorSpeed::getRevolutions(void) {
     this->revolutions_ = this->pulses_ / this->pulsesPerRev_;
     return this->revolutions_;
 }
@@ -70,7 +70,7 @@ int encoderKRAI::getRevolutions(void) {
  *  Perhitungan Pulse Encoder
  ***************************************/
 
-void encoderKRAI::encode(void) {
+void encoderMotorSpeed::encode(void) {
     int change = 0;
     int chanA  = channelA_.read();
     int chanB  = (this->encoding_ == X4_ENCODING) ? channelB_interrupt_.read() :  channelB_digital_.read();
@@ -109,7 +109,7 @@ void encoderKRAI::encode(void) {
 
     //PPS for Pulses per microsecond
     this->delta = us_ticker_read() - this->prevt;
-    this->PPuS = (this->pulses - this->lastPulses)/this->delta;
+    // this->PPuS = (this->pulses_ - this->lastPulses_)/this->delta;
     this->prevt= us_ticker_read();
     this->lastPulses_ = this->pulses_;
     this->prevState_ = this->currState_;

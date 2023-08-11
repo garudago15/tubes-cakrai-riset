@@ -2,8 +2,8 @@
 # NUCLEO_F446RE , ARCH_MAX
 # NUCLEO =  NUCLEO_F446RE
 # NUCLEO =  NUCLEO_G0B1RE
-NUCLEO =  NUCLEO_F446RE
-PROGRAM = testing-compile
+NUCLEO =  ARCH_MAX
+PROGRAM = testing-motorConstSpeed
 DRIVE_NAME = NODE_F446RE
 GET_DRIVE_CMD = $(shell wmic volume where "label='$(DRIVE_NAME)'" get driveletter)
 DRIVE_LETTER = $(word 2, $(GET_DRIVE_CMD))

@@ -24,7 +24,7 @@
  * Quadrature Encoder Interface *
  ********************************/
  
-class encoderKRAI {
+class encoderMotorSpeed {
     private:
         void encode(void);
         /*******************************************
@@ -45,6 +45,7 @@ class encoderKRAI {
         int          currState_;
 
         volatile int pulses_;
+        volatile int lastPulses_;
         volatile int revolutions_;
 
     public:
@@ -53,7 +54,7 @@ class encoderKRAI {
          * @param inA DigitalIn, out A dari encoder
          * @param inB DigitalIn, out B dari encoder
          *******************************************/
-        encoderKRAI(PinName channelA, PinName channelB, int pulsesPerRev, Encoding encoding = X2_ENCODING);
+        encoderMotorSpeed(PinName channelA, PinName channelB, int pulsesPerRev, EncodingM encoding = X2_ENCODING);
         
         /*******************************************
          * Reset encoder.
@@ -67,9 +68,10 @@ class encoderKRAI {
          *******************************************/
         int getPulses(void);
         
-        int delta;
-        int prevt;
-        int count_delta=0;
+        uint32_t delta;
+        uint32_t PPuS;
+        uint32_t prevt=0;
+        // int count_delta=0;
         /*******************************************
          * Membaca putaran yang didapat oleh encoder
          * @return Nilai revolusi/putaran yang telah dilalui.
