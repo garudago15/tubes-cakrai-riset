@@ -42,7 +42,7 @@ reset:
 # xcopy cmake_build\$(NUCLEO)\develop\GCC_ARM\$(PROGRAM).bin D:\
 
 push:
-	xcopy cmake_build\$(NUCLEO)\develop\GCC_ARM\$(PROGRAM).bin $(DRIVE_LETTER)\
+	xcopy cmake_build\$(NUCLEO)\develop\GCC_ARM\$(PROGRAM).bin F:\
 
 
 # =======================================
