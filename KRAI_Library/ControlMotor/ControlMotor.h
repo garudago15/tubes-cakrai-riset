@@ -11,7 +11,6 @@ class ControlMotor {
     private:
         PID *_address_pid;
         PIDAaronBerk *_address_pid_aaron;
-        pidLo *_address_pidLo;
         SMC *_address_smc;
         uint32_t _total_state;
 
@@ -39,15 +38,10 @@ class ControlMotor {
          */
         ControlMotor(PID* address_pid, SMC* address_smc, float v_batas, float kp_pid_1, float kp_pid_2, float kd_pid_1, float kd_pid_2, float kp_smc_1, float kp_smc_2);
         ControlMotor(PIDAaronBerk* address_pid_aaron, SMC* address_smc, float v_batas, float kc_pid_unsteady, float kc_pid_steady, float kp_smc_1, float kp_smc_2);
-        ControlMotor(pidLo* address_pidLo, SMC* address_smc, float v_batas, float kp_pid_1, float kp_pid_2, float kd_pid_1, float kd_pid_2, float kp_smc_1, float kp_smc_2); //new for cakrai
         float sgn(float in);
         float rumus_geser(float in, float vb, float k1, float k2);
         float createpwm(float setpoint, float feedback, float max);
         float newcreatepwm(float setpoint, float feedback, float max);
-
-        //from cakrai 15
-        float createpwmPidLo(float setpoint, float feedback, float max); 
-        void reset();
 };
 
 #endif

@@ -230,6 +230,7 @@ void PIDAaronBerk::setBias(float bias){
 
 float PIDAaronBerk::compute(bool allowNegative) {
     float minimumScale = (allowNegative)? -1.0 : 0.0;
+    
 
     //Pull in the input and setpoint, and scale them into percent span.
     float scaledPV = (processVariable_ - inMin_) / inSpan_;

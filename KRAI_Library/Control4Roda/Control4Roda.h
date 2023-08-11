@@ -98,37 +98,17 @@ class Control4Roda {
         void getVars(float *vx_cmd, float *vy_cmd, float *w_cmd, float *v_FL_curr, float *v_FR_curr, float *v_BR_curr, float *v_BL_curr, float *FL_pwm, float *FR_pwm, float *BR_pwm, float *BL_pwm, float *FL_target_speed, float *FR_target_speed, float *BR_target_speed, float *BL_target_speed, float *vy_last, float *vx_last, float *w_last, float *vy_motor, float *vx_motor, float *w_motor,
                      float *x_pos, float *y_pos, float *theta_pos, float *x_dest, float *y_dest);
 
-        //oleh cakrai 15
-        float get_v_FL_curr();
-        float get_v_FR_curr();
-        float get_v_BL_curr();
-        float get_v_BR_curr();
-        float get_FL_pwm();
-        float get_FR_pwm();
-        float get_BL_pwm();
-        float get_BR_pwm();
-        float get_FL_target_speed();
-        float get_FR_target_speed();
-        float get_BL_target_speed();
-        float get_BR_target_speed();
-        void reset();
-
-
 
         // Setter
         void set_vx_cmd(float vx_cmd);
         void set_vy_cmd(float vy_cmd);
         void set_w_cmd(float w_cmd);
 
-        //oleh cakrai 15
-        void set_v_curr(float v_FL_curr, float v_FR_curr, float v_BL_curr, float v_BR_curr);
-
 
         // procedure
         void motorSamp();
         void forceBrakeSync();
         void pidMotorSamp();
-        void pidLoMotorSamp(); //oleh cakrai 15
         virtual void updatePosition();
 
         /* 

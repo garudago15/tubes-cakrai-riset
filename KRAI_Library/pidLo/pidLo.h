@@ -28,11 +28,9 @@ class pidLo {
         void setKp(float p);
         void setKd(float d);
         void reset();
-
-        //from cakrai 15
-        float getPParam();
-        float getIParam();
-        float getDParam();
+        float getPParam(){ return this->kp; }
+        float getIParam(){ return this->ki; }
+        float getDParam(){ return this->kd; }
 };
 
 #endif

@@ -69,58 +69,6 @@ void Control4Roda::getVars(float *vx_cmd, float *vy_cmd, float *w_cmd,
     }
 }
 
-float Control4Roda::get_v_FL_curr(){
-    return this->v_FL_curr;
-}
-float Control4Roda::get_v_FR_curr(){
-    return this->v_FR_curr;
-}
-float Control4Roda::get_v_BL_curr(){
-    return this->v_BL_curr;
-}
-float Control4Roda::get_v_BR_curr(){
-    return this->v_BR_curr;
-}
-
-float Control4Roda::get_FL_pwm(){
-    return this->FL_pwm;
-}
-
-float Control4Roda::get_FR_pwm(){
-    return this->FR_pwm;
-}
-
-float Control4Roda::get_BL_pwm(){
-    return this->BL_pwm;
-}
-
-float Control4Roda::get_BR_pwm(){
-    return this->BR_pwm;
-}
-
-float Control4Roda::get_FL_target_speed(){
-    return this->FL_target_speed;
-}
-
-float Control4Roda::get_FR_target_speed(){
-    return this->FR_target_speed;
-}
-
-float Control4Roda::get_BL_target_speed(){
-    return this->BL_target_speed;
-}
-
-float Control4Roda::get_BR_target_speed(){
-    return this->BR_target_speed;
-}
-
-void Control4Roda::reset(){
-    this->control_FL_motor->reset();
-    this->control_FR_motor->reset();
-    this->control_BL_motor->reset();
-    this->control_BR_motor->reset();
-}
-
 /*Setter*/
 void Control4Roda::set_vx_cmd(float vx_cmd)
 {
@@ -135,13 +83,6 @@ void Control4Roda::set_vy_cmd(float vy_cmd)
 void Control4Roda::set_w_cmd(float w_cmd)
 {
     this->w_cmd = w_cmd;
-}
-
-void Control4Roda::set_v_curr(float v_FL_curr, float v_FR_curr, float v_BL_curr, float v_BR_curr){
-    this->v_FL_curr=v_FL_curr;
-    this->v_FR_curr=v_FR_curr;
-    this->v_BL_curr=v_BL_curr;
-    this->v_BR_curr=v_BR_curr;
 }
 
 /*Procedure*/
@@ -170,19 +111,6 @@ void Control4Roda::pidMotorSamp()
     this->FR_pwm = this->control_FR_motor->createpwm(this->FR_target_speed, this->v_FR_curr, max_pwm);
     this->BR_pwm = this->control_BR_motor->createpwm(this->BR_target_speed, this->v_BR_curr, max_pwm);
     this->BL_pwm = this->control_BL_motor->createpwm(this->BL_target_speed, this->v_BL_curr, max_pwm);
-
-    // printf("v_BR curr: %f\t v_BR target: %f\t v_BR PWM: %f\n", this->v_BR_curr, this->BR_target_speed, this->BR_pwm);
-    // print pwm
-    // printf("FL_pwm: %f, FR_pwm: %f, BR_pwm: %f, BL_pwm: %f\n", this->FL_pwm, this->FR_pwm, this->BR_pwm, this->BL_pwm);
-}
-
-void Control4Roda::pidLoMotorSamp()
-{
-    /* menghitung pid motor base */
-    this->FL_pwm = this->control_FL_motor->createpwmPidLo(this->FL_target_speed, this->v_FL_curr, max_pwm);
-    this->FR_pwm = this->control_FR_motor->createpwmPidLo(this->FR_target_speed, this->v_FR_curr, max_pwm);
-    this->BR_pwm = this->control_BR_motor->createpwmPidLo(this->BR_target_speed, this->v_BR_curr, max_pwm);
-    this->BL_pwm = this->control_BL_motor->createpwmPidLo(this->BL_target_speed, this->v_BL_curr, max_pwm);
 
     // printf("v_BR curr: %f\t v_BR target: %f\t v_BR PWM: %f\n", this->v_BR_curr, this->BR_target_speed, this->BR_pwm);
     // print pwm

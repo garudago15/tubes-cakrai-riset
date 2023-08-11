@@ -186,6 +186,9 @@ public:
     float getPParam();
     float getIParam();
     float getDParam();
+    float getActPParam(){ return this->Kc_; }
+    float getActIParam(){ return this->tauR_; }
+    float getActDParam(){ return this->tauD_; }
 
 private:
 
