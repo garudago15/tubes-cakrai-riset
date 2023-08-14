@@ -13,9 +13,9 @@ FileHandle *mbed::mbed_override_console(int fd)
 
 // ---------------------------------------------------------------------
 
-#define PWM F407VET6_PWM_MOTOR_10
-#define FWD F407VET6_FOR_MOTOR_10
-#define REV F407VET6_REV_MOTOR_10
+#define PWM F407VET6_PWM_MOTOR_7
+#define FWD F407VET6_FOR_MOTOR_7
+#define REV F407VET6_REV_MOTOR_7
 
 #define CHA F407VET6_ENCODER_2_3_A
 #define CHB F407VET6_ENCODER_2_3_B
@@ -93,15 +93,19 @@ int main() {
             now = millis_ms(); // ms
         }
 
-        // Jika R1 ditekan, LED1 nyala.
+
         if (ps3.getR1())
         {
-            motor.speed(0.2);
+            motor.speed(0.3);
             printf("0.2");
         } else if (ps3.getR2()) {
             printf("-0.3");
-            motor.speed(-0.3);
-        } 
+            motor.speed(-0.4);
+        } else {
+            motor.brake(1);
+        }
+
+        // motor.speed(0.2);
         
             
 
