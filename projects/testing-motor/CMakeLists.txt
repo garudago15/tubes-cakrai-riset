@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.19.0)
 
 set(MBED_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../mbed-os CACHE INTERNAL "")
 set(MBED_CONFIG_PATH ${CMAKE_CURRENT_BINARY_DIR} CACHE INTERNAL "")
-set(APP_TARGET testing-constant-PWM-motor)
+set(APP_TARGET testing-motor)
 
 include(${MBED_PATH}/tools/cmake/app.cmake)
 

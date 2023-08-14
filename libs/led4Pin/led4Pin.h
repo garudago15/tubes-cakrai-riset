@@ -10,7 +10,7 @@
 #include <math.h>
 
 
-class LED4 {
+class LED4Pin {
 public:
 
     /** 
@@ -20,7 +20,7 @@ public:
      * @param blue
      * 
      */
-    LED4(PinName red, PinName green, PinName blue);
+    LED4Pin(PinName red, PinName green, PinName blue);
     
     /** Set the period of the pwm duty cycle.
      *
