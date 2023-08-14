@@ -7,10 +7,10 @@
 #include "../../libs/led4Pin/led4Pin.h"
 
 // DEFINE LED
-#define red PA_10
-#define green PB_4
-#define blue PB_10
-LED4 RGB(red, green, blue);
+#define red PA_5
+#define green PA_6
+#define blue PA_7
+LED4Pin RGB(red, green, blue);
 
 int main()
 {

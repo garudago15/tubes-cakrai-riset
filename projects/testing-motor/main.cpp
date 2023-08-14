@@ -6,14 +6,14 @@
 #include "../../KRAI_Library/Pinout/F407VET6_2023.h"
 
 // PIN Encoder
-#define CHA F407VET6_ENCODER_2_4_A
-#define CHB F407VET6_ENCODER_2_4_B
+#define CHA F407VET6_ENCODER_2_2_A
+#define CHB F407VET6_ENCODER_2_2_B
 #define PPR 538
 
 // PIN Motor
-#define PWM F407VET6_PWM_MOTOR_6
-#define FOR F407VET6_FOR_MOTOR_6
-#define REV F407VET6_REV_MOTOR_6
+#define PWM F407VET6_PWM_MOTOR_8
+#define FOR F407VET6_FOR_MOTOR_8
+#define REV F407VET6_REV_MOTOR_8
 
 // Define paramaeter PID
 float Kp = 0.03;
