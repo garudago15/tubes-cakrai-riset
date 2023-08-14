@@ -63,9 +63,10 @@ void fallMotor(){
 }
 
 // -------------- DEFINE STIK --------------
-#define tx PC_10
-#define rx PC_11
+#define tx PA_2
+#define rx PA_3
 JoystickPS3 ps3(tx, rx);
+
 // -----------------------------------------
 
 // main() runs in its own thread in the OS
@@ -78,11 +79,7 @@ int main() {
     currentSudut = (enc.getPulses() * 360 / PPR);
 
     while (true) {
-        speedRPM = speedPulse / PPR * 60; // pulse/s / Pulse/rotation = rotation/s
-        speedSudut = speedPulse * 360 / PPR;
-        printf("Pulse : %d Millis (ms) : %d Pulse Speed : %.2f Speed RPM : %.2f Spd Sdt : %.2f INT: %d\n", enc.getPulses(), millis_ms(),speedPulse, speedRPM, speedSudut, interruptState);
         
-        // Pengolahan dan Update data
         ps3.olah_data();
         ps3.baca_data();
 
@@ -99,11 +96,18 @@ int main() {
         // Jika R1 ditekan, LED1 nyala.
         if (ps3.getR1())
         {
-            motor.speed(0.3);
-        } else {
-            motor.speed(0.4);
-        }
+            motor.speed(0.2);
+            printf("0.2");
+        } else if (ps3.getR2()) {
+            printf("-0.3");
+            motor.speed(-0.3);
+        } 
+        
+            
 
+        speedRPM = speedPulse / PPR * 60; // pulse/s / Pulse/rotation = rotation/s
+        speedSudut = speedPulse * 360 / PPR;
+        printf("Pulse : %d Pulse Speed : %.2f Speed RPM : %.2f Spd Sdt : %.2f INT: %d\n", enc.getPulses(),speedPulse, speedRPM, speedSudut, interruptState);
         
     }
 }
