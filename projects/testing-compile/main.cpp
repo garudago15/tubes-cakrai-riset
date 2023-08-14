@@ -8,10 +8,10 @@
  */
 
 //utk ARCH_MAX
-// #define micon_is_ARCH_MAX
+#define micon_is_ARCH_MAX
 
 //utk NUCLEO_F446RE
-#define micon_is_NUCLEO_F446RE
+//#define micon_is_NUCLEO_F446RE
 
 #ifdef micon_is_ARCH_MAX
 #define USB_TX PA_9

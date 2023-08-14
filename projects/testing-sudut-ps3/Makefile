@@ -3,8 +3,8 @@
 # NUCLEO =  NUCLEO_F446RE
 # NUCLEO =  NUCLEO_G0B1RE
 NUCLEO =  ARCH_MAX
-PROGRAM = testing-compile
-DRIVE_NAME = NODE_F446RE
+PROGRAM = mbed-output
+DRIVE_NAME = ARCH_MAX
 GET_DRIVE_CMD = $(shell wmic volume where "label='$(DRIVE_NAME)'" get driveletter)
 DRIVE_LETTER = $(word 2, $(GET_DRIVE_CMD))
 
