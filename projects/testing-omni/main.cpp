@@ -33,9 +33,9 @@ Motor baseMotorBL(BASE_MOTOR_BL_PWM, BASE_MOTOR_BL_FOR, BASE_MOTOR_BL_REV);
 Motor baseMotorBR(BASE_MOTOR_BR_PWM, BASE_MOTOR_BR_FOR, BASE_MOTOR_BR_REV);
 
 /* PID Vx, Vy, W */
-pidLo vxPid(0, 0, 0, SAMP_IK_US, 10, 1, 1000, 100);
-pidLo vyPid(0, 0, 0, SAMP_IK_US, 10, 1, 1000, 100);
-pidLo wPid(0.025, 0.0025, 0, SAMP_IK_US, 10, 1, 1000, 100);
+// pidLo vxPid(0, 0, 0, SAMP_IK_US, 10, 1, 1000, 100);
+// pidLo vyPid(0, 0, 0, SAMP_IK_US, 10, 1, 1000, 100);
+// pidLo wPid(0.025, 0.0025, 0, SAMP_IK_US, 10, 1, 1000, 100);
 
 PID pidMotorFL(BASE_FL_KP, BASE_FL_KI, BASE_FL_KD, BASE_FL_TS_MS, 0.5, 6);
 PID pidMotorFR(BASE_FR_KP, BASE_FR_KI, BASE_FR_KD, BASE_FR_TS_MS, 0.5, 6);
@@ -61,19 +61,19 @@ encoderKRAI encoderBaseBR(ENCODER_BASE_MOTOR_BR_CHA, ENCODER_BASE_MOTOR_BR_CHB, 
 encoderKRAI encoderBaseBL(ENCODER_BASE_MOTOR_BL_CHA, ENCODER_BASE_MOTOR_BL_CHB, ENC_BASE_MOTOR_PPR / 2, X2_ENCODING);
 
 /* Odometry Encoder */
-encoderKRAI encL(ENCODER_L_CHA, ENCODER_L_CHB, 1000, X4_ENCODING);
-encoderKRAI encAux(ENCODER_AUX_CHA, ENCODER_AUX_CHB, 1000, X4_ENCODING);
+// encoderKRAI encL(ENCODER_L_CHA, ENCODER_L_CHB, 1000, X4_ENCODING);
+// encoderKRAI encAux(ENCODER_AUX_CHA, ENCODER_AUX_CHB, 1000, X4_ENCODING);
 
 /* Odometry */
-odom2enc odom(&encAux, &encL);
+// odom2enc odom(&encAux, &encL);
 
 /* Trajectory Following */
-StanleyPursuit line;
-pidLo pid(0.08, 0.05, 0.5, 0.5, 0.5, 0, 1000, 100);
-pidLo pid2(0.03, 0.005, 0.2, 0.5, 0.5, 0, 1000, 100);
+// StanleyPursuit line;
+// pidLo pid(0.08, 0.05, 0.5, 0.5, 0.5, 0, 1000, 100);
+// pidLo pid2(0.03, 0.005, 0.2, 0.5, 0.5, 0, 1000, 100);
 
 /* ControlKRAI */
-ControlAutomatic4Omni omni(&baseMotorFL, &baseMotorFR, &baseMotorBR, &baseMotorBL, &encoderBaseFL, &encoderBaseFR, &encoderBaseBR, &encoderBaseBL, &controlMotorFL, &controlMotorFR, &controlMotorBR, &controlMotorBL, &odom, &vxPid, &vyPid, &wPid, &line, &pid, &pid2);
+ControlAutomatic4Omni omni(&baseMotorFL, &baseMotorFR, &baseMotorBR, &baseMotorBL, &encoderBaseFL, &encoderBaseFR, &encoderBaseBR, &encoderBaseBL, &controlMotorFL, &controlMotorFR, &controlMotorBR, &controlMotorBL);
 
 //omni variable
 float vx_cmd = 0, vy_cmd = 0, w_cmd = 0;

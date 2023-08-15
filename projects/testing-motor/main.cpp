@@ -6,14 +6,14 @@
 #include "../../KRAI_Library/Pinout/F407VET6_2023.h"
 
 // PIN Encoder
-#define CHA F407VET6_ENCODER_2_2_A
-#define CHB F407VET6_ENCODER_2_2_B
-#define PPR 538
+#define CHA F407VET6_ENCODER_2_4_A
+#define CHB F407VET6_ENCODER_2_4_B
+#define PPR 105 //538
 
 // PIN Motor
-#define PWM F407VET6_PWM_MOTOR_8
-#define FOR F407VET6_FOR_MOTOR_8
-#define REV F407VET6_REV_MOTOR_8
+#define PWM F407VET6_PWM_MOTOR_5
+#define FOR F407VET6_FOR_MOTOR_5
+#define REV F407VET6_REV_MOTOR_5
 
 // Define paramaeter PID
 float Kp = 0.03;
@@ -87,7 +87,7 @@ int main()
 
             // Coba
             // printf("%f ", output);
-            printf("%.2f\n", speedRPM);
+            printf("%.2f %d\n", speedRPM, enc.getPulses());
             // printf("%f, %f, %ld\n", speedRPM, output ,millis_ms()-SERIAL_PURPOSE_NOW);
         }   
     }

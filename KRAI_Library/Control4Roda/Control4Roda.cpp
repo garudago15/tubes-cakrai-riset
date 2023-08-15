@@ -1,7 +1,7 @@
 #include "Control4Roda.h"
 
 /*Constructor*/
-Control4Roda::Control4Roda(Motor *FL_motor, Motor *FR_motor, Motor *BR_motor, Motor *BL_motor, encoderKRAI *encFL, encoderKRAI *encFR, encoderKRAI *encBR, encoderKRAI *encBL, ControlMotor *control_FL_motor, ControlMotor *control_FR_motor, ControlMotor *control_BR_motor, ControlMotor *control_BL_motor, odom2enc *odom, pidLo *vxPid, pidLo *vyPid, pidLo *wPid, StanleyPursuit *line, pidLo *pid, pidLo *pid2)
+Control4Roda::Control4Roda(Motor *FL_motor, Motor *FR_motor, Motor *BR_motor, Motor *BL_motor, encoderKRAI *encFL, encoderKRAI *encFR, encoderKRAI *encBR, encoderKRAI *encBL, ControlMotor *control_FL_motor, ControlMotor *control_FR_motor, ControlMotor *control_BR_motor, ControlMotor *control_BL_motor)
 {
     this->FL_motor = FL_motor;
     this->FR_motor = FR_motor;
@@ -15,15 +15,15 @@ Control4Roda::Control4Roda(Motor *FL_motor, Motor *FR_motor, Motor *BR_motor, Mo
     this->control_FR_motor = control_FR_motor;
     this->control_BR_motor = control_BR_motor;
     this->control_BL_motor = control_BL_motor;
-    this->vxPid = vxPid;
-    this->vyPid = vyPid;
-    this->wPid = wPid;
-    this->pid = pid;
-    this->pid2 = pid2;
+    // this->vxPid = vxPid;
+    // this->vyPid = vyPid;
+    // this->wPid = wPid;
+    // this->pid = pid;
+    // this->pid2 = pid2;
     this->curr_dest_cout = 0;
     this->mode = 1;
-    this->odom = odom;
-    this->line = line;
+    // this->odom = odom;
+    // this->line = line;
 }
 
 /*Getter*/
@@ -69,6 +69,58 @@ void Control4Roda::getVars(float *vx_cmd, float *vy_cmd, float *w_cmd,
     }
 }
 
+float Control4Roda::get_v_FL_curr(){
+    return this->v_FL_curr;
+}
+float Control4Roda::get_v_FR_curr(){
+    return this->v_FR_curr;
+}
+float Control4Roda::get_v_BL_curr(){
+    return this->v_BL_curr;
+}
+float Control4Roda::get_v_BR_curr(){
+    return this->v_BR_curr;
+}
+
+float Control4Roda::get_FL_pwm(){
+    return this->FL_pwm;
+}
+
+float Control4Roda::get_FR_pwm(){
+    return this->FR_pwm;
+}
+
+float Control4Roda::get_BL_pwm(){
+    return this->BL_pwm;
+}
+
+float Control4Roda::get_BR_pwm(){
+    return this->BR_pwm;
+}
+
+float Control4Roda::get_FL_target_speed(){
+    return this->FL_target_speed;
+}
+
+float Control4Roda::get_FR_target_speed(){
+    return this->FR_target_speed;
+}
+
+float Control4Roda::get_BL_target_speed(){
+    return this->BL_target_speed;
+}
+
+float Control4Roda::get_BR_target_speed(){
+    return this->BR_target_speed;
+}
+
+void Control4Roda::reset(){
+    this->control_FL_motor->reset();
+    this->control_FR_motor->reset();
+    this->control_BL_motor->reset();
+    this->control_BR_motor->reset();
+}
+
 /*Setter*/
 void Control4Roda::set_vx_cmd(float vx_cmd)
 {
@@ -83,6 +135,13 @@ void Control4Roda::set_vy_cmd(float vy_cmd)
 void Control4Roda::set_w_cmd(float w_cmd)
 {
     this->w_cmd = w_cmd;
+}
+
+void Control4Roda::set_v_curr(float v_FL_curr, float v_FR_curr, float v_BL_curr, float v_BR_curr){
+    this->v_FL_curr=v_FL_curr;
+    this->v_FR_curr=v_FR_curr;
+    this->v_BL_curr=v_BL_curr;
+    this->v_BR_curr=v_BR_curr;
 }
 
 /*Procedure*/
@@ -119,6 +178,6 @@ void Control4Roda::pidMotorSamp()
 
 void Control4Roda::updatePosition()
 {
-    this->odom->updatePosition();
-    this->line->updatePosition(this->odom->position.x, this->odom->position.y, this->odom->position.teta, &this->setpoint, &this->feedback, &this->max);
+    // this->odom->updatePosition();
+    // this->line->updatePosition(this->odom->position.x, this->odom->position.y, this->odom->position.teta, &this->setpoint, &this->feedback, &this->max);
 }

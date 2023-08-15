@@ -2,9 +2,8 @@
 
 /* Constructor */
 ControlAutomatic4Omni::ControlAutomatic4Omni(Motor *FL_motor, Motor *FR_motor, Motor *BR_motor, Motor *BL_motor, encoderKRAI *encFL, encoderKRAI *encFR, encoderKRAI *encBR, encoderKRAI *encBL, 
-        ControlMotor *control_FL_motor, ControlMotor *control_FR_motor, ControlMotor *control_BR_motor, ControlMotor *control_BL_motor, odom2enc *odom, 
-        pidLo *vxPid, pidLo *vyPid, pidLo *wPid, StanleyPursuit *line, pidLo *pid, pidLo *pid2): 
-        Control4Omni(FL_motor, FR_motor, BR_motor, BL_motor, encFL, encFR, encBR, encBL, control_FL_motor, control_FR_motor, control_BR_motor, control_BL_motor, odom, vxPid, vyPid, wPid, line, pid, pid2){    
+        ControlMotor *control_FL_motor, ControlMotor *control_FR_motor, ControlMotor *control_BR_motor, ControlMotor *control_BL_motor): 
+        Control4Omni(FL_motor, FR_motor, BR_motor, BL_motor, encFL, encFR, encBR, encBL, control_FL_motor, control_FR_motor, control_BR_motor, control_BL_motor){    
     this->otomatis = false;
 }
 
@@ -77,15 +76,15 @@ void ControlAutomatic4Omni::base() {
         // this->vx_motor = this->vxPid->createpwm(this->arr_x_test2[0], this->odom->position.x, 0.5);
         
         // move in y direction, set vx to 0
-        if(this->initialPos.x == this->arr_x_test2[this->curr_dest_cout]){
-            this->vx_motor = 0;
-            this->vy_motor = this->vyPid->createpwm(this->arr_y_test2[this->curr_dest_cout], this->odom->position.y, this->max_pwm_velocity);
-        }
-        // move in x direction, set vy to 0
-        else if(this->initialPos.y == this->arr_y_test2[this->curr_dest_cout]){
-            this->vx_motor = this->vxPid->createpwm(this->arr_x_test2[this->curr_dest_cout], this->odom->position.x, this->max_pwm_velocity);
-            this->vy_motor = 0;
-        }
+        // if(this->initialPos.x == this->arr_x_test2[this->curr_dest_cout]){
+        //     this->vx_motor = 0;
+        //     this->vy_motor = this->vyPid->createpwm(this->arr_y_test2[this->curr_dest_cout], this->odom->position.y, this->max_pwm_velocity);
+        // }
+        // // move in x direction, set vy to 0
+        // else if(this->initialPos.y == this->arr_y_test2[this->curr_dest_cout]){
+        //     this->vx_motor = this->vxPid->createpwm(this->arr_x_test2[this->curr_dest_cout], this->odom->position.x, this->max_pwm_velocity);
+        //     this->vy_motor = 0;
+        // }
         
         printf("targetX: %f targetY: %f posX: %f posY: %f vx: %f vy: %f\n", this->arr_x_test2[this->curr_dest_cout], this->arr_y_test2[this->curr_dest_cout], this->odom->position.x, this->odom->position.y, this->vx_motor, this->vy_motor);
 
@@ -94,50 +93,50 @@ void ControlAutomatic4Omni::base() {
 
     else if(this->robot_to_pole_middle_mode){
         // Menengahkan robot ke pole
-        if(!this->middle){
-            this->w_motor = 0;
-            this->vx_motor = 0;
-            this->vy_motor = -0.25 * this->vyPid->createpwm(0, this->ultrasonic2 - this->ultrasonic1, 0.25);
-            printf("(MIDDLIZATION) ultrasonic1 = %f\tultrasonic2 = %f\tvx_motor = %f\n", this->ultrasonic1, this->ultrasonic2, this->vx_motor);
-            if(abs(this->ultrasonic2 - this->ultrasonic1) < 1){
-                printf("SUDAH DI TENGAH\n");
-                this->vx_motor = 0;
-                this->vy_motor = 0;
-                this->w_motor = 0;
-                this->middle = true;
-                this->deltaOffset = this->odom->position.x - (offset_for_lay_up - (this->ultrasonic1+this->ultrasonic2)/2) ;
-            }
-        }
-        // Mengatur jarak robot dengan pole
-        else if(this->offset_from_pole_mode){
-            this->w_motor = 0;
-            this->vx_motor = 0.25 * this->vxPid->createpwm(this->deltaOffset, this->odom->position.x , 0.25);
-            printf("(OFFSETIZATION) Offset = %f\tDelta offset = %f\tvx_motor = %f\n", this->offset_for_lay_up,this->deltaOffset, this->vx_motor);
-            this->vy_motor = 0;
-            if(abs((this->ultrasonic1 + this->ultrasonic2)/2 - this->offset_for_lay_up) < 1){
-                this->vx_motor = 0;
-                this->vy_motor = 0;
-                this->w_motor = 0;
-                this->forceBrakeSync();
-                printf("READY TO LAY UP\n");
-                this->setRobotToPoleMiddleMode(false);
-            }
-        }
-        // Diam
-        else{
-            this->vx_motor = 0;
-            this->vy_motor = 0;
-            this->w_motor = 0;
-            // this->forceBrakeSync();
+        // if(!this->middle){
+        //     this->w_motor = 0;
+        //     this->vx_motor = 0;
+        //     this->vy_motor = -0.25 * this->vyPid->createpwm(0, this->ultrasonic2 - this->ultrasonic1, 0.25);
+        //     printf("(MIDDLIZATION) ultrasonic1 = %f\tultrasonic2 = %f\tvx_motor = %f\n", this->ultrasonic1, this->ultrasonic2, this->vx_motor);
+        //     if(abs(this->ultrasonic2 - this->ultrasonic1) < 1){
+        //         printf("SUDAH DI TENGAH\n");
+        //         this->vx_motor = 0;
+        //         this->vy_motor = 0;
+        //         this->w_motor = 0;
+        //         this->middle = true;
+        //         this->deltaOffset = this->odom->position.x - (offset_for_lay_up - (this->ultrasonic1+this->ultrasonic2)/2) ;
+        //     }
+        // }
+        // // Mengatur jarak robot dengan pole
+        // else if(this->offset_from_pole_mode){
+        //     this->w_motor = 0;
+        //     this->vx_motor = 0.25 * this->vxPid->createpwm(this->deltaOffset, this->odom->position.x , 0.25);
+        //     printf("(OFFSETIZATION) Offset = %f\tDelta offset = %f\tvx_motor = %f\n", this->offset_for_lay_up,this->deltaOffset, this->vx_motor);
+        //     this->vy_motor = 0;
+        //     if(abs((this->ultrasonic1 + this->ultrasonic2)/2 - this->offset_for_lay_up) < 1){
+        //         this->vx_motor = 0;
+        //         this->vy_motor = 0;
+        //         this->w_motor = 0;
+        //         this->forceBrakeSync();
+        //         printf("READY TO LAY UP\n");
+        //         this->setRobotToPoleMiddleMode(false);
+        //     }
+        // }
+        // // Diam
+        // else{
+        //     this->vx_motor = 0;
+        //     this->vy_motor = 0;
+        //     this->w_motor = 0;
+        //     // this->forceBrakeSync();
 
-        }
+        // }
     }
 
     else if(this->parallel_park_mode){
-        this->vx_motor = 0;
-        this->vy_motor = 0;
-        this->w_motor = 1.5 * this->wPid->createpwm(0, this->ultrasonic1-this->ultrasonic2, 1);
-        printf("w_motor = %f\n", this->w_motor);
+        // this->vx_motor = 0;
+        // this->vy_motor = 0;
+        // this->w_motor = 1.5 * this->wPid->createpwm(0, this->ultrasonic1-this->ultrasonic2, 1);
+        // printf("w_motor = %f\n", this->w_motor);
     }
     
     else {

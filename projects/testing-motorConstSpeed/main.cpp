@@ -17,6 +17,8 @@
 #include "../../libs/noPWMMotor/noPWMMotor.h"
 #include "../../libs/encoderMotorSpeed/encoderMotorSpeed.h"
 
+#define resolution 50
+
 // PIN Encoder
 #define CHA F407VET6_ENCODER_2_2_A
 #define CHB F407VET6_ENCODER_2_2_B
@@ -42,12 +44,12 @@ float lastRPM=0;
 uint32_t t0=0, t1=0, t2=0;
 #define virtualPWMPeriod 500 //in us
 #define printPeriod 100000
-#define PPR 538
+#define PPR 105
 #define absoluteMaxAcc 1.0f
 #define TIMEOUT 1000000
 #define baseSpeed 120.0f
 uint32_t accelPeriod = 1000; //in ms
-float setpoint=120.0f;
+float setpoint=0.0f; //120.0f
 float tmpSetpoint=0.0f;
 float toRPMMultiplier= 60.0f * 1000000.0f / (float)virtualPWMPeriod / (float)PPR;
 float toRPMMultiplierM = 60.0f * 1000000.0f / (float)PPR;
@@ -62,27 +64,46 @@ float  output;
 float motor_default_speed=0.5;
 
 float accelResolution=100.0f;
+int j=0;
+float AVG=0.0f;
 
-// float getAvgSpeed(){
-//     realSpeedRPM = (float)(enc.getPulses() - tmpPulse) * toRPMMultiplier;
-//     tmpPulse=enc.getPulses();
-//     return Avg.movingAverage(realSpeedRPM);
-// }
-
-float getAvgSpeedM(){
-    if(us_ticker_read() - encM.prevt > TIMEOUT){
-        return 0.0f;
-    } else{
-        return toRPMMultiplierM/(float)encM.delta;
+float placeHolder[resolution];
+void placeHolder_setup(){
+    for(int i=0; i<resolution; i++){
+        placeHolder[i]=0.0f;
     }
 }
+float fast_movingAvg(float data){
+    AVG+=(data - placeHolder[j])/resolution;
+    placeHolder[j]=data;
+    j++;
+    if(j>=resolution){
+        j=0;
+    }
+    return AVG;
+}
+
+
+float getAvgSpeed(){
+    realSpeedRPM = (float)(encM.getPulses() - tmpPulse) * toRPMMultiplier;
+    tmpPulse=encM.getPulses();
+    return fast_movingAvg(realSpeedRPM);
+}
+
+// float getAvgSpeedM(){
+//     if(us_ticker_read() - encM.prevt > TIMEOUT){
+//         return 0.0f;
+//     } else{
+//         return toRPMMultiplierM/(float)encM.delta;
+//     }
+// }
 
 Ticker virtualPWMtick;
 void virtualPWM(){
-    // speedRPM_ = getAvgSpeed();
-    speedRPMM = getAvgSpeedM();
+    speedRPM_ = getAvgSpeed();
+    // speedRPMM = getAvgSpeedM();
 
-    speedRPM = speedRPMM; //change this
+    speedRPM = speedRPM_; //change this
     // accRPM = (speedRPM - tmpSpeedRPM) * toAccRPMMultiplier;
 
     // //taking tmp values
@@ -94,9 +115,9 @@ void virtualPWM(){
     // if(accRPM>maxAccRPM){ //max acceleration check
     //     motor.onOff(0);
     // } 
-    if(speedRPM>tmpSetpoint){ //max speed check
-        // motor.onOff(0);
-        motor.forcebrake();
+    if(speedRPM>=tmpSetpoint){ //max speed check
+        motor.onOff(0);
+        // motor.forcebrake();
     } else{
         motor.onOff(1);
     }
@@ -104,12 +125,13 @@ void virtualPWM(){
 
 int main()
 {
+    placeHolder_setup();
     // virtualPWMtick.attach_us(&virtualPWM, virtualPWMPeriod);
     while(true){
         if (serial_port.readable())
         {
 
-            scanf("%f", &setpoint);
+            scanf("%d %f", &resolution, &setpoint);
         }
         if(us_ticker_read()-t0>virtualPWMPeriod){
             virtualPWM();
@@ -128,10 +150,10 @@ int main()
         // }
 
         if(us_ticker_read()-t2>accelPeriod*(1000/(int)accelResolution)){
-            if(tmpSetpoint> setpoint){
-                tmpSetpoint-=setpoint/accelResolution;
-            } else if(tmpSetpoint<setpoint){
-                tmpSetpoint+=setpoint/accelResolution;
+            if(tmpSetpoint> setpoint + baseSpeed/accelResolution){
+                tmpSetpoint-=baseSpeed/accelResolution;
+            } else if(tmpSetpoint<setpoint - baseSpeed/accelResolution){
+                tmpSetpoint+=baseSpeed/accelResolution;
             } else{
                 tmpSetpoint=setpoint;
             }
@@ -143,7 +165,7 @@ int main()
         if(us_ticker_read()-t1>printPeriod){
             // mot.speed(0.3);
             // printf("speed: %.2f goal: %.2f enc: %d\n",speedRPM_, tmpSetpoint, enc.getPulses());
-            printf("speedM: %.2f goal: %.2f enc: %d delta: %d\n", speedRPMM, tmpSetpoint, encM.getPulses(), encM.delta);
+            printf("speed: %.2f goal: %.2f enc: %d delta: %d\n", speedRPM, tmpSetpoint, encM.getPulses(), encM.delta);
             // printf("speed: %.2f speedM: %.2f goal: %.2f enc: %d delta: %d\n",speedRPM_, speedRPMM, tmpSetpoint, enc.getPulses(), encM.delta);
             t1=us_ticker_read();
         }

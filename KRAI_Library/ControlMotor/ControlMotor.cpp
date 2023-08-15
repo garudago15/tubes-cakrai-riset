@@ -13,6 +13,13 @@ ControlMotor::ControlMotor(PIDAaronBerk* address_pid_aaron, SMC * address_smc, f
     (*address_smc).setKp(this->_kp_smc_1);
 }
 
+ControlMotor::ControlMotor(pidLo* address_pidLo, SMC * address_smc, float v_batas, float kp_pid_1, float kp_pid_2, float kd_pid_1, float kd_pid_2, float kp_smc_1, float kp_smc_2): _address_pidLo(address_pidLo), _address_smc(address_smc), _kp_pid_1(kp_pid_1), _kp_pid_2(kp_pid_2), _kd_pid_1(kd_pid_1), _kd_pid_2(kd_pid_2), _kp_smc_1(kp_smc_1), _kp_smc_2(kp_smc_2), _v_batas(v_batas)
+{
+    (*address_pidLo).setKp(this->_kp_pid_1);
+    (*address_pidLo).setKd(this->_kd_pid_1);
+    (*address_smc).setKp(this->_kp_smc_1);
+}
+
 // Fungsi Signum, bentuk seperti S, digunakan untuk
 float ControlMotor::sgn(float in){
     return (in / (fabs(in) + 0.001));
@@ -68,4 +75,27 @@ float ControlMotor::newcreatepwm(float setpoint, float feedback, float max){
     // printf("PID: %f, SMC: %f\n", (*_address_pid_aaron).createpwm(setpoint, feedback, max), (*_address_smc).createpwm(setpoint, feedback, max));
 
     return temp;
+}
+
+float ControlMotor::createpwmPidLo(float setpoint, float feedback, float max){
+    if (setpoint == 0)
+    {
+        (*_address_pidLo).reset();
+        (*_address_smc).reset();
+    }
+
+
+    float temp = (*_address_pidLo).createpwm(setpoint, feedback, max) + (*_address_smc).createpwm(setpoint, feedback, max);
+    // float temp = ((*_address_pidLo).createpwm(setpoint, feedback, max) + (*_address_smc).createpwm(setpoint, feedback, max))/2.0f;
+
+    
+    if (fabs(temp) > fabs(max)){
+        temp = fabs(temp)*max/temp;
+    }
+    return temp;
+}
+
+void ControlMotor::reset(){
+    (*_address_pidLo).reset();
+    (*_address_smc).reset();
 }

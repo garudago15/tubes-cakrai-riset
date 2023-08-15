@@ -2,10 +2,9 @@
 #include <math.h>
 
 Control4Omni::Control4Omni(Motor *FL_motor, Motor *FR_motor, Motor *BR_motor, Motor *BL_motor, encoderKRAI *encFL, encoderKRAI *encFR, encoderKRAI *encBR, encoderKRAI *encBL,
-                           ControlMotor *control_FL_motor, ControlMotor *control_FR_motor, ControlMotor *control_BR_motor, ControlMotor *control_BL_motor, odom2enc *odom,
-                           pidLo *vxPid, pidLo *vyPid, pidLo *wPid, StanleyPursuit *line, pidLo *pid, pidLo *pid2) : Control4Roda(FL_motor, FR_motor, BR_motor, BL_motor, encFL, encFR, encBR, encBL, control_FL_motor, control_FR_motor, control_BR_motor, control_BL_motor, odom, vxPid, vyPid, wPid, line, pid, pid2)
+                           ControlMotor *control_FL_motor, ControlMotor *control_FR_motor, ControlMotor *control_BR_motor, ControlMotor *control_BL_motor) : Control4Roda(FL_motor, FR_motor, BR_motor, BL_motor, encFL, encFR, encBR, encBL, control_FL_motor, control_FR_motor, control_BR_motor, control_BL_motor)
 {
-    this->line->setError(ERROR_THRESHOLD);
+    // this->line->setError(ERROR_THRESHOLD);
 }
 
 void Control4Omni::encoderMotorSamp()
@@ -95,6 +94,30 @@ void Control4Omni::base()
 
     float vx_motor_input = this->vx_motor * COS45;
     float vy_motor_input = this->vy_motor * COS45;
+    float w_motor_input = this->w_motor;
+
+    this->FL_target_speed = vy_motor_input + vx_motor_input - w_motor_input * R_BASE;
+    this->FR_target_speed = -vy_motor_input + vx_motor_input - w_motor_input * R_BASE;
+    this->BR_target_speed = -vy_motor_input - vx_motor_input - w_motor_input * R_BASE;
+    this->BL_target_speed = vy_motor_input - vx_motor_input - w_motor_input * R_BASE;
+
+    // printf("FL target: %f\tFR target: %f\tBR target: %f\tBL target: %f\n", this->FL_target_speed, this->FR_target_speed, this->BR_target_speed, this->BL_target_speed);
+}
+
+void Control4Omni::basePidLo()
+{
+
+    // Robot jalannya lurus, ga perlu koreksi pake vc vy w PID
+    this->vy_motor = this->vy_cmd;
+    this->vx_motor = this->vx_cmd;
+    this->w_motor = this->w_cmd;
+
+    
+    this->vy_last = this->vy_motor;
+    this->vx_last = this->vx_motor;
+
+    float vx_motor_input = this->vx_motor / COS45;
+    float vy_motor_input = this->vy_motor / COS45;
     float w_motor_input = this->w_motor;
 
     this->FL_target_speed = vy_motor_input + vx_motor_input - w_motor_input * R_BASE;
