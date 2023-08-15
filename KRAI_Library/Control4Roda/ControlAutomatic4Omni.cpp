@@ -86,7 +86,7 @@ void ControlAutomatic4Omni::base() {
         //     this->vy_motor = 0;
         // }
         
-        printf("targetX: %f targetY: %f posX: %f posY: %f vx: %f vy: %f\n", this->arr_x_test2[this->curr_dest_cout], this->arr_y_test2[this->curr_dest_cout], this->odom->position.x, this->odom->position.y, this->vx_motor, this->vy_motor);
+        // printf("targetX: %f targetY: %f posX: %f posY: %f vx: %f vy: %f\n", this->arr_x_test2[this->curr_dest_cout], this->arr_y_test2[this->curr_dest_cout], this->odom->position.x, this->odom->position.y, this->vx_motor, this->vy_motor);
 
     
     }

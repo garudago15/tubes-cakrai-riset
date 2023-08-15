@@ -16,47 +16,6 @@
 #define SAMP_STICK_US 13000
 #define SAMP_STICK_MS 13
 
-/* BASE MOTOR PID */
-
-/** 
- * Konstanta Untuk PID baru, tidak jadi dipakai
-*/
-// #define BASE_KC 6.0f
-// #define BASE_KC_CEPAT 24.0f
-// #define BASE_TAUI 0.105f
-
-// #define BASE_FL_KC 6.0f
-// #define BASE_FL_KC_STEADY BASE_FL_KC
-// #define BASE_FL_KC_CEPAT 24.0f
-// #define BASE_FL_TAUI BASE_TAUI
-// #define BASE_FL_TAUD 0
-// #define BASE_FL_TS (SAMP_PID_BASE_MOTOR_US/1000000.0)
-
-// #define BASE_FR_KC 6.0f
-// #define BASE_FR_KC_STEADY BASE_FR_KC
-// #define BASE_FR_KC_CEPAT 24.0f
-// #define BASE_FR_TAUI BASE_TAUI
-// #define BASE_FR_TAUD 0
-// #define BASE_FR_TS (SAMP_PID_BASE_MOTOR_US/1000000.0)
-
-// #define BASE_BR_KC 6.0f
-// #define BASE_BR_KC_STEADY BASE_BR_KC
-// #define BASE_BR_KC_CEPAT 24.0f
-// #define BASE_BR_TAUI BASE_TAUI
-// #define BASE_BR_TAUD 0
-// #define BASE_BR_TS (SAMP_PID_BASE_MOTOR_US/1000000.0)
-
-// #define BASE_BL_KC 6.0f
-// #define BASE_BL_KC_STEADY BASE_BL_KC
-// #define BASE_BL_KC_CEPAT 24.0f
-// #define BASE_BL_TAUI BASE_TAUI
-// #define BASE_BL_TAUD 0
-// #define BASE_BL_TS (SAMP_PID_BASE_MOTOR_US/1000000.0)
-
-/** 
- * Konstanta Untuk PID lama, dipakai.
- * Konstanta dengan akhiran '_MAX' tidak dipakai, namun diperlukan untuk constructor ControlMotor
-*/
 #define BASE_FL_KP 0.9f
 #define BASE_FL_KP_MAX 1.0f
 #define BASE_FL_KI 0
@@ -140,7 +99,10 @@
 #define BASE_MOTOR_V_LIM 1.0f
 
 /* BASE MOTOR VARIABLE */
-#define ENC_BASE_MOTOR_PPR 537.6f
+#define PPR_FL 537.6f
+#define PPR_FR 537.6f
+#define PPR_BL 537.6f
+#define PPR_BR 537.6f
 
 #define TRANSLATION_BASE_SPEED 0.45f
 #define ROTATION_BASE_SPEED (1.05 * PI / 6)
@@ -164,7 +126,6 @@
 #define ERROR_THRESHOLD 5
 
 #define ENC_MOTOR_SAMP_US_DEF SAMP_BASE_MOTOR_ENCODER_US
-#define ENC_MOTOR_PULSE ENC_BASE_MOTOR_PPR
 
 #define WHEEL_RAD 0.075
 
@@ -178,33 +139,9 @@
 #define R_BASE 0.3341295
 // #define R_BASE 0.450
 
-// Servo
-#define SERVO_DEFAULT_ANGLE -53.0
-
-#define MAXOUT 1
-#define VFF 0
-#define RPF 1000
-#define MAXIN 1000
-
-// AIMING TARGET
-#define TARGETLINE1 0
-#define TARGETLINE2 4
-#define TARGETLINE3 8
-#define TARGETLINE4 12
-#define TARGETLINE5 16
-
-#define DELTAAIM 0.05
-
-// RELOADER
-#define RELOADER_TOGGLE_DELAY 500000
-#define POSITION_DOWN_ANGLE 84.7
-#define POSITION_STANDBY_ANGLE SERVO_DEFAULT_ANGLE
-#define DURATION_FOR_SHAKE_UP 150 * 1000
-#define DURATION_OF_GOING_UP_OR_DOWN 1000 * 1000
-#define DURATION_FOR_GOING_DOWN 750 * 1000
-#define DURATION_FOR_GOING_DOWN_DELAY_MS 5
-#define SHAKE_DEGREE 20
-#define AUTO_SHAKE_DELAY 600000
-#define AUTO_SHAKE_DURATION 800000
+//shooter constants
+#define PPR_shooter 103.3f
+#define PPR_reloader 104.4f
+#define PPR_angle 538.0f
 
 #endif
