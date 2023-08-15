@@ -170,7 +170,7 @@ int main()
             }
 
             // printf("angle: %d\n", enc3.getPulses());
-            printf("angle reloader: %.2f goal: %.2f pwm: %.2f rpmFly: %.2f Kp: %.5f ENC Sudut: %.2f I_State: %d\n", currentSudut, motor_default_speed, output, avgSpeedRPM, setpoint, enc3.getPulses(), interruptState);
+            printf("angle reloader: %.2f goal: %.2f pwm: %.2f rpmFly: %.2f Setpoint: %.5f ENC Sudut: %d I_State: %d\n", currentSudut, motor_default_speed, output, avgSpeedRPM, setpoint, enc3.getPulses(), interruptState);
             // SET MOTOR SPEED
             // motor.speed(output);
             
