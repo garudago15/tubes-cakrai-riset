@@ -94,7 +94,7 @@ int main() {
         }
 
 
-        if (ps3.getR1())
+        if (ps3.getL2())
         {
             motor.speed(0.3);
             printf("0.2");
@@ -102,8 +102,17 @@ int main() {
             printf("-0.3");
             motor.speed(-0.4);
         } else {
-            motor.brake(1);
+            if (ps3.getSilang())
+            {
+                motor.forcebrake();
+                printf("BREAK");
+            } else {
+                motor.brake(1);
+            }
+            
         }
+
+        
 
         // motor.speed(0.2);
         
