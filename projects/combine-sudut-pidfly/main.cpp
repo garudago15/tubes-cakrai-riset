@@ -8,6 +8,7 @@
 #include "../../KRAI_Library/pidLo/pidLo.h" // Include the pidLo library
 #include "../../KRAI_Library/Pinout/F407VET6_2023.h"
 #include "../../KRAI_Library/JoystickPS3/JoystickPS3.h"
+#include "../../KRAI_Library/PIDAaronBerk/PIDAaronBerk.h"
 
 // PIN Encoder
 #define CHA1 F407VET6_ENCODER_2_4_A //shooter
@@ -19,7 +20,7 @@
 #define CHA3 F407VET6_ENCODER_2_3_A //sudut
 #define CHB3 F407VET6_ENCODER_2_3_B
 
-#define PPR 104.4
+#define PPR 538
 
 // PIN Motor
 #define PWM1 F407VET6_PWM_MOTOR_5 //shooter
@@ -58,6 +59,10 @@ Motor motor3(PWM3, FOR3, REV3);
 #define MAXIN 1000
 
 pidLo pid(Kp, Ki, Kd, Ts, MAXOUT, VFF, RPF, MAXIN);
+PIDAaronBerk pidAaronBerk(Kp, Ki, Kd, Ts/1000.0f);
+
+
+MovingAverage movAvgShooter(20);
 MovingAverage movAvg2(20);
 MovingAverage movAvg3(20);
 
@@ -71,6 +76,14 @@ uint32_t millis_ms(){
 uint32_t now = millis_ms();
 uint32_t SERIAL_PURPOSE_NOW = millis_ms();
 int32_t tmpPulse = enc1.getPulses();
+
+uint32_t prevTimeMotor = us_ticker_read();
+int32_t prevPulsesShooter = enc1.getPulses();
+// 1 s = 1000.000 mikrosecond
+// 1 ms = 1000 mikrosecond
+uint32_t timeSamplingPID = 10 * 1000;
+float omegaShooter = 0.0f;
+float outputPwm;
 
 float PID_error, output;
 float motor_default_speed=0.7, reloader_speed=0.7;
@@ -110,6 +123,12 @@ int main()
 
     LimitSwitch.rise(&riseMotor);
     LimitSwitch.fall(&fallMotor);
+    int maxRPM = 800.0f;
+
+    pidAaronBerk.setInputLimits(0.0, maxRPM);
+    pidAaronBerk.setOutputLimits(0.0, 1.0);
+
+    float trySetPoint = 400.0f;
 
     while (true)
     {
@@ -118,9 +137,20 @@ int main()
         // Check for incoming serial data
         if (serial_port.readable())
         {
-            scanf("%f %f", &motor_default_speed, &reloader_speed);
-            // scanf("%f %f %f", &Kp, &Ki, &Kd);
-            // pid.setTunings(Kp, Ki, Kd);
+            //scanf("%f %f", &motor_default_speed, &reloader_speed);
+            scanf("%f %f %f", &Kp, &Ki, &Kd);
+            // ki = kp/tau_i <=> tau_i = kp/ki
+            // kd = kp * tau_d <=> tau_d = kd/kp
+            //if (Ki != 0)
+            // {
+            //     Ki = Kp / Ki;
+            // }
+            // if (Kp != 0)
+            // {
+            //     Kd = Kd/Kp;
+            // }
+
+            pid.setTunings(Kp, Ki, Kd);
         }
 
         // --------------------------- ATUR SUDUT -----------------------
@@ -143,16 +173,30 @@ int main()
         }
         //-----------------------------------------------------------
 
+        if (us_ticker_read() - prevTimeMotor > timeSamplingPID)
+        {
+            /*
+             Speed Measurement
+                FREQUENCY-BASED MEASUREMENT
+                measured the number of encoder pulses in a fix gate time
+                omega = (delta_pulses) / (PPR * timeSampling)
+            */
+        
+            omegaShooter = (enc1.getPulses() - prevPulsesShooter) / (PPR * (timeSamplingPID/1000000.0f)) * 60; // Revolutions per Minute
+            omegaShooter = movAvgShooter.movingAverage(omegaShooter); 
+            
+            outputPwm = pid.createpwm(trySetPoint, omegaShooter, 1.0);
+            //outputPwm = pidAaronBerk.createpwm(trySetPoint, omegaShooter, 1.0);
+            motor1.speed(outputPwm);
+            
+            prevPulsesShooter = enc1.getPulses();
+            prevTimeMotor = us_ticker_read();
+            printf("%f %f %f %f %f %f\n", omegaShooter/maxRPM, trySetPoint/maxRPM, outputPwm, Kp, Ki, Kd);
+        }
+
         // Cek Speed berkala setiap Ts detik
         if (millis_ms() - now > Ts * 1000)
         {
-            
-
-            speedPulse = ((float)(enc1.getPulses() - tmpPulse) / Ts) * (60.0); //
-            //Calculate the speed in pulses per second and convert to RPM
-            tmpPulse = enc1.getPulses();
-
-            speedRPM = speedPulse / PPR; // pulse/s / Pulse/rotation = rotation/s
             avgSpeedRPM = movAvg3.movingAverage(speedRPM);
             // Hitung ulang output yang dibutuhkan motor
             // Hitung berdasarkan delta state_sekarang dan state_target
@@ -170,7 +214,7 @@ int main()
             }
 
             // printf("angle: %d\n", enc3.getPulses());
-            printf("angle reloader: %.2f goal: %.2f pwm: %.2f rpmFly: %.2f Setpoint: %.5f ENC Sudut: %d I_State: %d\n", currentSudut, motor_default_speed, output, avgSpeedRPM, setpoint, enc3.getPulses(), interruptState);
+            //printf("angle reloader: %.2f goal: %.2f pwm: %.2f rpmFly: %.2f Setpoint: %.5f ENC Sudut: %d I_State: %d\n", currentSudut, motor_default_speed, output, avgSpeedRPM, setpoint, enc3.getPulses(), interruptState);
             // SET MOTOR SPEED
             // motor.speed(output);
             
