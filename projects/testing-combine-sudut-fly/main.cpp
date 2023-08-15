@@ -73,7 +73,7 @@ uint32_t SERIAL_PURPOSE_NOW = millis_ms();
 int32_t tmpPulse = enc1.getPulses();
 
 float PID_error, output;
-float motor_default_speed=0.7, reloader_speed=0.6;
+float motor_default_speed=0.7, reloader_speed=0.7;
 float currentSudut, avgPulses;
 
 // INITIALIZE SERIAL USING PRINTF 
@@ -128,7 +128,7 @@ int main()
         {
             motor3.speed(0.3);
             printf("0.2 \n");
-        } else if (ps3.getR2()) {
+        } else if (ps3.getSelect()) { //sementara saja
             printf("-0.3 \n");
             motor3.speed(-0.4);
         } else {

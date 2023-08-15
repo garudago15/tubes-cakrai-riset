@@ -99,10 +99,10 @@
 #define BASE_MOTOR_V_LIM 1.0f
 
 /* BASE MOTOR VARIABLE */
-#define PPR_FL 537.6f
-#define PPR_FR 537.6f
-#define PPR_BL 537.6f
-#define PPR_BR 537.6f
+#define PPR_FL 384.0f
+#define PPR_FR 384.0f
+#define PPR_BL 538.2f
+#define PPR_BR 537.2f
 
 #define TRANSLATION_BASE_SPEED 0.45f
 #define ROTATION_BASE_SPEED (1.05 * PI / 6)

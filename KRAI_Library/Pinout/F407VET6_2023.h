@@ -79,16 +79,16 @@ Dilihat dari sini -> |________           |                    |  |
 #define F407VET6_UART_TX_2 PA_2 // Jangan digunakan bersamaan dengan motor 10
 #define F407VET6_UART_RX_2 PA_3 // Jangan digunakan bersamaan dengan motor 11
 
-#define F407VET6_I2C_SDA_1 PB_7 // Jangan digunakan bersamaan dengan motor 8
+#define F407VET6_I2C_SDA_1 PB_7 // Jangan digunakan bersamaan dengan motor 8 //pwm
 #define F407VET6_I2C_SCL_1 PB_6
 #define F407VET6_I2C_SDA_2 PB_11
-#define F407VET6_I2C_SCL_2 PB_10 // Jangan digunakan bersamaan dengan motor 9
+#define F407VET6_I2C_SCL_2 PB_10 // Jangan digunakan bersamaan dengan motor 9 //pwm
 #define F407VET6_I2C_SDA_3 PC_9
 #define F407VET6_I2C_SCL_3 PA_8
 
-#define F407VET6_SPI_MOSI PA_7
-#define F407VET6_SPI_MISO PA_6
-#define F407VET6_SPI_SCK PA_5
+#define F407VET6_SPI_MOSI PA_7 //pwm //led2
+#define F407VET6_SPI_MISO PA_6 //pwm
+#define F407VET6_SPI_SCK PA_5 //pwm
 #define F407VET6_SPI_CS PA_4
 
 /*Belum Di Cek*/
@@ -108,8 +108,8 @@ Dilihat dari sini -> |________           |                    |  |
 #define F407VET6_DIGITAL_2_6 PC_13
 
 /*Belum Di Cek*/
-#define F407VET6_ANALOG_1 PA_0
-#define F407VET6_ANALOG_2 PA_1
+#define F407VET6_ANALOG_1 PA_0 //pwm
+#define F407VET6_ANALOG_2 PA_1 //pwm
 #define F407VET6_ANALOG_3 PC_4
 
 #endif

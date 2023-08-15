@@ -12,22 +12,22 @@ void Control4Omni::encoderMotorSamp()
     this->baseSpeed();
 
     uint32_t currBLticker = us_ticker_read();
-    this->v_BL_curr = (float)this->encBL->getPulses() * 2 * PI * WHEEL_RAD * S_TO_US / (ENC_MOTOR_PULSE * (currBLticker - this->prevBLticker));
+    this->v_BL_curr = (float)this->encBL->getPulses() * 2 * PI * WHEEL_RAD * S_TO_US / (PPR_BL * (currBLticker - this->prevBLticker));
     this->prevBLticker = currBLticker;
     this->encBL->reset();
 
     uint32_t currFLticker = us_ticker_read();
-    this->v_FL_curr = (float)this->encFL->getPulses() * 2 * PI * WHEEL_RAD * S_TO_US / (ENC_MOTOR_PULSE * (currFLticker - this->prevFLticker));
+    this->v_FL_curr = (float)this->encFL->getPulses() * 2 * PI * WHEEL_RAD * S_TO_US / (PPR_FL * (currFLticker - this->prevFLticker));
     this->prevFLticker = currFLticker;
     this->encFL->reset();
 
     uint32_t currBRticker = us_ticker_read();
-    this->v_BR_curr = (float)this->encBR->getPulses() * 2 * PI * WHEEL_RAD * S_TO_US / (ENC_MOTOR_PULSE * (currBRticker - this->prevBRticker));
+    this->v_BR_curr = (float)this->encBR->getPulses() * 2 * PI * WHEEL_RAD * S_TO_US / (PPR_BR * (currBRticker - this->prevBRticker));
     this->prevBRticker = currBRticker;
     this->encBR->reset();
 
     uint32_t currFRticker = us_ticker_read();
-    this->v_FR_curr = (float)this->encFR->getPulses() * 2 * PI * WHEEL_RAD * S_TO_US / (ENC_MOTOR_PULSE * (currFRticker - this->prevFRticker));
+    this->v_FR_curr = (float)this->encFR->getPulses() * 2 * PI * WHEEL_RAD * S_TO_US / (PPR_FR * (currFRticker - this->prevFRticker));
     this->prevFRticker = currFRticker;
     this->encFR->reset();
 

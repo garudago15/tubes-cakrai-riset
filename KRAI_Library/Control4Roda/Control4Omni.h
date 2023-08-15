@@ -3,6 +3,7 @@
 
 #include "Control4Roda.h"
 #include "../../Master_Elephant2/Configurations/Constants.h"
+#include "../../libs/Configs/Constants.h"
 class Control4Omni : public Control4Roda {
     private:
         uint32_t prevFLticker = 0;

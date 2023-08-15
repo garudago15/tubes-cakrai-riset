@@ -15,6 +15,7 @@ add_subdirectory(${MBED_PATH} ${CMAKE_CURRENT_BINARY_DIR}/mbed-os)
 
 add_executable(${APP_TARGET}
     ../../KRAI_Library/Motor/Motor.cpp
+    ../../KRAI_Library/pidLo/pidLo.cpp
     # ../../KRAI_Library/encoderKRAI/encoderKRAI.cpp
     ../../libs/MovingAverage/MovingAverage.cpp
     ../../libs/noPWMMotor/noPWMMotor.cpp
