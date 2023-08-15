@@ -35,6 +35,7 @@
 #define REV3 F407VET6_REV_MOTOR_7
 
 #define LIMIT_SWITCH_PIN F407VET6_ENCODER_2_1_B
+InterruptIn LimitSwitch(LIMIT_SWITCH_PIN, PullDown);
 
 // Define paramaeter PID
 float Kp = 0.0f;
@@ -83,7 +84,7 @@ FileHandle *mbed::mbed_override_console(int fd){
 
 // --------------------------------------------------------------------
 
-InterruptIn LimitSwitch(LIMIT_SWITCH_PIN, PullDown);
+
 
 // ------------------------------------------------------------------
 
@@ -122,6 +123,26 @@ int main()
             // pid.setTunings(Kp, Ki, Kd);
         }
 
+        // --------------------------- ATUR SUDUT -----------------------
+        if (ps3.getL2())
+        {
+            motor3.speed(0.3);
+            printf("0.2 \n");
+        } else if (ps3.getR2()) {
+            printf("-0.3 \n");
+            motor3.speed(-0.4);
+        } else {
+            if (ps3.getSilang())
+            {
+                motor3.forcebrake();
+                printf("BREAK \n");
+            } else {
+                motor3.brake(1);
+            }
+            
+        }
+        //-----------------------------------------------------------
+
         // Cek Speed berkala setiap Ts detik
         if (millis_ms() - now > Ts * 1000)
         {
@@ -136,7 +157,7 @@ int main()
             // Hitung ulang output yang dibutuhkan motor
             // Hitung berdasarkan delta state_sekarang dan state_target
             // PID_error = setpoint - speedRPM;
-            avgPulses=movAvg2.movingAverage((float)enc3.getPulses());
+            avgPulses=movAvg2.movingAverage((float)enc2.getPulses());
             currentSudut = (avgPulses * 360.0f / PPR);
             output = pid.createpwm(setpoint, currentSudut, 1.0); // Call the
             // motor2.speed(output);
@@ -149,10 +170,20 @@ int main()
             }
 
             // printf("angle: %d\n", enc3.getPulses());
-            printf("angle: %.2f goal: %.2f pwm: %.2f rpmFly: %.2f Kp: %.5f Ki: %.5f I_State: %d\n", currentSudut, motor_default_speed, output, avgSpeedRPM, setpoint, Ki, interruptState);
+            printf("angle reloader: %.2f goal: %.2f pwm: %.2f rpmFly: %.2f Kp: %.5f ENC Sudut: %.2f I_State: %d\n", currentSudut, motor_default_speed, output, avgSpeedRPM, setpoint, enc3.getPulses(), interruptState);
             // SET MOTOR SPEED
             // motor.speed(output);
-            motor1.speed(motor_default_speed);
+            
+
+            if(ps3.getLingkaran()){
+                motor1.speed(motor_default_speed);
+                printf("ON \n");
+            } else if (ps3.getSegitiga()){
+                motor1.speed(0);
+                printf("OFF \n");
+            }
+
+
             if(ps3.getKotak()){
                 setpoint=180.0f;
                 // printf("%d\n", 1);
