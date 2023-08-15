@@ -30,9 +30,11 @@
 #define FOR2 F407VET6_FOR_MOTOR_8
 #define REV2 F407VET6_REV_MOTOR_8
 
-#define PWM3 F407VET6_PWM_MOTOR_10 //sudut
-#define FOR3 F407VET6_FOR_MOTOR_10
-#define REV3 F407VET6_REV_MOTOR_10
+#define PWM3 F407VET6_PWM_MOTOR_7 //sudut
+#define FOR3 F407VET6_FOR_MOTOR_7
+#define REV3 F407VET6_REV_MOTOR_7
+
+#define LIMIT_SWITCH_PIN F407VET6_ENCODER_2_1_B
 
 // Define paramaeter PID
 float Kp = 0.0f;
@@ -79,10 +81,35 @@ FileHandle *mbed::mbed_override_console(int fd){
     return &serial_port;
 }
 
+// --------------------------------------------------------------------
+
+InterruptIn LimitSwitch(LIMIT_SWITCH_PIN, PullDown);
+
+// ------------------------------------------------------------------
+
+bool interruptState = false;
+void riseMotor(){
+    if(LimitSwitch.read()){
+        interruptState = true;
+        enc3.reset();
+    }
+}
+void fallMotor(){
+    if(!LimitSwitch.read()){
+        interruptState = false;
+    }
+}
+
+// --------------------------------------------------------------------
+
 int main()
 {
     ps3.idle();   
     ps3.setup();
+
+    LimitSwitch.rise(&riseMotor);
+    LimitSwitch.fall(&fallMotor);
+
     while (true)
     {
         ps3.olah_data();
@@ -109,7 +136,7 @@ int main()
             // Hitung ulang output yang dibutuhkan motor
             // Hitung berdasarkan delta state_sekarang dan state_target
             // PID_error = setpoint - speedRPM;
-            avgPulses=movAvg2.movingAverage((float)enc2.getPulses());
+            avgPulses=movAvg2.movingAverage((float)enc3.getPulses());
             currentSudut = (avgPulses * 360.0f / PPR);
             output = pid.createpwm(setpoint, currentSudut, 1.0); // Call the
             // motor2.speed(output);
@@ -122,7 +149,7 @@ int main()
             }
 
             // printf("angle: %d\n", enc3.getPulses());
-            printf("angle: %.2f goal: %.2f pwm: %.2f rpmFly: %.2f Kp: %.5f Ki: %.5f Kd: %.5f\n", currentSudut, motor_default_speed, output, avgSpeedRPM, Kp, Ki, Kd);
+            printf("angle: %.2f goal: %.2f pwm: %.2f rpmFly: %.2f Kp: %.5f Ki: %.5f I_State: %d\n", currentSudut, motor_default_speed, output, avgSpeedRPM, setpoint, Ki, interruptState);
             // SET MOTOR SPEED
             // motor.speed(output);
             motor1.speed(motor_default_speed);
