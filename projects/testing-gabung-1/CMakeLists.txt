@@ -14,6 +14,7 @@ project(${APP_TARGET})
 add_subdirectory(${MBED_PATH} ${CMAKE_CURRENT_BINARY_DIR}/mbed-os)
 
 add_executable(${APP_TARGET}
+    ../../libs/MovingAverage/MovingAverage.cpp
     ../../KRAI_Library/pidLo/pidLo.cpp
     ../../KRAI_Library/PID_KRAI/PID_KRAI.cpp
     ../../KRAI_Library/SMC_KRAI/SMC_KRAI.cpp

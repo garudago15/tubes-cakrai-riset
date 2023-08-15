@@ -4,6 +4,7 @@
 #include "mbed.h"
 #include "../../../libs/Configs/Constants.h"
 #include "../../../libs/Configs/ConfigurationPin.h"
+#include "../../libs/MovingAverage/MovingAverage.h"
 // #include "../../../libs/Control4Roda/Control4Omni.h"
 #include "../../../KRAI_Library/Motor/Motor.h"
 #include "../../../KRAI_Library/pidLo/pidLo.h"
@@ -102,12 +103,40 @@ uint32_t samplingIK = 0;
 //---------------------------------------------------------------------------------------------------------------------
 /* VARIABEL SHOOTER*/
 
+InterruptIn LimitSwitch(LIMIT_SWITCH_PIN, PullDown);
+
+// Define paramaeter PID
+float setpoint = 0.0f;
+float Ts = 5 * 0.001; // Sampling time (s)
+
+// Define Object
+encoderKRAI encoderShooter(ENCODER_SHOOTER_CHA, ENCODER_SHOOTER_CHB, PPR_shooter, Encoding::X4_ENCODING);
+Motor motorShooter(MOTOR_SHOOTER_PWM, MOTOR_SHOOTER_FOR, MOTOR_SHOOTER_REV);
+encoderKRAI encoderReloader(ENCODER_RELOADER_CHA, ENCODER_RELOADER_CHB, PPR_reloader, Encoding::X4_ENCODING);
+Motor motorReloader(MOTOR_RELOADER_PWM, MOTOR_RELOADER_FOR, MOTOR_RELOADER_REV);
+encoderKRAI encoderAngle(ENCODER_ANGLE_CHA, ENCODER_ANGLE_CHB, PPR_angle, Encoding::X4_ENCODING);
+Motor motorAngle(MOTOR_ANGLE_PWM, MOTOR_ANGLE_FOR, MOTOR_ANGLE_REV);
+MovingAverage movAvg2(20);
+MovingAverage movAvg3(20);
+
+float speedRPM, speedPulse, avgSpeedRPM;
+uint32_t millis_ms(){
+    return us_ticker_read()/1000;
+}
+uint32_t now = millis_ms();
+uint32_t SERIAL_PURPOSE_NOW = millis_ms();
+int32_t tmpPulse = encoderShooter.getPulses();
+
+float PID_error, output;
+float motor_default_speed=0.7, reloader_speed=0.7;
+float currentSudut, avgPulses;
+
 
 //-------------------------------------------------------------------------------------------------------------------------
 /*multithreading*/
-Thread threadBase;
-Thread threadStick;
-Thread threadShooter;
+// Thread threadBase;
+// Thread threadStick;
+// Thread threadShooter;
 
 
 #endif

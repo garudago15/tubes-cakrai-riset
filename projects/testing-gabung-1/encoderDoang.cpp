@@ -1,9 +1,3 @@
-// #include "mainVersion1.cpp" //gk kerja
-// #include "mainVersion2.cpp" //tanpa threading //gk kerja
-// #include "encoderDoang.cpp" //kerja
-
-//knp gk ad yg kerja????
-
 #include "Configs/Variables.h"
 
 bool interruptState = false;
