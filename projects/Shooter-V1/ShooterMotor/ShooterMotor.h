@@ -1,10 +1,10 @@
 #pragma once
 
 #include "mbed.h"
-#include "../../KRAI_Library/encoderKRAI/encoderKRAI.h"
-#include "../../KRAI_Library/Motor/Motor.h"
-#include "../../KRAI_Library/pidLo/pidLo.h"
-#include "../../KRAI_Library/MovingAverage/MovingAverage.h"
+#include "../../../KRAI_Library/encoderKRAI/encoderKRAI.h"
+#include "../../../KRAI_Library/Motor/Motor.h"
+#include "../../../KRAI_Library/pidLo/pidLo.h"
+#include "../../../KRAI_Library/MovingAverage/MovingAverage.h"
 #include "../Configurations/Constants.h"
 
 // #define PPR_LM 3358

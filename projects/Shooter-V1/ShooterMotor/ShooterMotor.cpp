@@ -70,7 +70,9 @@ void ShooterMotor::controlOmegaShooter(float setPoint)
         measured the number of encoder pulses in a fix gate time
         omega = (delta_pulses) / (PPR * timeSampling)
     */
+    float beforeMovAvg;
     this->omegaLM = ((this->encLeftMotor->getPulses() - this->prevPulsesLM) / (PPR_LM * (float)(timeNow - this->prevTimeNow)/1000000.0f)) * 60; // Revolutions per Minute
+    beforeMovAvg = this->omegaLM;
     this->omegaLM = this->movAvgLM->movingAverage(this->omegaLM);
 
     // PID dan set speed motor
@@ -83,7 +85,7 @@ void ShooterMotor::controlOmegaShooter(float setPoint)
     this->accelShooter = this->movAvgAccel->movingAverage(this->accelShooter);
 
     // printf("%f %f %f\n", this->omegaLM, this->accelShooter, (this->omegaLM - this->prevOmega)/(60* (float)(timeNow - this->prevTimeNow)/1000000.0f));
-    printf("%f %f\n", this->omegaLM, this->accelShooter);
+    // printf("%f %f\n", this->omegaLM, this->accelShooter);
 
     // Update nilai pulses
     this->prevPulsesLM = this->encLeftMotor->getPulses();
@@ -91,6 +93,7 @@ void ShooterMotor::controlOmegaShooter(float setPoint)
     this->prevOmega = this->omegaLM;
 
 
+    printf("%f %f\n", beforeMovAvg, this->omegaLM);
 
     // printf("%f %f %f %f %f %f\n", this->omegaLM, setPoint, this->accelShooter, getDParamLM(), getIParamLM(), getDParamLM());
 

@@ -3,9 +3,9 @@
 
 cmake_minimum_required(VERSION 3.19.0)
 
-set(MBED_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../mbed-os CACHE INTERNAL "")
+set(MBED_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../mbed-os CACHE INTERNAL "")
 set(MBED_CONFIG_PATH ${CMAKE_CURRENT_BINARY_DIR} CACHE INTERNAL "")
-set(APP_TARGET Testing-Motor)
+set(APP_TARGET Shooter-V1)
 
 include(${MBED_PATH}/tools/cmake/app.cmake)
 
@@ -15,12 +15,13 @@ add_subdirectory(${MBED_PATH} ${CMAKE_CURRENT_BINARY_DIR}/mbed-os)
 
 add_executable(${APP_TARGET}
     main.cpp
-    ../KRAI_Library/encoderKRAI/encoderKRAI.cpp
-    ../KRAI_Library/Motor/Motor.cpp
-    ../KRAI_Library/pidLo/pidLo.cpp
-    ../KRAI_Library/MovingAverage/MovingAverage.cpp
+    ../../KRAI_Library/encoderKRAI/encoderKRAI.cpp
+    ../../KRAI_Library/Motor/Motor.cpp
+    ../../KRAI_Library/pidLo/pidLo.cpp
+    ../../KRAI_Library/MovingAverage/MovingAverage.cpp
     ShooterMotor/ShooterMotor.cpp
-    ../KRAI_Library/JoystickPS3/JoystickPS3.cpp
+    AngleShooter/AngleShooter.cpp
+    ../../KRAI_Library/JoystickPS3/JoystickPS3.cpp
 )
 
 target_link_libraries(${APP_TARGET} mbed-os)
