@@ -6,17 +6,44 @@
 #include "Configurations/Constants.h"
 #include "Configurations/Setup.h"
 #include "ShooterMotor/ShooterMotor.h"
+#include "AngleShooter/AngleShooter.h"
 #include "../../KRAI_Library/JoystickPS3/JoystickPS3.h"
 
 // Inisialisasi Pengendali Motor Shooter
 ShooterMotor controlShooterMotor(&leftMotor, &encLeftMotor, &pidLeftMotor, &movAvgLM, &movAvgAccel, &motorReload, &encMotorReload);
+AngleShooter controlAngShooter(&motorAngle, &encMotorAngle, &pidMotorAngle, &movAvgANG);
 JoystickPS3 ps3(UART_STICK_TX, UART_STICK_RX);
+
+// ------------------------------------------------------------------
+
+bool interruptState = false;
+void riseMotor(){
+    if(LimitSwitch.read()){
+        interruptState = true;
+        controlAngShooter.encReset();
+        RESET_ANG_MOTOR = false;
+    }
+}
+void fallMotor(){
+    if(!LimitSwitch.read()){
+        interruptState = false;
+    }
+}
+
+// --------------------------------------------------------------------
+
 
 int main()
 {
-    ps3.setup();  
+    ps3.setup();
+
+    LimitSwitch.rise(&riseMotor);
+    LimitSwitch.fall(&fallMotor);
 
     float trySetPoint = 0.0f; // SetPoint PID (RPM)
+    float angleSetPoint = 60.0f;
+    bool startReload = false;
+
     /* Debugin Purpose */
     const int MAX_MSG = 64;
     static char message[MAX_MSG];
@@ -24,8 +51,7 @@ int main()
     int constPID_pos = 0;
     static unsigned int message_pos = 0;
     char inByte;
-
-    bool startReload = false;
+    // -------------------
 
     while (1)
     {
@@ -67,6 +93,7 @@ int main()
             }
         }
 
+        // ------------------------- RELOAD MECHANISM -------------------------
         if (ps3.getKotak() && (controlShooterMotor.getAccelShooter() > -5.0f && controlShooterMotor.getAccelShooter() < 5.0f) &&
         (controlShooterMotor.getOmegaShooter() - trySetPoint > -10.0f && controlShooterMotor.getOmegaShooter() - trySetPoint < 10.0f))
         {
@@ -85,12 +112,35 @@ int main()
                 controlShooterMotor.runReloader(180.0, 0.7);
             }
         }
+        // ------------------------------------------------------------------------------
 
+
+        // ------------------------- RESET ANGLE PULSES TO ZERO -------------------------
+        if (ps3.getSelect())
+        {
+            RESET_ANG_MOTOR = true;
+        }
+        controlAngShooter.resetMotorAngle(0.35, RESET_ANG_MOTOR);
+        // ------------------------------------------------------------------------------
+
+
+        // ------------------------- CONTROL MOTOR SHOOTER -------------------------
         if (us_ticker_read() - timeLast > samplingPID)
-        
-            controlShooterMotor.controlOmegaShooter(trySetPoint); 
+        { 
+            controlShooterMotor.controlOmegaShooter(trySetPoint);
             timeLast = us_ticker_read();
         }
+        // ------------------------------------------------------------------------------
+
+
+        // ------------------------- CONTROL ANGLE SHOOTER -------------------------
+        // if (us_ticker_read() - timeLastForAngleShooter > samplingPID)
+        // {
+        //     controlAngShooter.controlAng(angleSetPoint);
+        //     timeLastForAngleShooter = us_ticker_read();
+        // }
+        // ------------------------------------------------------------------------------
+
     }
 
     return 0;
