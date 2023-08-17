@@ -3,9 +3,8 @@
 # NUCLEO =  NUCLEO_F446RE
 # NUCLEO =  NUCLEO_G0B1RE
 NUCLEO =  ARCH_MAX
-PROGRAM = Shooter-V1
+PROGRAM = Testing-shooter
 DRIVE_NAME = NODE_F446RE
-MBED_OS_PATH = "../../mbed-os"
 GET_DRIVE_CMD = $(shell wmic volume where "label='$(DRIVE_NAME)'" get driveletter)
 DRIVE_LETTER = $(word 2, $(GET_DRIVE_CMD))
 
@@ -16,7 +15,7 @@ build: cmake ninja
 run: ninja push
 
 configure:
-	mbed-tools configure -m $(NUCLEO) -t GCC_ARM --mbed-os-path $(MBED_OS_PATH)
+	mbed-tools configure -m $(NUCLEO) -t GCC_ARM --mbed-os-path "../../mbed-os"
 
 cmake:
 	cmake -S . -B cmake_build/$(NUCLEO)/develop/GCC_ARM -GNinja
@@ -41,7 +40,7 @@ reset:
 # xcopy cmake_build\$(NUCLEO)\develop\GCC_ARM\$(PROGRAM).bin D:\
 
 push:
-	xcopy cmake_build\$(NUCLEO)\develop\GCC_ARM\$(PROGRAM).bin E:\
+	xcopy cmake_build\$(NUCLEO)\develop\GCC_ARM\$(PROGRAM).bin D:\
 
 
 # =======================================

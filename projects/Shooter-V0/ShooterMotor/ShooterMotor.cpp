@@ -59,9 +59,6 @@ void ShooterMotor::runReloader(float deltaDerajatRLD, float pwmReloader)
 void ShooterMotor::setTuningLM(float kp, float ki, float kd)
 {
     this->pidLeftMotor->setTunings(kp, ki, kd);
-    
-    printf("Set to %f %f %f \n", kp, ki, kd);
-    printf("Pakai Fungsi %f %f %f\n", getPParamLM(), getIParamLM(), getDParamLM());
 }
 
 void ShooterMotor::controlOmegaShooter(float setPoint)
@@ -73,22 +70,12 @@ void ShooterMotor::controlOmegaShooter(float setPoint)
         measured the number of encoder pulses in a fix gate time
         omega = (delta_pulses) / (PPR * timeSampling)
     */
-    float beforeMovAvg;
     this->omegaLM = ((this->encLeftMotor->getPulses() - this->prevPulsesLM) / (PPR_LM * (float)(timeNow - this->prevTimeNow)/1000000.0f)) * 60; // Revolutions per Minute
-    beforeMovAvg = this->omegaLM;
     this->omegaLM = this->movAvgLM->movingAverage(this->omegaLM);
 
     // PID dan set speed motor
     this->outputPMW_LM = this->pidLeftMotor->createpwm(setPoint, this->omegaLM, 1.0); // PWM POSITIVE => omegaLM (+)
-
-    // PID Hanya jika diatas 0
-    if (setPoint != 0)
-    {
-        this->leftMotor->speed(this->outputPMW_LM);
-    } else {
-        this->leftMotor->speed(0);
-    }
-    
+    this->leftMotor->speed(this->outputPMW_LM);
     // this->leftMotor->speed(0.8f);
 
     // Akselerasi omega
@@ -96,7 +83,7 @@ void ShooterMotor::controlOmegaShooter(float setPoint)
     this->accelShooter = this->movAvgAccel->movingAverage(this->accelShooter);
 
     // printf("%f %f %f\n", this->omegaLM, this->accelShooter, (this->omegaLM - this->prevOmega)/(60* (float)(timeNow - this->prevTimeNow)/1000000.0f));
-    // printf("%f %f\n", this->omegaLM, this->accelShooter);
+    printf("%f %f\n", this->omegaLM, this->accelShooter);
 
     // Update nilai pulses
     this->prevPulsesLM = this->encLeftMotor->getPulses();
@@ -104,9 +91,8 @@ void ShooterMotor::controlOmegaShooter(float setPoint)
     this->prevOmega = this->omegaLM;
 
 
-    // printf("%f %f\n", beforeMovAvg, this->omegaLM);
 
-    // printf("%f %f %f %f %f\n", this->omegaLM, setPoint, getPParamLM(), getIParamLM(), getDParamLM());
+    // printf("%f %f %f %f %f %f\n", this->omegaLM, setPoint, this->accelShooter, getDParamLM(), getIParamLM(), getDParamLM());
 
     // printf("%d %d\n", this->encLeftMotor->getPulses(), this->encRightMotor->getPulses());
     // printf("%f %f\n", this->omegaLM, this->omegaRM);
@@ -115,12 +101,3 @@ void ShooterMotor::controlOmegaShooter(float setPoint)
     // printf("%f %f %f %f %f %f\n", this->omegaRM/maxRPMRM, setPoint/maxRPMRM, this->outputPWM_RM, getPParamRM(), getIParamRM(), getDParamRM());
     // printf("%f %f %f\n", this->omegaRM/maxRPM, setPoint/maxRPM, this->outputPWM_RM);
 }
-
-
-// 0.0009 0.0016 0.0001
-
-
-// 0.001 0.0 0.00009
-
-// Bener ni bang
-// 0.001 0.001 0.00009

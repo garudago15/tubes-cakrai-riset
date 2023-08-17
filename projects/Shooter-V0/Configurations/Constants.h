@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../../KRAI_Library/Pinout/F446RE_MASTER_2022.h"
-#include "../../../KRAI_Library/Pinout/F407VET6_2023.h"
+#include "../../KRAI_Library/Pinout/F446RE_MASTER_2022.h"
+#include "../../KRAI_Library/Pinout/F407VET6_2023.h"
 
 # define PI 3.1415926535
 
@@ -34,6 +34,9 @@
 #define CHB_RLD F407VET6_ENCODER_2_2_B
 #define PPR_RLD 104.4
 
+// Limit Switch Sudut
+#define LIMIT_SWITCH_PIN F407VET6_ENCODER_2_1_B
+
 // PIDLO
 #define MAXOUT 1
 #define VFF 0
@@ -45,14 +48,10 @@
 #define UART_STICK_RX F407VET6_UART_RX_2
 
 // Encoder Sudut
-#define CHA_ANG F407VET6_ENCODER_2_3_A //sudut
-#define CHB_ANG F407VET6_ENCODER_2_3_B
+#define CHA3 F407VET6_ENCODER_2_3_A //sudut
+#define CHB3 F407VET6_ENCODER_2_3_B
 
 // Motor Sudut
-#define PWM_ANG F407VET6_PWM_MOTOR_7 //pc6
-#define FOR_ANG F407VET6_FOR_MOTOR_7 //pe13
-#define REV_ANG F407VET6_REV_MOTOR_7 // pe12
-#define PPR_ANG 548
-
-// LIMIT SWITCH
-#define LIMIT_SWITCH_PIN F407VET6_ENCODER_2_1_B
+#define PWM3 F407VET6_PWM_MOTOR_7 //sudut
+#define FOR3 F407VET6_FOR_MOTOR_7
+#define REV3 F407VET6_REV_MOTOR_7
