@@ -26,6 +26,7 @@ private:
 
     // Target
     uint32_t prevTimeNow;
+    float setPointFlywheel;
     float maxRPMLM; // Revolution per Minute
     float maxRPMRM; // Revolution per Minute
 
@@ -46,11 +47,16 @@ public:
     void controlOmegaShooter(float setPoint);
     void setRPM(float rpm){ this->leftMotor->speed(rpm);}
     void setTuningLM(float kp, float ki, float kd);
+
     float getOmegaShooter(){ return this->omegaLM; }
     float getAccelShooter(){ return this->accelShooter; }
+    float getSetpoint(){ return this->setPointFlywheel; }
+
     float getPParamLM(){ return this->pidLeftMotor->getPParam(); }
     float getIParamLM(){ return this->pidLeftMotor->getIParam(); }
     float getDParamLM(){ return this->pidLeftMotor->getDParam(); }
+
+    void setParamSetpoint(float updateSetpoint) { this->setPointFlywheel = updateSetpoint;}
     
 
     void runReloader(float deltaDerajatRLD, float pwmReloader);

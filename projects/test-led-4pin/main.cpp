@@ -4,7 +4,7 @@
  */
 
 #include "mbed.h"
-#include "../../libs/led4Pin/led4Pin.h"
+#include "../../KRAI_Library/led4Pin/led4Pin.h"
 
 // DEFINE LED
 #define red PA_5

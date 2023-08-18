@@ -33,10 +33,11 @@ void AngleShooter::resetMotorAngle(float pwm, bool isReset)
 
 void AngleShooter::controlAng(int targetSudut)
 {
-    this->angle = mapValue(this->encMotorAngle->getPulses());
-    this->angle = static_cast<int>(this->movAvgAngle->movingAverage(static_cast<float>(this->angle)));
+    this->angleTarget = targetSudut;
+    this->angleRealtime = mapValue(this->encMotorAngle->getPulses());
+    this->angleRealtime = static_cast<int>(this->movAvgAngle->movingAverage(static_cast<float>(this->angleRealtime)));
 
-    this->outputPMWAngle = this->pidMotorAngle->createpwm(targetSudut, this->angle, 0.5);
+    this->outputPMWAngle = this->pidMotorAngle->createpwm(targetSudut, this->angleRealtime, 0.5);
 
     if (targetSudut != 80)
     {
@@ -44,11 +45,11 @@ void AngleShooter::controlAng(int targetSudut)
     }
 
     /* FOR DEBUGING PURPOSE (Buat tunning dan cek nyala) */
-    // printf("%d %d %.2f %d ", angle, targetSudut, outputPMWAngle, this->encMotorAngle->getPulses());
+    // printf("%d %d %.2f %d ", angleRealtime, targetSudut, outputPMWAngle, this->encMotorAngle->getPulses());
     // printf("%f %f %f \n", getPParamLM(), getIParamLM(), getDParamLM());
 
     // Buat Tunning Lokasi
-    printf(" %d %d ", angle, targetSudut);
+    // printf(" %d %d ", angleRealtime, targetSudut);
 
 }
 
