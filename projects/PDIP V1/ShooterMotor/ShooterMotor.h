@@ -62,4 +62,6 @@ public:
     void runReloader(float deltaDerajatRLD, float pwmReloader);
     void setReloaderStatus(bool flag) {this->isInReload = flag; }
     bool getReloaderStatus(){ return this->isInReload; }
+
+    float getCalcRPM(float xr, int angle);
 };

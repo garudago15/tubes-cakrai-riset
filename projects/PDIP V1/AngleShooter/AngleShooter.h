@@ -43,6 +43,7 @@ public:
     
     void encReset();
     void resetMotorAngle(float pwm, bool isReset);
+    void setAngleTarget(int updateTarget);
 
     int mapValue(int encReading);
 };

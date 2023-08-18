@@ -5,8 +5,8 @@ MASTER-MAGANG
  */
 
 #include "mbed.h"
-#include "../KRAI_Library/TFMini/TFPlus.h"
-#include "../KRAI_Library/Pinout/F446RE_MASTER_2022.h"
+#include "../../KRAI_Library/TFMini/TFPlus.h"
+#include "../../KRAI_Library/Pinout/F446RE_MASTER_2022.h"
 
 // Pins and Configs
 #define Serial_RX USBRX
@@ -104,7 +104,7 @@ int main(){
                     // Send the string over UART
                     // Convert the values to a string
                     char msg[50];  // Adjust the size as needed
-                    snprintf(msg, sizeof(msg), "%f %f %f %d %d\n", target_dist, current_rpm, setpoint_rpm, current_angle, setpoint_angle);
+                    
 
                     // Send the string over UART to esp_uart
                     // printf("%s", msga);
@@ -136,6 +136,8 @@ int main(){
     
         // Send to ARCH_MAX
         // printf("%f %d\n", rpm, angleInDegrees );
+
+        snprintf(msg, sizeof(msg), "%f %f %f %d %d\n", target_dist, current_rpm, setpoint_rpm, current_angle, setpoint_angle);
 
     }
 }
