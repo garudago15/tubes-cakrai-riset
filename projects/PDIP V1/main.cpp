@@ -252,7 +252,7 @@ int main(){
         
 
         /* UNTUK TUNNING LAPANGAN */
-        printf("#%f %f %d %d&\n", controlShooterMotor.getOmegaShooter(), controlShooterMotor.getSetpoint(), controlAngShooter.getAngleRealtime(), controlAngShooter.getAngleTarget());
+        printf("%f %f %d %d\n", controlShooterMotor.getOmegaShooter(), controlShooterMotor.getSetpoint(), controlAngShooter.getAngleRealtime(), controlAngShooter.getAngleTarget());
         
         // utk reset
         if (ps3.getStart())
