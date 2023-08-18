@@ -26,7 +26,7 @@
 #include "../../KRAI_Library/MovingAverage/MovingAverage.h"
 
 // Untuk LED
-#include "../../KRAI_Library/led4Pin/led4Pin.h"
+#include "../../KRAI_Library/led4Pin/led4Pin-digital.h"
 
 // Inisialisasi Pengendali Motor Shooter
 ShooterMotor controlShooterMotor(&leftMotor, &encLeftMotor, &pidLeftMotor, &movAvgLM, &movAvgAccel, &motorReload, &encMotorReload);
@@ -52,13 +52,18 @@ void fallMotor(){
 // -----------------------------------------------------------------------
 
 // --------------------- UNTUK LED ------------------------
-// DEFINE LED
-// #define red PC_0
-// #define green PA_2
-// #define blue PC_1
+// // DEFINE LED
+// #define red PD_3
+// #define green PC_13
+// #define blue PC_12
 // LED4Pin RGB(red, green, blue);
 
-string state = "standby";
+#define RED             PE_4
+#define GREEN           PC_12
+#define BLUE            PD_0
+LED4PinDigital RGB(RED, GREEN, BLUE);
+
+string state = "notready";
 // ---------------------------------------------------------
 
 
@@ -159,6 +164,9 @@ int main(){
     // -------------------
 
     while (true){
+        // Untuk Pekerluan LED
+        us_timestamp_t currentTimestampLED = us_ticker_read();
+
         // Pengolahan dan Update data PS3
         ps3.olah_data();
         ps3.baca_data();
@@ -183,7 +191,6 @@ int main(){
 
         if (startReload)
         {
-            state = "reload";
             if (controlShooterMotor.getReloaderStatus() == false)
             {
                 startReload = false;
@@ -211,15 +218,6 @@ int main(){
         if (us_ticker_read() - timeLast > samplingPID)
         { 
             controlShooterMotor.controlOmegaShooter(trySetPoint);
-
-            // if (trySetPoint != 0)
-            // {
-            //     controlShooterMotor.controlOmegaShooter(trySetPoint);
-            // } else
-            // {
-            //     controlShooterMotor.setRPM(0.0);
-            //     controlShooterMotor.setParamSetpoint(0.0);
-            // }
         }
         // ------------------------------------------------------------------------------
 
@@ -251,18 +249,10 @@ int main(){
         }
         // ------------------------------------------------------------------------------
 
-        // --------------------------------- UNTUK CONTROL LED --------------------------
-        // if (state == "standby"){
-        //     RGB.setColor("BLUE");
-        // } else if (state == "reload") {
-        //     RGB.setColor("GREEN");
-        // } else {
-        //     RGB.setColor("RED");
-        // }
-        // ------------------------------------------------------------------------------
+        
 
         /* UNTUK TUNNING LAPANGAN */
-        printf("%f %f %d %d\n", controlShooterMotor.getOmegaShooter(), controlShooterMotor.getSetpoint(), controlAngShooter.getAngleRealtime(), controlAngShooter.getAngleTarget());
+        printf("#%f %f %d %d&\n", controlShooterMotor.getOmegaShooter(), controlShooterMotor.getSetpoint(), controlAngShooter.getAngleRealtime(), controlAngShooter.getAngleTarget());
         
         // utk reset
         if (ps3.getStart())
@@ -424,18 +414,47 @@ int main(){
 
         }
 
-        // old sampling method
-        // now = us_ticker_read();
-        // if(now - timer1 > TIME_SAMPLING){
-        //     //omni sampling
-        //     omni.encoderMotorSamp(); //baca encoder (current speed) tiap motor
-        //     omni.baseSpeed(); //update odometri
-        //     omni.base(); //update target speed tiap motor berdasarkan vx, vy, dan w
-        //     omni.pidMotorSamp(); //update PID berdasarkan target dan current speed tiap motor
-        //     omni.motorSamp(); //update motor
 
-        //     timer1 = now;
-        // }
+        // --------------------------------- UNTUK CONTROL LED --------------------------
+        // APAKAH SEDANG GERAK?
+        if (omni.get_v_FL_curr() != 0 || omni.get_v_FR_curr() != 0 || omni.get_v_BL_curr() != 0 || omni.get_v_BR_curr() != 0)
+        {
+            state = "movement";
+
+        // APAKAH SEDAH RELOAD?
+        } else if (startReload) {
+            state = "reload";
+
+        // CEK APAKAH SUDAH MENCAPAI SEMUA SETPOINT
+        } else if ( ((controlAngShooter.getAngleRealtime() < controlAngShooter.getAngleTarget() + 4) && (controlAngShooter.getAngleRealtime() > controlAngShooter.getAngleTarget() - 4)) &&
+                    ((controlShooterMotor.getOmegaShooter() < controlShooterMotor.getSetpoint() + 100) && (controlShooterMotor.getOmegaShooter() > controlShooterMotor.getSetpoint() - 100)) && 
+                    (controlShooterMotor.getSetpoint() != 0 && controlAngShooter.getAngleTarget() != 0) )
+        {
+            state = "ready";
+        
+        // SEMUA TIDAK READY
+        } else {
+            state = "notready";
+        }
+
+        // MODE SELEBRASI
+        if(ps3.getSelect()){
+            state = "SELEBERASI";
+        }
+
+
+        if (state == "ready"){
+            RGB.setColor("GREEN");
+        } else if (state == "notready") {
+            RGB.setColor("RED");
+        } else if (state == "movement") {
+            RGB.setColor("BLUE");
+        } else if (state == "reload") {
+            RGB.setColor("PURPLE");
+        } else if (state == "SELEBERASI") {
+            RGB.turnOff();
+        }
+        // ------------------------------------------------------------------------------
 
         
     }
