@@ -24,7 +24,8 @@ private:
     float outputPMWAngle;
     float omegaAngle;  // Revolutions per Minute
     
-    int angle;
+    int angleRealtime;
+    int angleTarget;
     int prevPulses;
 
 public:
@@ -32,6 +33,10 @@ public:
     void controlAng(int targetSudut);
 
     void setTuning(float kp, float ki, float kd);
+
+    int getAngleRealtime() { return this->angleRealtime; }
+    int getAngleTarget() { return this->angleTarget; }
+
     float getPParamLM(){ return this->pidMotorAngle->getPParam(); }
     float getIParamLM(){ return this->pidMotorAngle->getIParam(); }
     float getDParamLM(){ return this->pidMotorAngle->getDParam(); }

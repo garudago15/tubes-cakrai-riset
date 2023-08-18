@@ -25,6 +25,9 @@
 #include "AngleShooter/AngleShooter.h"
 #include "../../KRAI_Library/MovingAverage/MovingAverage.h"
 
+// Untuk LED
+#include "../../KRAI_Library/led4Pin/led4Pin.h"
+
 // Inisialisasi Pengendali Motor Shooter
 ShooterMotor controlShooterMotor(&leftMotor, &encLeftMotor, &pidLeftMotor, &movAvgLM, &movAvgAccel, &motorReload, &encMotorReload);
 AngleShooter controlAngShooter(&motorAngle, &encMotorAngle, &pidMotorAngle, &movAvgANG);
@@ -47,6 +50,17 @@ void fallMotor(){
 
 // --------------------------------------------------------------------
 // -----------------------------------------------------------------------
+
+// --------------------- UNTUK LED ------------------------
+// DEFINE LED
+// #define red PC_0
+// #define green PA_2
+// #define blue PC_1
+// LED4Pin RGB(red, green, blue);
+
+string state = "standby";
+// ---------------------------------------------------------
+
 
 /* Base Motor */
 Motor baseMotorFL(BASE_MOTOR_FL_PWM, BASE_MOTOR_FL_FOR, BASE_MOTOR_FL_REV);
@@ -164,10 +178,12 @@ int main(){
         (controlShooterMotor.getOmegaShooter() - trySetPoint > -50.0f && controlShooterMotor.getOmegaShooter() - trySetPoint < 50.0f))
         {
             startReload = true;
+            
         }
 
         if (startReload)
         {
+            state = "reload";
             if (controlShooterMotor.getReloaderStatus() == false)
             {
                 startReload = false;
@@ -181,20 +197,29 @@ int main(){
         // ------------------------------------------------------------------------------
 
         // ------------------------- CONTROL MOTOR SHOOTER -------------------------
-        if (ps3.getLingkaran() && ps3.getButtonDown())
+        if (ps3.getLingkaran() && ps3.getL2())
         {
             trySetPoint = 0;
-        } else if (ps3.getLingkaran() && ps3.getButtonLeft())
+        } else if (ps3.getLingkaran() && ps3.getButtonDown())
         {
-            trySetPoint = 2900;
+            trySetPoint = 2470;
         } else if (ps3.getLingkaran() && ps3.getButtonUp())
         {
-            trySetPoint = 3200;
+            trySetPoint = 2900;
         }
 
         if (us_ticker_read() - timeLast > samplingPID)
         { 
             controlShooterMotor.controlOmegaShooter(trySetPoint);
+
+            // if (trySetPoint != 0)
+            // {
+            //     controlShooterMotor.controlOmegaShooter(trySetPoint);
+            // } else
+            // {
+            //     controlShooterMotor.setRPM(0.0);
+            //     controlShooterMotor.setParamSetpoint(0.0);
+            // }
         }
         // ------------------------------------------------------------------------------
 
@@ -202,10 +227,10 @@ int main(){
         
         if (ps3.getLY() < -120)
         {
-            angleSetPoint = 80;
+            angleSetPoint = 55;
         } else if (ps3.getLY() > 120)
         {
-            angleSetPoint = 60;
+            angleSetPoint = 65;
         } 
 
         // printf("%d %d\n", ps3.getLY(), angleSetPoint);       // Buat debug bener ga ni tombol
@@ -226,6 +251,18 @@ int main(){
         }
         // ------------------------------------------------------------------------------
 
+        // --------------------------------- UNTUK CONTROL LED --------------------------
+        // if (state == "standby"){
+        //     RGB.setColor("BLUE");
+        // } else if (state == "reload") {
+        //     RGB.setColor("GREEN");
+        // } else {
+        //     RGB.setColor("RED");
+        // }
+        // ------------------------------------------------------------------------------
+
+        /* UNTUK TUNNING LAPANGAN */
+        printf("%f %f %d %d\n", controlShooterMotor.getOmegaShooter(), controlShooterMotor.getSetpoint(), controlAngShooter.getAngleRealtime(), controlAngShooter.getAngleTarget());
         
         // utk reset
         if (ps3.getStart())
@@ -244,17 +281,17 @@ int main(){
             omni.forceBrakeSync(); //hard brake sebelum nembak agar robot tidak gerak saat nembak
         } else{
             //moving
-            if (ps3.getButtonRight()) { //gerak ke kanan
+            if (ps3.getButtonRight() && !ps3.getLingkaran()) { //gerak ke kanan
                 vx_cmd += TRANSLATION_BASE_SPEED;
             } 
-            if (ps3.getButtonLeft()) { //gerak ke kiri
+            if (ps3.getButtonLeft() && !ps3.getLingkaran()) { //gerak ke kiri
                 vx_cmd -= TRANSLATION_BASE_SPEED;
             } 
 
-            if (ps3.getButtonUp()) { //gerak ke atas
+            if (ps3.getButtonUp() && !ps3.getLingkaran()) { //gerak ke atas
                 vy_cmd += TRANSLATION_BASE_SPEED;
             } 
-            if (ps3.getButtonDown()) { //gerak ke bawah
+            if (ps3.getButtonDown() && !ps3.getLingkaran()) { //gerak ke bawah
                 vy_cmd -= TRANSLATION_BASE_SPEED;
             }
 
@@ -400,7 +437,6 @@ int main(){
         //     timer1 = now;
         // }
 
-        /* UNTUK TUNNING LAPANGAN */
-        printf("\n");
+        
     }
 }

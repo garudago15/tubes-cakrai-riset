@@ -66,6 +66,8 @@ void ShooterMotor::setTuningLM(float kp, float ki, float kd)
 
 void ShooterMotor::controlOmegaShooter(float setPoint)
 {
+    this->setPointFlywheel = setPoint;
+
     uint32_t timeNow = us_ticker_read();
     /*
     Speed Measurement
@@ -86,7 +88,8 @@ void ShooterMotor::controlOmegaShooter(float setPoint)
     {
         this->leftMotor->speed(this->outputPMW_LM);
     } else {
-        this->leftMotor->speed(0);
+        this->leftMotor->speed(0.0);
+        this->pidLeftMotor->reset();
     }
     
     // this->leftMotor->speed(0.8f);
@@ -107,7 +110,7 @@ void ShooterMotor::controlOmegaShooter(float setPoint)
     // printf("%f %f\n", beforeMovAvg, this->omegaLM);
 
     /* BUAT TUNNING LAPANGAN */
-    printf(" %f %f ", this->omegaLM, setPoint);
+    //printf(" %f %f ", this->omegaLM, setPoint);
 
     // printf("%f %f %f %f %f\n", this->omegaLM, setPoint, getPParamLM(), getIParamLM(), getDParamLM());
 

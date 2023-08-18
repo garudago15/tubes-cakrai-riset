@@ -54,7 +54,7 @@ MovingAverage movAvgANG(10);
 // Variabel Inisialisasi
 float timeLast = us_ticker_read();
 float timeLastForAngleShooter = us_ticker_read();
-bool RESET_ANG_MOTOR = false;
+bool RESET_ANG_MOTOR = true;
 
 // INITIALIZE SERIAL USING PRINTF 
 static BufferedSerial serial_port(PA_9, PA_10, 115200);
