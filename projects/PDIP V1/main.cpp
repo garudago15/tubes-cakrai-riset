@@ -238,7 +238,7 @@ int main(){
         //     RGB.setRGB(true, true, true);
         // }
 
-        // // ----------------------------- SET SETPOINT -------------------------------
+        // ----------------------------- SET SETPOINT -------------------------------
         // if (serial_port.readable())
         // {
         //     scanf("%f %d", &dataSerialF_1, &dataSerialI_1);
@@ -513,7 +513,7 @@ int main(){
             state = "ready";
         
         // SEMUA TIDAK READY
-        } else if (jarakTF[0] == 0.0 || jarakTF[0] > 5.0){
+        } else if (jarakTF[0] == 0.0 || jarakTF[0] > 4.0){
             state = "notf";                 //JArak gakebaca
         } else {
             state = "notready";
