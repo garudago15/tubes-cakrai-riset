@@ -279,6 +279,7 @@ int main(){
         //braking system
         if(ps3.getKotak() || ps3.getStart()){ //tombol utk nembak
             omni.forceBrakeSync(); //hard brake sebelum nembak agar robot tidak gerak saat nembak
+            omni.reset();
         } else{
             //moving
             if (ps3.getButtonRight() && !ps3.getLingkaran()) { //gerak ke kanan
