@@ -285,6 +285,8 @@ int main(){
 
         // printf("%d %d\n", ps3.getLY(), angleSetPoint);       // Buat debug bener ga ni tombol
 
+        // TES
+
         // Reset Angle Purpose
         if (ps3.getLY() < -120 && ps3.getRY() < -120)
         {
