@@ -280,7 +280,7 @@ int main(){
             angleSetPoint = 65;
         } else if (ps3.getLY() > 120)  // Gerakin ke bawah, buat area paling deket
         {
-            angleSetPoint = 65;
+            angleSetPoint = 70;
         }
 
         // printf("%d %d\n", ps3.getLY(), angleSetPoint);       // Buat debug bener ga ni tombol
