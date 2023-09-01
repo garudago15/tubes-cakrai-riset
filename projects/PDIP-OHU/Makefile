@@ -3,7 +3,7 @@
 # NUCLEO =  NUCLEO_F446RE
 # NUCLEO =  NUCLEO_G0B1RE
 NUCLEO =  ARCH_MAX
-PROGRAM = PDIP V1
+PROGRAM = PDIP-OHU
 DRIVE_NAME = NODE_F446RE
 GET_DRIVE_CMD = $(shell wmic volume where "label='$(DRIVE_NAME)'" get driveletter)
 DRIVE_LETTER = $(word 2, $(GET_DRIVE_CMD))
@@ -40,7 +40,7 @@ reset:
 # xcopy cmake_build\$(NUCLEO)\develop\GCC_ARM\$(PROGRAM).bin D:\
 
 push:
-	xcopy "cmake_build\$(NUCLEO)\develop\GCC_ARM\$(PROGRAM).bin" E:\
+	xcopy cmake_build\$(NUCLEO)\develop\GCC_ARM\$(PROGRAM).bin E:\
 
 
 # =======================================

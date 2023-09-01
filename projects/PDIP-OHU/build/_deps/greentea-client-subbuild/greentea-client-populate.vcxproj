@@ -1,0 +1,294 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x86</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{B6083D3C-FC51-3B68-A3DB-FB9F8ED1A0D9}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.22000.0</WindowsTargetPlatformVersion>
+    <Platform>x64</Platform>
+    <ProjectName>greentea-client-populate</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\CMakeFiles\4b78a51c60a4d2d748f4840e0cd8f779\greentea-client-populate-mkdir.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Creating directories for 'greentea-client-populate'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\bin\cmake.exe -Dcfgdir=/Debug -P "D:/URO-mbed-os/tubes-cakrai-riset/projects/PDIP V1/build/_deps/greentea-client-subbuild/greentea-client-populate-prefix/tmp/greentea-client-populate-mkdirs.cmake"
+if %errorlevel% neq 0 goto :cmEnd
+C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\bin\cmake.exe -E touch "D:/URO-mbed-os/tubes-cakrai-riset/projects/PDIP V1/build/_deps/greentea-client-subbuild/greentea-client-populate-prefix/src/greentea-client-populate-stamp/Debug/greentea-client-populate-mkdir"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\greentea-client-populate-prefix\src\greentea-client-populate-stamp\Debug\greentea-client-populate-mkdir</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\CMakeFiles\4b78a51c60a4d2d748f4840e0cd8f779\greentea-client-populate-download.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Performing download step (git clone) for 'greentea-client-populate'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+cd "D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps"
+if %errorlevel% neq 0 goto :cmEnd
+D:
+if %errorlevel% neq 0 goto :cmEnd
+C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\bin\cmake.exe -P "D:/URO-mbed-os/tubes-cakrai-riset/projects/PDIP V1/build/_deps/greentea-client-subbuild/greentea-client-populate-prefix/tmp/greentea-client-populate-gitclone.cmake"
+if %errorlevel% neq 0 goto :cmEnd
+C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\bin\cmake.exe -E touch "D:/URO-mbed-os/tubes-cakrai-riset/projects/PDIP V1/build/_deps/greentea-client-subbuild/greentea-client-populate-prefix/src/greentea-client-populate-stamp/Debug/greentea-client-populate-download"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\greentea-client-populate-prefix\src\greentea-client-populate-stamp\greentea-client-populate-gitinfo.txt;D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\greentea-client-populate-prefix\src\greentea-client-populate-stamp\Debug\greentea-client-populate-mkdir;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\greentea-client-populate-prefix\src\greentea-client-populate-stamp\Debug\greentea-client-populate-download</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\CMakeFiles\4b78a51c60a4d2d748f4840e0cd8f779\greentea-client-populate-update.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Performing update step for 'greentea-client-populate'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+cd "D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-src"
+if %errorlevel% neq 0 goto :cmEnd
+D:
+if %errorlevel% neq 0 goto :cmEnd
+C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\bin\cmake.exe -P "D:/URO-mbed-os/tubes-cakrai-riset/projects/PDIP V1/build/_deps/greentea-client-subbuild/greentea-client-populate-prefix/tmp/greentea-client-populate-gitupdate.cmake"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\greentea-client-populate-prefix\src\greentea-client-populate-stamp\Debug\greentea-client-populate-download;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\greentea-client-populate-prefix\src\greentea-client-populate-stamp\Debug\greentea-client-populate-update</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <VerifyInputsAndOutputsExist Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</VerifyInputsAndOutputsExist>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\CMakeFiles\4b78a51c60a4d2d748f4840e0cd8f779\greentea-client-populate-patch.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">No patch step for 'greentea-client-populate'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\bin\cmake.exe -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\bin\cmake.exe -E touch "D:/URO-mbed-os/tubes-cakrai-riset/projects/PDIP V1/build/_deps/greentea-client-subbuild/greentea-client-populate-prefix/src/greentea-client-populate-stamp/Debug/greentea-client-populate-patch"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\greentea-client-populate-prefix\src\greentea-client-populate-stamp\Debug\greentea-client-populate-update;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\greentea-client-populate-prefix\src\greentea-client-populate-stamp\Debug\greentea-client-populate-patch</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <VerifyInputsAndOutputsExist Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</VerifyInputsAndOutputsExist>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\CMakeFiles\4b78a51c60a4d2d748f4840e0cd8f779\greentea-client-populate-configure.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">No configure step for 'greentea-client-populate'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+cd "D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-build"
+if %errorlevel% neq 0 goto :cmEnd
+D:
+if %errorlevel% neq 0 goto :cmEnd
+C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\bin\cmake.exe -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\bin\cmake.exe -E touch "D:/URO-mbed-os/tubes-cakrai-riset/projects/PDIP V1/build/_deps/greentea-client-subbuild/greentea-client-populate-prefix/src/greentea-client-populate-stamp/Debug/greentea-client-populate-configure"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\greentea-client-populate-prefix\tmp\greentea-client-populate-cfgcmd.txt;D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\greentea-client-populate-prefix\src\greentea-client-populate-stamp\Debug\greentea-client-populate-patch;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\greentea-client-populate-prefix\src\greentea-client-populate-stamp\Debug\greentea-client-populate-configure</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\CMakeFiles\4b78a51c60a4d2d748f4840e0cd8f779\greentea-client-populate-build.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">No build step for 'greentea-client-populate'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+cd "D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-build"
+if %errorlevel% neq 0 goto :cmEnd
+D:
+if %errorlevel% neq 0 goto :cmEnd
+C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\bin\cmake.exe -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\bin\cmake.exe -E touch "D:/URO-mbed-os/tubes-cakrai-riset/projects/PDIP V1/build/_deps/greentea-client-subbuild/greentea-client-populate-prefix/src/greentea-client-populate-stamp/Debug/greentea-client-populate-build"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\greentea-client-populate-prefix\src\greentea-client-populate-stamp\Debug\greentea-client-populate-configure;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\greentea-client-populate-prefix\src\greentea-client-populate-stamp\Debug\greentea-client-populate-build</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\CMakeFiles\4b78a51c60a4d2d748f4840e0cd8f779\greentea-client-populate-install.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">No install step for 'greentea-client-populate'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+cd "D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-build"
+if %errorlevel% neq 0 goto :cmEnd
+D:
+if %errorlevel% neq 0 goto :cmEnd
+C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\bin\cmake.exe -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\bin\cmake.exe -E touch "D:/URO-mbed-os/tubes-cakrai-riset/projects/PDIP V1/build/_deps/greentea-client-subbuild/greentea-client-populate-prefix/src/greentea-client-populate-stamp/Debug/greentea-client-populate-install"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\greentea-client-populate-prefix\src\greentea-client-populate-stamp\Debug\greentea-client-populate-build;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\greentea-client-populate-prefix\src\greentea-client-populate-stamp\Debug\greentea-client-populate-install</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\CMakeFiles\4b78a51c60a4d2d748f4840e0cd8f779\greentea-client-populate-test.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">No test step for 'greentea-client-populate'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+cd "D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-build"
+if %errorlevel% neq 0 goto :cmEnd
+D:
+if %errorlevel% neq 0 goto :cmEnd
+C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\bin\cmake.exe -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\bin\cmake.exe -E touch "D:/URO-mbed-os/tubes-cakrai-riset/projects/PDIP V1/build/_deps/greentea-client-subbuild/greentea-client-populate-prefix/src/greentea-client-populate-stamp/Debug/greentea-client-populate-test"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\greentea-client-populate-prefix\src\greentea-client-populate-stamp\Debug\greentea-client-populate-install;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\greentea-client-populate-prefix\src\greentea-client-populate-stamp\Debug\greentea-client-populate-test</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\CMakeFiles\691fa37b8b83577912e8539c596ecd46\greentea-client-populate-complete.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Completed 'greentea-client-populate'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\bin\cmake.exe -E make_directory "D:/URO-mbed-os/tubes-cakrai-riset/projects/PDIP V1/build/_deps/greentea-client-subbuild/CMakeFiles/Debug"
+if %errorlevel% neq 0 goto :cmEnd
+C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\bin\cmake.exe -E touch "D:/URO-mbed-os/tubes-cakrai-riset/projects/PDIP V1/build/_deps/greentea-client-subbuild/CMakeFiles/Debug/greentea-client-populate-complete"
+if %errorlevel% neq 0 goto :cmEnd
+C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\bin\cmake.exe -E touch "D:/URO-mbed-os/tubes-cakrai-riset/projects/PDIP V1/build/_deps/greentea-client-subbuild/greentea-client-populate-prefix/src/greentea-client-populate-stamp/Debug/greentea-client-populate-done"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\greentea-client-populate-prefix\src\greentea-client-populate-stamp\Debug\greentea-client-populate-install;D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\greentea-client-populate-prefix\src\greentea-client-populate-stamp\Debug\greentea-client-populate-mkdir;D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\greentea-client-populate-prefix\src\greentea-client-populate-stamp\Debug\greentea-client-populate-download;D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\greentea-client-populate-prefix\src\greentea-client-populate-stamp\Debug\greentea-client-populate-update;D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\greentea-client-populate-prefix\src\greentea-client-populate-stamp\Debug\greentea-client-populate-patch;D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\greentea-client-populate-prefix\src\greentea-client-populate-stamp\Debug\greentea-client-populate-configure;D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\greentea-client-populate-prefix\src\greentea-client-populate-stamp\Debug\greentea-client-populate-build;D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\greentea-client-populate-prefix\src\greentea-client-populate-stamp\Debug\greentea-client-populate-test;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\CMakeFiles\Debug\greentea-client-populate-complete</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <VerifyInputsAndOutputsExist Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</VerifyInputsAndOutputsExist>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\CMakeFiles\2c13b383e2f01700956d32e3d324fa35\greentea-client-populate.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"></Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\CMakeFiles\Debug\greentea-client-populate-complete;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\CMakeFiles\greentea-client-populate</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <VerifyInputsAndOutputsExist Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</VerifyInputsAndOutputsExist>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\CMakeLists.txt">
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule D:/URO-mbed-os/tubes-cakrai-riset/projects/PDIP V1/build/_deps/greentea-client-subbuild/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\bin\cmake.exe "-SD:/URO-mbed-os/tubes-cakrai-riset/projects/PDIP V1/build/_deps/greentea-client-subbuild" "-BD:/URO-mbed-os/tubes-cakrai-riset/projects/PDIP V1/build/_deps/greentea-client-subbuild" --check-stamp-file "D:/URO-mbed-os/tubes-cakrai-riset/projects/PDIP V1/build/_deps/greentea-client-subbuild/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\share\cmake-3.26\Modules\CMakeGenericSystem.cmake;C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\share\cmake-3.26\Modules\CMakeInitializeConfigs.cmake;C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\share\cmake-3.26\Modules\CMakeSystemSpecificInformation.cmake;C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\share\cmake-3.26\Modules\CMakeSystemSpecificInitialize.cmake;C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\share\cmake-3.26\Modules\ExternalProject.cmake;C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\share\cmake-3.26\Modules\ExternalProject\RepositoryInfo.txt.in;C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\share\cmake-3.26\Modules\ExternalProject\cfgcmd.txt.in;C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\share\cmake-3.26\Modules\ExternalProject\gitclone.cmake.in;C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\share\cmake-3.26\Modules\ExternalProject\gitupdate.cmake.in;C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\share\cmake-3.26\Modules\ExternalProject\mkdirs.cmake.in;C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\share\cmake-3.26\Modules\Platform\Windows.cmake;C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\share\cmake-3.26\Modules\Platform\WindowsPaths.cmake;D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\CMakeFiles\3.26.1\CMakeSystem.cmake;D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\greentea-client-populate-prefix\tmp\greentea-client-populate-mkdirs.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\CMakeFiles\greentea-client-populate">
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\ZERO_CHECK.vcxproj">
+      <Project>{BF17C7A2-786E-353A-9DFE-8577E4A92E7C}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

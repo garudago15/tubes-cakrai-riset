@@ -1,0 +1,3 @@
+D:/URO-mbed-os/tubes-cakrai-riset/projects/PDIP V1/build/_deps/greentea-client-subbuild/CMakeFiles/greentea-client-populate.dir
+D:/URO-mbed-os/tubes-cakrai-riset/projects/PDIP V1/build/_deps/greentea-client-subbuild/CMakeFiles/ALL_BUILD.dir
+D:/URO-mbed-os/tubes-cakrai-riset/projects/PDIP V1/build/_deps/greentea-client-subbuild/CMakeFiles/ZERO_CHECK.dir

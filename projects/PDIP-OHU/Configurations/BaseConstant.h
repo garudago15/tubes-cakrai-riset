@@ -1,5 +1,4 @@
-#ifndef _DECLARATIONS_H_
-#define _DECLARATIONS_H_
+#pragma once
 
 // #include "Constants150.h"
 // #include "Constants97Cat.h"
@@ -25,8 +24,6 @@
 
 #define SAMP_STICK_US 13000
 #define SAMP_STICK_MS 13
-
-#define SAMP_JEDAG_JEDUG 250000
 
 /* BASE MOTOR PID */
 
@@ -218,5 +215,3 @@
 #define SHAKE_DEGREE 20
 #define AUTO_SHAKE_DELAY 600000
 #define AUTO_SHAKE_DURATION 800000
-
-#endif
