@@ -317,7 +317,7 @@ int main(){
             trySetPoint = 2770;         // 2.5m pembacaan sensor berarti 2m jarak di asli
         } else if (ps3.getLingkaran() && ps3.getButtonDown())
         {
-            trySetPoint = 2400.0;       // ini buat deket banget sudut 70
+            trySetPoint = 1100.0;       // ini buat deket banget sudut 70
         } else if (ps3.getLingkaran() && ps3.getButtonRight())
         {
             trySetPoint = controlShooterMotor.getCalcRPM(jarakTF[0], angleSetPoint);
@@ -338,7 +338,8 @@ int main(){
 
         /* UNTUK TUNNING LAPANGAN */
         // printf("%f %f %d %d\n", controlShooterMotor.getOmegaShooter(), controlShooterMotor.getSetpoint(), controlAngShooter.getAngleRealtime(), controlAngShooter.getAngleTarget());
-        
+        // printf("%d\n", encMotorReload.getPulses());
+
         // utk reset
         // if (ps3.getStart())
         // {
@@ -540,8 +541,6 @@ int main(){
         } else if (state == "reload") {
             RGB.setColor("PURPLE");
         } else if (state == "SELEBERASI") {
-            RGB.setColor("CYAN");
-
             if(us_ticker_read() - samplingJedagJedug > SAMP_JEDAG_JEDUG){
                 
                 switch(jedagJedugCount){
@@ -573,11 +572,11 @@ int main(){
                         RGB.turnOff();
                 }
                 
-                RGB.setColor("RED");
                 jedagJedugCount++;
                 if(jedagJedugCount>16){
                     jedagJedugCount=1;
                 }
+                samplingJedagJedug=us_ticker_read();
             }
         } else if (state == "notf"){
             RGB.setRGB(true, true, true);
