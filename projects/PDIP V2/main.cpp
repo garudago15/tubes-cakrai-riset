@@ -265,11 +265,11 @@ int main(){
         printf("%f %f %d %d\n", controlShooterMotor.getOmegaShooter(), controlShooterMotor.getSetpoint(), controlAngShooter.getAngleRealtime(), controlAngShooter.getAngleTarget());
         
         // utk reset
-        if (ps3.getStart())
-        {
-            NVIC_SystemReset();
-            printf("start");
-        }
+        // if (ps3.getStart())
+        // {
+        //     NVIC_SystemReset();
+        //     printf("start");
+        // }
 
         //default
         vx_cmd = 0;
@@ -277,8 +277,9 @@ int main(){
         w_cmd = 0;
 
         //braking system
-        if(ps3.getKotak()){ //tombol utk nembak
+        if(ps3.getKotak() || ps3.getStart()){ //tombol utk nembak
             omni.forceBrakeSync(); //hard brake sebelum nembak agar robot tidak gerak saat nembak
+            omni.reset();
         } else{
             //moving
             if (ps3.getButtonRight() && !ps3.getLingkaran()) { //gerak ke kanan
