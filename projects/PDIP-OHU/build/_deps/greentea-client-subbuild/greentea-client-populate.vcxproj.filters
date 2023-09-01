@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\CMakeFiles\4b78a51c60a4d2d748f4840e0cd8f779\greentea-client-populate-mkdir.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\CMakeFiles\4b78a51c60a4d2d748f4840e0cd8f779\greentea-client-populate-download.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\CMakeFiles\4b78a51c60a4d2d748f4840e0cd8f779\greentea-client-populate-update.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\CMakeFiles\4b78a51c60a4d2d748f4840e0cd8f779\greentea-client-populate-patch.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\CMakeFiles\4b78a51c60a4d2d748f4840e0cd8f779\greentea-client-populate-configure.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\CMakeFiles\4b78a51c60a4d2d748f4840e0cd8f779\greentea-client-populate-build.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\CMakeFiles\4b78a51c60a4d2d748f4840e0cd8f779\greentea-client-populate-install.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\CMakeFiles\4b78a51c60a4d2d748f4840e0cd8f779\greentea-client-populate-test.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\CMakeFiles\691fa37b8b83577912e8539c596ecd46\greentea-client-populate-complete.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\CMakeFiles\2c13b383e2f01700956d32e3d324fa35\greentea-client-populate.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-subbuild\CMakeFiles\greentea-client-populate" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{8CD1B421-D099-3868-88AD-A7F27ECD7295}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

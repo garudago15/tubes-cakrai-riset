@@ -1,0 +1,150 @@
+^D:\URO-MBED-OS\TUBES-CAKRAI-RISET\PROJECTS\PDIP V1\BUILD\_DEPS\GREENTEA-CLIENT-SUBBUILD\CMAKEFILES\4B78A51C60A4D2D748F4840E0CD8F779\GREENTEA-CLIENT-POPULATE-MKDIR.RULE
+setlocal
+C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\bin\cmake.exe -Dcfgdir=/Debug -P "D:/URO-mbed-os/tubes-cakrai-riset/projects/PDIP V1/build/_deps/greentea-client-subbuild/greentea-client-populate-prefix/tmp/greentea-client-populate-mkdirs.cmake"
+if %errorlevel% neq 0 goto :cmEnd
+C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\bin\cmake.exe -E touch "D:/URO-mbed-os/tubes-cakrai-riset/projects/PDIP V1/build/_deps/greentea-client-subbuild/greentea-client-populate-prefix/src/greentea-client-populate-stamp/Debug/greentea-client-populate-mkdir"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\URO-MBED-OS\TUBES-CAKRAI-RISET\PROJECTS\PDIP V1\BUILD\_DEPS\GREENTEA-CLIENT-SUBBUILD\CMAKEFILES\4B78A51C60A4D2D748F4840E0CD8F779\GREENTEA-CLIENT-POPULATE-DOWNLOAD.RULE
+setlocal
+cd "D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps"
+if %errorlevel% neq 0 goto :cmEnd
+D:
+if %errorlevel% neq 0 goto :cmEnd
+C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\bin\cmake.exe -P "D:/URO-mbed-os/tubes-cakrai-riset/projects/PDIP V1/build/_deps/greentea-client-subbuild/greentea-client-populate-prefix/tmp/greentea-client-populate-gitclone.cmake"
+if %errorlevel% neq 0 goto :cmEnd
+C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\bin\cmake.exe -E touch "D:/URO-mbed-os/tubes-cakrai-riset/projects/PDIP V1/build/_deps/greentea-client-subbuild/greentea-client-populate-prefix/src/greentea-client-populate-stamp/Debug/greentea-client-populate-download"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\URO-MBED-OS\TUBES-CAKRAI-RISET\PROJECTS\PDIP V1\BUILD\_DEPS\GREENTEA-CLIENT-SUBBUILD\CMAKEFILES\4B78A51C60A4D2D748F4840E0CD8F779\GREENTEA-CLIENT-POPULATE-UPDATE.RULE
+setlocal
+cd "D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-src"
+if %errorlevel% neq 0 goto :cmEnd
+D:
+if %errorlevel% neq 0 goto :cmEnd
+C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\bin\cmake.exe -P "D:/URO-mbed-os/tubes-cakrai-riset/projects/PDIP V1/build/_deps/greentea-client-subbuild/greentea-client-populate-prefix/tmp/greentea-client-populate-gitupdate.cmake"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\URO-MBED-OS\TUBES-CAKRAI-RISET\PROJECTS\PDIP V1\BUILD\_DEPS\GREENTEA-CLIENT-SUBBUILD\CMAKEFILES\4B78A51C60A4D2D748F4840E0CD8F779\GREENTEA-CLIENT-POPULATE-PATCH.RULE
+setlocal
+C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\bin\cmake.exe -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\bin\cmake.exe -E touch "D:/URO-mbed-os/tubes-cakrai-riset/projects/PDIP V1/build/_deps/greentea-client-subbuild/greentea-client-populate-prefix/src/greentea-client-populate-stamp/Debug/greentea-client-populate-patch"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\URO-MBED-OS\TUBES-CAKRAI-RISET\PROJECTS\PDIP V1\BUILD\_DEPS\GREENTEA-CLIENT-SUBBUILD\CMAKEFILES\4B78A51C60A4D2D748F4840E0CD8F779\GREENTEA-CLIENT-POPULATE-CONFIGURE.RULE
+setlocal
+cd "D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-build"
+if %errorlevel% neq 0 goto :cmEnd
+D:
+if %errorlevel% neq 0 goto :cmEnd
+C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\bin\cmake.exe -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\bin\cmake.exe -E touch "D:/URO-mbed-os/tubes-cakrai-riset/projects/PDIP V1/build/_deps/greentea-client-subbuild/greentea-client-populate-prefix/src/greentea-client-populate-stamp/Debug/greentea-client-populate-configure"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\URO-MBED-OS\TUBES-CAKRAI-RISET\PROJECTS\PDIP V1\BUILD\_DEPS\GREENTEA-CLIENT-SUBBUILD\CMAKEFILES\4B78A51C60A4D2D748F4840E0CD8F779\GREENTEA-CLIENT-POPULATE-BUILD.RULE
+setlocal
+cd "D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-build"
+if %errorlevel% neq 0 goto :cmEnd
+D:
+if %errorlevel% neq 0 goto :cmEnd
+C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\bin\cmake.exe -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\bin\cmake.exe -E touch "D:/URO-mbed-os/tubes-cakrai-riset/projects/PDIP V1/build/_deps/greentea-client-subbuild/greentea-client-populate-prefix/src/greentea-client-populate-stamp/Debug/greentea-client-populate-build"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\URO-MBED-OS\TUBES-CAKRAI-RISET\PROJECTS\PDIP V1\BUILD\_DEPS\GREENTEA-CLIENT-SUBBUILD\CMAKEFILES\4B78A51C60A4D2D748F4840E0CD8F779\GREENTEA-CLIENT-POPULATE-INSTALL.RULE
+setlocal
+cd "D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-build"
+if %errorlevel% neq 0 goto :cmEnd
+D:
+if %errorlevel% neq 0 goto :cmEnd
+C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\bin\cmake.exe -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\bin\cmake.exe -E touch "D:/URO-mbed-os/tubes-cakrai-riset/projects/PDIP V1/build/_deps/greentea-client-subbuild/greentea-client-populate-prefix/src/greentea-client-populate-stamp/Debug/greentea-client-populate-install"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\URO-MBED-OS\TUBES-CAKRAI-RISET\PROJECTS\PDIP V1\BUILD\_DEPS\GREENTEA-CLIENT-SUBBUILD\CMAKEFILES\4B78A51C60A4D2D748F4840E0CD8F779\GREENTEA-CLIENT-POPULATE-TEST.RULE
+setlocal
+cd "D:\URO-mbed-os\tubes-cakrai-riset\projects\PDIP V1\build\_deps\greentea-client-build"
+if %errorlevel% neq 0 goto :cmEnd
+D:
+if %errorlevel% neq 0 goto :cmEnd
+C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\bin\cmake.exe -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\bin\cmake.exe -E touch "D:/URO-mbed-os/tubes-cakrai-riset/projects/PDIP V1/build/_deps/greentea-client-subbuild/greentea-client-populate-prefix/src/greentea-client-populate-stamp/Debug/greentea-client-populate-test"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\URO-MBED-OS\TUBES-CAKRAI-RISET\PROJECTS\PDIP V1\BUILD\_DEPS\GREENTEA-CLIENT-SUBBUILD\CMAKEFILES\691FA37B8B83577912E8539C596ECD46\GREENTEA-CLIENT-POPULATE-COMPLETE.RULE
+setlocal
+C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\bin\cmake.exe -E make_directory "D:/URO-mbed-os/tubes-cakrai-riset/projects/PDIP V1/build/_deps/greentea-client-subbuild/CMakeFiles/Debug"
+if %errorlevel% neq 0 goto :cmEnd
+C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\bin\cmake.exe -E touch "D:/URO-mbed-os/tubes-cakrai-riset/projects/PDIP V1/build/_deps/greentea-client-subbuild/CMakeFiles/Debug/greentea-client-populate-complete"
+if %errorlevel% neq 0 goto :cmEnd
+C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\bin\cmake.exe -E touch "D:/URO-mbed-os/tubes-cakrai-riset/projects/PDIP V1/build/_deps/greentea-client-subbuild/greentea-client-populate-prefix/src/greentea-client-populate-stamp/Debug/greentea-client-populate-done"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\URO-MBED-OS\TUBES-CAKRAI-RISET\PROJECTS\PDIP V1\BUILD\_DEPS\GREENTEA-CLIENT-SUBBUILD\CMAKEFILES\2C13B383E2F01700956D32E3D324FA35\GREENTEA-CLIENT-POPULATE.RULE
+setlocal
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\URO-MBED-OS\TUBES-CAKRAI-RISET\PROJECTS\PDIP V1\BUILD\_DEPS\GREENTEA-CLIENT-SUBBUILD\CMAKELISTS.TXT
+setlocal
+C:\Users\Voodoo\AppData\Local\Programs\Python\Python311\Lib\site-packages\cmake\data\bin\cmake.exe "-SD:/URO-mbed-os/tubes-cakrai-riset/projects/PDIP V1/build/_deps/greentea-client-subbuild" "-BD:/URO-mbed-os/tubes-cakrai-riset/projects/PDIP V1/build/_deps/greentea-client-subbuild" --check-stamp-file "D:/URO-mbed-os/tubes-cakrai-riset/projects/PDIP V1/build/_deps/greentea-client-subbuild/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
