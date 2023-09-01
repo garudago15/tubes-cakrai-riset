@@ -66,3 +66,8 @@ int AngleShooter::mapValue(int encReading)
     
     return mappedValue;
 }
+
+void AngleShooter::setAngleTarget(int updateTarget)
+{
+    this->angleTarget = updateTarget;
+}

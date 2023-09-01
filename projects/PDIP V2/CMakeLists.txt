@@ -32,7 +32,7 @@ add_executable(${APP_TARGET}
     ShooterMotor/ShooterMotor.cpp
     AngleShooter/AngleShooter.cpp
 
-    ../../KRAI_Library/led4Pin/led4Pin.cpp
+    ../../KRAI_Library/led4Pin/led4Pin-digital.cpp
 
     main.cpp
 )

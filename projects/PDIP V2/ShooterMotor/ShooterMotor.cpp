@@ -123,10 +123,18 @@ void ShooterMotor::controlOmegaShooter(float setPoint)
 }
 
 
-// 0.0009 0.0016 0.0001
-
-
-// 0.001 0.0 0.00009
-
-// Bener ni bang
-// 0.001 0.001 0.00009
+float ShooterMotor::getCalcRPM(float x, int targetAngle)
+{
+    if (targetAngle == 55)
+    {
+        return (-104.4*x*x + 827.3*x + 1391);
+    } else if (targetAngle == 65)
+    {
+        return (245.9*x*x + 655.5*x + 1259);
+    } else if (targetAngle == 70)
+    {
+        return (-745.1*x*x + 1021*x + 2070);
+    } else {
+        return 0.0;
+    }
+}
