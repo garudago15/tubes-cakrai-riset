@@ -280,7 +280,7 @@ int main(){
             angleSetPoint = 65;
         } else if (ps3.getLY() > 120)  // Gerakin ke bawah, buat area paling deket
         {
-            angleSetPoint = 70;
+            angleSetPoint = 65;
         }
 
         // printf("%d %d\n", ps3.getLY(), angleSetPoint);       // Buat debug bener ga ni tombol
@@ -313,7 +313,7 @@ int main(){
             trySetPoint = 2770;         // 2.5m pembacaan sensor berarti 2m jarak di asli
         } else if (ps3.getLingkaran() && ps3.getButtonDown())
         {
-            trySetPoint = 2400.0;       // ini buat deket banget sudut 70
+            trySetPoint = 1100.0;       // ini buat deket banget sudut 70
         } else if (ps3.getLingkaran() && ps3.getButtonRight())
         {
             trySetPoint = controlShooterMotor.getCalcRPM(jarakTF[0], angleSetPoint);
@@ -513,9 +513,13 @@ int main(){
             state = "ready";
         
         // SEMUA TIDAK READY
-        } else if (jarakTF[0] == 0.0 || jarakTF[0] > 4.0){
-            state = "notf";                 //JArak gakebaca
-        } else {
+        } 
+        
+        // else if (jarakTF[0] == 0.0 || jarakTF[0] > 4.0){
+        //     state = "notf";                 //JArak gakebaca
+        // } 
+        
+        else {
             state = "notready";
         }
 
@@ -535,9 +539,11 @@ int main(){
             RGB.setColor("PURPLE");
         } else if (state == "SELEBERASI") {
             RGB.turnOff();
-        } else if (state == "notf"){
-            RGB.setRGB(true, true, true);
-        }
+        } 
+        
+        // else if (state == "notf"){
+        //     RGB.setRGB(true, true, true);
+        // }
         // ------------------------------------------------------------------------------
 
         
