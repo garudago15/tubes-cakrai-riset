@@ -136,6 +136,7 @@ uint32_t samplingIK = 0;
 // uint32_t samplingOtomatisESP = 0;
 // uint32_t samplingParallelPark = 0;
 // uint32_t samplingAutoAim = 0;
+uint32_t samplingJedagJedug = 0;
 
 /* UNTUK PEMBACAAN JARAK DARI NUCLEO */
 const int MAX_MSG = 64;
@@ -144,6 +145,9 @@ int constPID_pos = 0;
 static unsigned int message_pos = 0;
 char inByte;
 static float jarakTF[2];
+
+//jedag jedug
+int jedagJedugCount = 1;
 
 
 int main(){
@@ -329,12 +333,13 @@ int main(){
         if (us_ticker_read() - timeLast > samplingPID)
         { 
             controlShooterMotor.controlOmegaShooter(trySetPoint);
+            timeLast=us_ticker_read();
         }
         // ------------------------------------------------------------------------------
         
 
         /* UNTUK TUNNING LAPANGAN */
-        printf("%f %f %d %d\n", controlShooterMotor.getOmegaShooter(), controlShooterMotor.getSetpoint(), controlAngShooter.getAngleRealtime(), controlAngShooter.getAngleTarget());
+        // printf("%f %f %d %d\n", controlShooterMotor.getOmegaShooter(), controlShooterMotor.getSetpoint(), controlAngShooter.getAngleRealtime(), controlAngShooter.getAngleTarget());
         
         // utk reset
         // if (ps3.getStart())
@@ -541,7 +546,43 @@ int main(){
         } else if (state == "reload") {
             RGB.setColor("PURPLE");
         } else if (state == "SELEBERASI") {
-            RGB.turnOff();
+            if(us_ticker_read() - samplingJedagJedug > SAMP_JEDAG_JEDUG){
+                
+                switch(jedagJedugCount){
+                    case 1:
+                        RGB.setColor("RED");
+                        break;
+                    case 3:
+                        RGB.setColor("BLUE");
+                        break;
+                    case 5:
+                        RGB.setColor("YELLOW");
+                        break;
+                    case 7:
+                        RGB.setColor("GREEN");
+                        break;
+                    case 9:
+                        RGB.setColor("CYAN");
+                        break;
+                    case 11:
+                        RGB.setColor("ORANGE");
+                        break;
+                    case 13:
+                        RGB.setColor("PURPLE");
+                        break;
+                    case 15:
+                        RGB.setRGB(true, true, true);
+                        break;
+                    default:
+                        RGB.turnOff();
+                }
+                
+                RGB.setColor("RED");
+                jedagJedugCount++;
+                if(jedagJedugCount>16){
+                    jedagJedugCount=1;
+                }
+            }
         } 
         
         // else if (state == "notf"){

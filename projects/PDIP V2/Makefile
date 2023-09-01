@@ -4,7 +4,7 @@
 # NUCLEO =  NUCLEO_G0B1RE
 NUCLEO =  ARCH_MAX
 PROGRAM = testing-omni
-DRIVE_NAME = ARCH_MAX
+DRIVE_NAME = NODE_F446RE
 GET_DRIVE_CMD = $(shell wmic volume where "label='$(DRIVE_NAME)'" get driveletter)
 DRIVE_LETTER = $(word 2, $(GET_DRIVE_CMD))
 

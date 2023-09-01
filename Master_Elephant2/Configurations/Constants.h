@@ -26,6 +26,8 @@
 #define SAMP_STICK_US 13000
 #define SAMP_STICK_MS 13
 
+#define SAMP_JEDAG_JEDUG 250000
+
 /* BASE MOTOR PID */
 
 /** 
