@@ -26,7 +26,7 @@
 #include "../../KRAI_Library/MovingAverage/MovingAverage.h"
 
 // Untuk LED
-#include "../../KRAI_Library/led4Pin/led4Pin.h"
+#include "../../KRAI_Library/led4Pin/led4Pin-digital.h"
 
 // Inisialisasi Pengendali Motor Shooter
 ShooterMotor controlShooterMotor(&leftMotor, &encLeftMotor, &pidLeftMotor, &movAvgLM, &movAvgAccel, &motorReload, &encMotorReload);
@@ -52,13 +52,18 @@ void fallMotor(){
 // -----------------------------------------------------------------------
 
 // --------------------- UNTUK LED ------------------------
-// DEFINE LED
-// #define red PC_0
-// #define green PA_2
-// #define blue PC_1
+// // DEFINE LED
+// #define red PD_3
+// #define green PC_13
+// #define blue PC_12
 // LED4Pin RGB(red, green, blue);
 
-string state = "standby";
+#define RED             PE_4
+#define GREEN           PC_12
+#define BLUE            PD_0
+LED4PinDigital RGB(RED, GREEN, BLUE);
+
+string state = "notready";
 // ---------------------------------------------------------
 
 
@@ -132,8 +137,18 @@ uint32_t samplingIK = 0;
 // uint32_t samplingParallelPark = 0;
 // uint32_t samplingAutoAim = 0;
 
+/* UNTUK PEMBACAAN JARAK DARI NUCLEO */
+const int MAX_MSG = 64;
+static char message[MAX_MSG];
+int constPID_pos = 0;
+static unsigned int message_pos = 0;
+char inByte;
+static float jarakTF[2];
+
+
 int main(){
-    printf("STICK START\n");
+    // printf("STICK START\n");
+    jarakTF[0] = 0.0;
 
     /* SET UP JOYSTICK */
     ps3.idle();   
@@ -158,19 +173,79 @@ int main(){
     int dataSerialI_1;
     // -------------------
 
+
+
     while (true){
+        // Untuk Pekerluan LED
+        us_timestamp_t currentTimestampLED = us_ticker_read();
+
         // Pengolahan dan Update data PS3
         ps3.olah_data();
         ps3.baca_data();
 
-        // ----------------------------- SET SETPOINT -------------------------------
-        if (serial_port.readable())
-        {
-            scanf("%f %d", &dataSerialF_1, &dataSerialI_1);
-            angleSetPoint = dataSerialI_1;
-            trySetPoint = dataSerialF_1;
+        // ------------------------------ BUAT BACA JARAK DARI NUCLEO --------------------
 
+        while (serial_port.readable())
+        {
+            serial_port.read(&inByte, 1);
+            printf("KEBACA \n");
+
+            if ((inByte != '\n') && message_pos < MAX_MSG - 1)
+            {
+                message[message_pos] = inByte;
+                printf("%c\n", inByte);
+                message_pos++;
+            }
+            else
+            {
+                message[message_pos] = '\0';
+                message_pos = 0;
+                char *token = strtok(message, " ");
+
+                while (token != NULL)
+                {
+                    jarakTF[constPID_pos] = atof(token);
+                    //printf("%s %d\n", token, constPID_pos);
+                    printf("%d\n", constPID_pos);
+                    token = strtok(NULL, " ");
+                    constPID_pos++;
+                    if (constPID_pos == 2)
+                    {
+                        constPID_pos = 0;
+                    }
+                }
+
+                // printf("kp = %f || ki = %f || kd = %f\n", pidLeftMotor.getPParam(), pidLeftMotor.getIParam(), pidLeftMotor.getDParam());
+                // printf("kp = %f || ki = %f || kd = %f\n", kpKiKd[0], kpKiKd[1], kpKiKd[2]);
+            }
         }
+
+        // -------------------------------------------------------------------------------
+
+        // printf("%.2f \n", jarakTF[0]);
+        // VALIDASI TF MINI
+        // JIka diatas 10m buat jadi 0
+        if (jarakTF[0] > 10.0){
+            jarakTF[0] = 0.0;
+        }
+
+        /* ------------------------ BUAT CEK TF MINI ------------------------------------- */
+        // if (jarakTF[0] == 0.0){
+        //     RGB.setRGB(false, false, true);
+        // } else if ( jarakTF[0] > 0.0 && jarakTF[0] < 10.0) {
+        //     RGB.setRGB(false, true, false);
+        // } else {
+        //     RGB.setRGB(true, true, true);
+        // }
+
+        // ----------------------------- SET SETPOINT -------------------------------
+        // if (serial_port.readable())
+        // {
+        //     scanf("%f %d", &dataSerialF_1, &dataSerialI_1);
+        //     angleSetPoint = dataSerialI_1;
+        //     trySetPoint = dataSerialF_1;
+
+        // }
 
         // ------------------------- RELOAD MECHANISM -------------------------
         if (ps3.getKotak() && controlShooterMotor.getOmegaShooter() > 1000 &&
@@ -183,7 +258,6 @@ int main(){
 
         if (startReload)
         {
-            state = "reload";
             if (controlShooterMotor.getReloaderStatus() == false)
             {
                 startReload = false;
@@ -196,44 +270,22 @@ int main(){
         }
         // ------------------------------------------------------------------------------
 
-        // ------------------------- CONTROL MOTOR SHOOTER -------------------------
-        if (ps3.getLingkaran() && ps3.getL2())
-        {
-            trySetPoint = 0;
-        } else if (ps3.getLingkaran() && ps3.getButtonDown())
-        {
-            trySetPoint = 2470;
-        } else if (ps3.getLingkaran() && ps3.getButtonUp())
-        {
-            trySetPoint = 2900;
-        }
-
-        if (us_ticker_read() - timeLast > samplingPID)
-        { 
-            controlShooterMotor.controlOmegaShooter(trySetPoint);
-
-            // if (trySetPoint != 0)
-            // {
-            //     controlShooterMotor.controlOmegaShooter(trySetPoint);
-            // } else
-            // {
-            //     controlShooterMotor.setRPM(0.0);
-            //     controlShooterMotor.setParamSetpoint(0.0);
-            // }
-        }
-        // ------------------------------------------------------------------------------
-
         // ------------------------- CONTROL ANGLE SHOOTER -------------------------
         
-        if (ps3.getLY() < -120)
+        if (ps3.getLY() < -120)         // Gerakin ke atas
         {
             angleSetPoint = 55;
-        } else if (ps3.getLY() > 120)
+        } else if (ps3.getLX() < -120)   // Gerakin ke kiri, buat area tengah
         {
             angleSetPoint = 65;
-        } 
+        } else if (ps3.getLY() > 120)  // Gerakin ke bawah, buat area paling deket
+        {
+            angleSetPoint = 70;
+        }
 
         // printf("%d %d\n", ps3.getLY(), angleSetPoint);       // Buat debug bener ga ni tombol
+
+        // TES
 
         // Reset Angle Purpose
         if (ps3.getLY() < -120 && ps3.getRY() < -120)
@@ -241,7 +293,7 @@ int main(){
             RESET_ANG_MOTOR = true;
             angleSetPoint = 80;                                 // Posisi Paling Bawah
         }
-        controlAngShooter.resetMotorAngle(0.35, RESET_ANG_MOTOR);
+        controlAngShooter.resetMotorAngle(0.3, RESET_ANG_MOTOR);
 
         // Sampling for PID Purpose
         if (us_ticker_read() - timeLastForAngleShooter > samplingPID)
@@ -251,15 +303,35 @@ int main(){
         }
         // ------------------------------------------------------------------------------
 
-        // --------------------------------- UNTUK CONTROL LED --------------------------
-        // if (state == "standby"){
-        //     RGB.setColor("BLUE");
-        // } else if (state == "reload") {
-        //     RGB.setColor("GREEN");
-        // } else {
-        //     RGB.setColor("RED");
-        // }
+        // ------------------------- CONTROL MOTOR SHOOTER -------------------------
+        if (ps3.getLingkaran() && ps3.getL2())
+        {
+            trySetPoint = 0;
+        } else if (ps3.getLingkaran() && ps3.getButtonUp())
+        {
+            trySetPoint = 2950;         // nah ni buat jauh sangat sekitar 3.1m sensor atau 2.5 jarak di asli
+        } else if (ps3.getLingkaran() && ps3.getButtonLeft())
+        {
+            trySetPoint = 2770;         // 2.5m pembacaan sensor berarti 2m jarak di asli
+        } else if (ps3.getLingkaran() && ps3.getButtonDown())
+        {
+            trySetPoint = 1100.0;       // ini buat deket banget sudut 70
+        } else if (ps3.getLingkaran() && ps3.getButtonRight())
+        {
+            trySetPoint = controlShooterMotor.getCalcRPM(jarakTF[0], angleSetPoint);
+        }
+
+        // PASTIIN RPM DIBAWAH BATAS MAKSIMUM MOTOR
+        if (trySetPoint > 3500.0){
+            trySetPoint = 0.0;
+        }
+
+        if (us_ticker_read() - timeLast > samplingPID)
+        { 
+            controlShooterMotor.controlOmegaShooter(trySetPoint);
+        }
         // ------------------------------------------------------------------------------
+        
 
         /* UNTUK TUNNING LAPANGAN */
         printf("%f %f %d %d\n", controlShooterMotor.getOmegaShooter(), controlShooterMotor.getSetpoint(), controlAngShooter.getAngleRealtime(), controlAngShooter.getAngleTarget());
@@ -268,7 +340,7 @@ int main(){
         // if (ps3.getStart())
         // {
         //     NVIC_SystemReset();
-        //     printf("start");
+        //     // printf("start");
         // }
 
         //default
@@ -425,18 +497,57 @@ int main(){
 
         }
 
-        // old sampling method
-        // now = us_ticker_read();
-        // if(now - timer1 > TIME_SAMPLING){
-        //     //omni sampling
-        //     omni.encoderMotorSamp(); //baca encoder (current speed) tiap motor
-        //     omni.baseSpeed(); //update odometri
-        //     omni.base(); //update target speed tiap motor berdasarkan vx, vy, dan w
-        //     omni.pidMotorSamp(); //update PID berdasarkan target dan current speed tiap motor
-        //     omni.motorSamp(); //update motor
 
-        //     timer1 = now;
+        // --------------------------------- UNTUK CONTROL LED --------------------------
+        // APAKAH SEDANG GERAK?
+        if (omni.get_v_FL_curr() != 0 || omni.get_v_FR_curr() != 0 || omni.get_v_BL_curr() != 0 || omni.get_v_BR_curr() != 0)
+        {
+            state = "movement";
+
+        // APAKAH SEDAH RELOAD?
+        } else if (startReload) {
+            state = "reload";
+
+        // CEK APAKAH SUDAH MENCAPAI SEMUA SETPOINT
+        } else if ( ((controlAngShooter.getAngleRealtime() < controlAngShooter.getAngleTarget() + 4) && (controlAngShooter.getAngleRealtime() > controlAngShooter.getAngleTarget() - 4)) &&
+                    ((controlShooterMotor.getOmegaShooter() < controlShooterMotor.getSetpoint() + 100) && (controlShooterMotor.getOmegaShooter() > controlShooterMotor.getSetpoint() - 100)) && 
+                    (controlShooterMotor.getSetpoint() != 0 && controlAngShooter.getAngleTarget() != 80) )
+        {
+            state = "ready";
+        
+        // SEMUA TIDAK READY
+        } 
+        
+        // else if (jarakTF[0] == 0.0 || jarakTF[0] > 4.0){
+        //     state = "notf";                 //JArak gakebaca
+        // } 
+        
+        else {
+            state = "notready";
+        }
+
+        // MODE SELEBRASI
+        if(ps3.getSelect()){
+            state = "SELEBERASI";
+        }
+
+
+        if (state == "ready"){
+            RGB.setColor("GREEN");
+        } else if (state == "notready") {
+            RGB.setColor("RED");
+        } else if (state == "movement") {
+            RGB.setColor("BLUE");
+        } else if (state == "reload") {
+            RGB.setColor("PURPLE");
+        } else if (state == "SELEBERASI") {
+            RGB.turnOff();
+        } 
+        
+        // else if (state == "notf"){
+        //     RGB.setRGB(true, true, true);
         // }
+        // ------------------------------------------------------------------------------
 
         
     }
